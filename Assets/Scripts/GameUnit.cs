@@ -7,10 +7,10 @@ public class GameUnit : Unit
 {
     public Color LeadingColor;
     public bool canShoot;
-    bool hasMoved = false;
+    bool hasMoved;
     public bool isDeployed;
     List<Cell> available;
-    bool isSelected = false;
+    bool isSelected;
 
     public override void Initialize()
     {
@@ -19,6 +19,8 @@ public class GameUnit : Unit
         transform.position += new Vector3(0, 0, -1);
         GetComponent<Renderer>().material.color = LeadingColor;
         isDeployed = true;
+        hasMoved = false;
+        isSelected = false;
     }
 
     public bool HasMoved()
@@ -26,9 +28,9 @@ public class GameUnit : Unit
         return hasMoved;
     }
 
-    public void SwitchHasMoved()
+    public void SetHasMoved(bool val)
     {
-        hasMoved = !hasMoved;
+        hasMoved = val;
     }
 
     void OnMouseDown()
@@ -45,11 +47,8 @@ public class GameUnit : Unit
             return;
         }
         GameUnit unit = this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SelectedUnit();
-        if (unit != null)
-        {
-            unit.UnSelect();
-            this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
-        }
+        if (unit != null) unit.UnSelect();
+        this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
         int limit = this.MovementPoints;
         PopulateAvailableCells();
         foreach (Cell cell in available)

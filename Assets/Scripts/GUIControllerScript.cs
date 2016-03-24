@@ -44,6 +44,12 @@ public class GUIControllerScript : MonoBehaviour
     private void OnTurnEnded(object sender, EventArgs e)
     {
         //NextTurnButton.interactable = ((sender as CellGrid).CurrentPlayer is HumanPlayer);
+        GameUnit[] units = UnitsParent.gameObject.transform.GetComponentsInChildren<GameUnit>();
+        foreach (GameUnit unit in units)
+        {
+            unit.UnSelect();
+            unit.SetHasMoved(false);
+        }
         Debug.Log("Turn Ended");
     }
     private void OnGameEnded(object sender, EventArgs e)
@@ -101,19 +107,11 @@ public class GUIControllerScript : MonoBehaviour
     {
         Application.LoadLevel(Application.loadedLevel);
     }
-
-    void Update () 
+    
+    // checks if all units have moved
+    // and if a player's carrier was destroyed
+    void CheckForEndingConditions()
     {
-        // switching cameras
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            CarrierCamera.enabled = !CarrierCamera.enabled;
-            OverheadCamera.enabled = !OverheadCamera.enabled;
-        }
-
-        // ending turn
-        if(Input.GetKeyDown(KeyCode.N))
-            CellGrid.EndTurn(); //User ends his turn by pressing "n" on keyboard.
         GameUnit[] gameUnits = UnitsParent.GetComponentsInChildren<GameUnit>();
         bool allUnitsMoved = true;
         Carrier carrier = null;
@@ -127,8 +125,30 @@ public class GUIControllerScript : MonoBehaviour
                 //break;
             }
         }
+        if (allUnitsMoved) Debug.Log("All units moved");
         if (allUnitsMoved) CellGrid.EndTurn();
         if (carrier == null)
             Destroy(PlayersParent.gameObject.transform.GetChild(carrier.PlayerNumber));
     }
+
+    void Update () 
+    {
+        // switching cameras
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            CarrierCamera.enabled = !CarrierCamera.enabled;
+            OverheadCamera.enabled = !OverheadCamera.enabled;
+            return;
+        }
+
+        // ending turn
+        if(Input.GetKeyDown(KeyCode.N))
+            CellGrid.EndTurn(); //User ends his turn by pressing "n" on keyboard.
+        CheckForEndingConditions();       
+    }
+
+   /* void FixedUpdate()
+    {
+        CheckForEndingConditions();
+    }*/
 }

@@ -8,11 +8,13 @@ public class FloorCell : Hexagon
 
     void OnMouseDown()
     {
+        //Debug.Log("Moving to cell");
         if (moveable == null) return;
         moveable.Move(this, moveable.FindPath(moveable.GetAvailableCells(), this));
-        moveable.SwitchHasMoved();
+        moveable.SetHasMoved(true);
         moveable.UnSelect();
         this.UnReach();
+        //Debug.Log("done moving to cell");
     }
 
     protected override void OnMouseExit()

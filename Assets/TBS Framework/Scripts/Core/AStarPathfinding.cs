@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Implementation of A* pathfinding algorithm.
 /// </summary>
 class AStarPathfinding : IPathfinding
 {
+    private List<Cell> path;
+
     public override List<T> FindPath<T>(Dictionary<T, Dictionary<T, int>> edges, T originNode, T destinationNode)
     {
         IPriorityQueue<T> frontier = new HeapPriorityQueue<T>();
@@ -40,13 +43,20 @@ class AStarPathfinding : IPathfinding
 
         path.Add(destinationNode);
         var temp = destinationNode;
-
-        while (!cameFrom[temp].Equals(originNode))
+        Debug.Log(temp + " - " + destinationNode + " - " + originNode);
+        try
         {
-            var currentPathElement = cameFrom[temp];
-            path.Add(currentPathElement);
+            while (!cameFrom[temp].Equals(originNode))
+            {
+                var currentPathElement = cameFrom[temp];
+                path.Add(currentPathElement);
 
-            temp = currentPathElement;
+                temp = currentPathElement;
+            }
+        }
+        catch (System.NullReferenceException e)
+        {
+            return path;
         }
 
         return path;

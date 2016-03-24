@@ -137,7 +137,7 @@ public class CellGrid : MonoBehaviour
     /// </summary> 
     public void EndTurn()
     {
-        if (Units.Select(u => u.PlayerNumber).Distinct().Count() == 1)
+        if (Units.Select(u => u.PlayerNumber).Distinct().Count() == 0)
         {
             return;
         }
