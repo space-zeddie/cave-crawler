@@ -8,6 +8,8 @@ public class GUIControllerScript : MonoBehaviour
 	public CellGrid CellGrid;
     public GameObject UnitsParent;
     public GameObject PlayersParent;
+    public Camera CarrierCamera;
+    public Camera OverheadCamera;
 
    /* public Button NextTurnButton;
 
@@ -23,6 +25,9 @@ public class GUIControllerScript : MonoBehaviour
         CellGrid.GameStarted += OnGameStarted;
         CellGrid.TurnEnded += OnTurnEnded;
         CellGrid.GameEnded += OnGameEnded;
+
+        CarrierCamera.enabled = true;
+        OverheadCamera.enabled = false;
     }
 
     private void OnGameStarted(object sender, EventArgs e)
@@ -99,6 +104,14 @@ public class GUIControllerScript : MonoBehaviour
 
     void Update () 
     {
+        // switching cameras
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            CarrierCamera.enabled = !CarrierCamera.enabled;
+            OverheadCamera.enabled = !OverheadCamera.enabled;
+        }
+
+        // ending turn
         if(Input.GetKeyDown(KeyCode.N))
             CellGrid.EndTurn(); //User ends his turn by pressing "n" on keyboard.
         GameUnit[] gameUnits = UnitsParent.GetComponentsInChildren<GameUnit>();
