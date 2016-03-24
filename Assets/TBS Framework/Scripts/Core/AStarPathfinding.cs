@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 class AStarPathfinding : IPathfinding
 {
-    private List<Cell> path;
+   // private List<Cell> safePath;
 
     public override List<T> FindPath<T>(Dictionary<T, Dictionary<T, int>> edges, T originNode, T destinationNode)
     {
@@ -53,10 +53,16 @@ class AStarPathfinding : IPathfinding
 
                 temp = currentPathElement;
             }
+            if (path.Count != 0 && path[0] is Cell)
+            {
+              //  safePath = new List<Cell>();
+               // foreach (T elem in path)
+                //    safePath.Add(elem as Cell);
+            }
         }
         catch (System.NullReferenceException e)
         {
-            return path;
+            return path; //safePath;
         }
 
         return path;
