@@ -38,15 +38,18 @@ public class ObstacleGenerator : MonoBehaviour {
             i = rnd.Next(Hex.width * Hex.height);
             cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<Cell>();
         }
+        InstantiateObstacle(cell, ExitPrefab);
+    }
 
-        GameObject obstacle = Instantiate(ExitPrefab);
+    void InstantiateObstacle(Cell cell, GameObject prefab)
+    {
+        GameObject obstacle = Instantiate(prefab);
+      //  obstacle.AddComponent<Collectable>();
+        if (cell is FloorCell) (cell as FloorCell).spawn = obstacle;
         cell.IsTaken = true;
         Vector3 offset = new Vector3(0, 0, cell.GetCellDimensions().z);
         obstacle.transform.position = cell.transform.position - offset;
         obstacle.transform.parent = ObstaclesParent;
-        //ObstaclesParent.gameObject.g
-
-        
     }
 
     void ManualSpawn()

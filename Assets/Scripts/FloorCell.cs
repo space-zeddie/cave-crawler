@@ -5,11 +5,17 @@ public class FloorCell : Hexagon
 {
     bool isReachable = false;
     public GameUnit moveable = null;
+    public GameObject spawn = null;
 
     void OnMouseDown()
     {
         //Debug.Log("Moving to cell");
         if (moveable == null) return;
+        if (spawn != null)
+        {
+            Destroy(spawn);
+            IsTaken = false;
+        }
         moveable.Move(this, moveable.FindPath(moveable.GetAvailableCells(), this));
         moveable.SetHasMoved(true);
         moveable.UnSelect();

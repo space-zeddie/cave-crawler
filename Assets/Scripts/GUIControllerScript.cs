@@ -8,6 +8,7 @@ public class GUIControllerScript : MonoBehaviour
 	public CellGrid CellGrid;
     public GameObject UnitsParent;
     public GameObject PlayersParent;
+    public GameObject ObstaclesParent;
     public Camera CarrierCamera;
     public Camera OverheadCamera;
 
@@ -129,6 +130,12 @@ public class GUIControllerScript : MonoBehaviour
         if (allUnitsMoved) CellGrid.EndTurn();
         if (carrier == null)
             Destroy(PlayersParent.gameObject.transform.GetChild(carrier.PlayerNumber));
+
+        Collectable[] spawns = ObstaclesParent.GetComponentsInChildren<Collectable>();
+        bool exitReached = true;
+        foreach (Collectable obj in spawns)
+            if (obj is Exit) exitReached = false;
+        //if (exitReached) //CellGrid.Gam
     }
 
     void Update () 
