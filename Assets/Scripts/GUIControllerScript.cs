@@ -113,6 +113,7 @@ public class GUIControllerScript : MonoBehaviour
     // and if a player's carrier was destroyed
     void CheckForEndingConditions()
     {
+        Debug.Log("Check for ending condition");
         GameUnit[] gameUnits = UnitsParent.GetComponentsInChildren<GameUnit>();
         bool allUnitsMoved = true;
         Carrier carrier = null;
@@ -126,7 +127,6 @@ public class GUIControllerScript : MonoBehaviour
                 //break;
             }
         }
-        if (allUnitsMoved) Debug.Log("All units moved");
         if (allUnitsMoved) CellGrid.EndTurn();
         if (carrier == null)
             Destroy(PlayersParent.gameObject.transform.GetChild(carrier.PlayerNumber));
@@ -134,8 +134,13 @@ public class GUIControllerScript : MonoBehaviour
         Collectable[] spawns = ObstaclesParent.GetComponentsInChildren<Collectable>();
         bool exitReached = true;
         foreach (Collectable obj in spawns)
+        {
             if (obj is Exit) exitReached = false;
-        //if (exitReached) //CellGrid.Gam
+            Debug.Log(obj);
+        }
+
+        if (exitReached)
+            CellGrid.EndGame();
     }
 
     void Update () 

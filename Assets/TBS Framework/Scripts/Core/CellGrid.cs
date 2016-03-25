@@ -131,6 +131,12 @@ public class CellGrid : MonoBehaviour
         Players.Find(p => p.PlayerNumber.Equals(CurrentPlayerNumber)).Play(this);
     }
 
+    public void EndGame()
+    {
+        if (GameEnded != null)
+            GameEnded.Invoke(this, new EventArgs());
+    }
+
 
     /// <summary>
     /// Method makes turn transitions. It is called by player at the end of his turn.
