@@ -44,8 +44,8 @@ public class ObstacleGenerator : MonoBehaviour {
     void InstantiateObstacle(Cell cell, GameObject prefab)
     {
         GameObject obstacle = Instantiate(prefab);
-      //  obstacle.AddComponent<Collectable>();
-        if (cell is FloorCell) (cell as FloorCell).spawn = obstacle;
+        obstacle.AddComponent<Collectable>();
+        if (cell is FloorCell) (cell as FloorCell).spawn = obstacle.GetComponent<Collectable>();
         cell.IsTaken = true;
         Vector3 offset = new Vector3(0, 0, cell.GetCellDimensions().z);
         obstacle.transform.position = cell.transform.position - offset;

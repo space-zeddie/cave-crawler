@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Exit : Collectable {
+public class Exit : Collectable 
+{
 
-	// Use this for initialization
-	void Start () {
+    public void VanishUnit(GameUnit unit)
+    {
+        unit.enabled = false;
+        unit.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+    }
 	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

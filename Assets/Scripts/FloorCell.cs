@@ -5,7 +5,7 @@ public class FloorCell : Hexagon
 {
     bool isReachable = false;
     public GameUnit moveable = null;
-    public GameObject spawn = null;
+    public Collectable spawn = null;
 
     void OnMouseDown()
     {
@@ -13,11 +13,13 @@ public class FloorCell : Hexagon
         if (moveable == null) return;
         if (spawn != null)
         {
-            Destroy(spawn);
+            if (!(spawn is Exit)) { Debug.Log("is Exit");  Destroy(spawn); }
             IsTaken = false;
         }
-        moveable.Move(this, moveable.FindPath(moveable.GetAvailableCells(), this));
+        if (!(spawn is Exit)) moveable.Move(this, moveable.FindPath(moveable.GetAvailableCells(), this));
         moveable.SetHasMoved(true);
+
+        if (spawn is Exit) (spawn as Exit).VanishUnit(moveable);
         moveable.UnSelect();
         this.UnReach();
         //Debug.Log("done moving to cell");
