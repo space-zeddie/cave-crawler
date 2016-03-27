@@ -26,10 +26,13 @@ public class LinkToMainMenu : Singleton<LinkToMainMenu>
     {
         SingleplayerButton sb = canvas.gameObject.transform.GetComponentInChildren<SingleplayerButton>();
         MultiplayerButton mb = canvas.gameObject.transform.GetComponentInChildren<MultiplayerButton>();
+        ReturnToMenuButton rmb = canvas.gameObject.transform.GetComponentInChildren<ReturnToMenuButton>();
         if (sb != null)
-            (sb as Button).onClick.AddListener(delegate { LoadSingplayerScene(); });
+            (sb as Button).onClick.AddListener(delegate { gm.LoadSingleplayerCave(); });
         if (mb != null)
-            (mb as Button).onClick.AddListener(delegate { LoadMultiplayerScene(); });
+            (mb as Button).onClick.AddListener(delegate { gm.LoadMultiplayerCave(); });
+        if (rmb != null)
+            (rmb as Button).onClick.AddListener(delegate { gm.LoadMainMenu(); });
     }
 
 

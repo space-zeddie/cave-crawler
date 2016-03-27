@@ -63,6 +63,7 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
 
         _gameOverPanel.GetComponent<RectTransform>().SetParent(Canvas.GetComponent<RectTransform>(), false);*/
       //  Debug.Log("Game Ended");
+
     }
 
     private void OnUnitAttacked(object sender, AttackEventArgs e)
