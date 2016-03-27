@@ -37,5 +37,6 @@ public class GameManager : Singleton<GameManager>
     {
         loadingImage.SetActive(true);
         Application.LoadLevel(level);
+        loadingImage.SetActive(false);
     }
 }
