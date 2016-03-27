@@ -144,7 +144,7 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
     void Update () 
     {
         // switching cameras
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             SwitchCameras();
             return;
