@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 
-public class GUIControllerScript : MonoBehaviour 
+public class GUIControllerScript : Singleton<GUIControllerScript> 
 {
 	public CellGrid CellGrid;
     public GameObject UnitsParent;
@@ -12,14 +12,11 @@ public class GUIControllerScript : MonoBehaviour
     public Camera CarrierCamera;
     public Camera OverheadCamera;
 
-   /* public Button NextTurnButton;
+    //public Button NextTurnButton;
 
-    public GameObject InfoPanel;
-    public GameObject GameOverPanel;
-    public Canvas Canvas;
-
-    private GameObject _infoPanel;
-    private GameObject _gameOverPanel;*/
+   // public Image UnitImage;
+    //public Text InfoText;
+    //public Text StatsText;
 
     void Start()
     {
@@ -55,13 +52,17 @@ public class GUIControllerScript : MonoBehaviour
     }
     private void OnGameEnded(object sender, EventArgs e)
     {
+      //  if (PlayersParent.gameObject.transform.GetChildCount() > 1) 
+        //    InfoText.text = "Cave completed";
+        //else
+          //  InfoText.text = "Cave completed. Player " + ((sender as CellGrid).CurrentPlayerNumber + 1) + " wins!";
        /* _gameOverPanel = Instantiate(GameOverPanel);
         _gameOverPanel.transform.Find("InfoText").GetComponent<Text>().text = "Player " + ((sender as CellGrid).CurrentPlayerNumber + 1) + "\nwins!";
 
         _gameOverPanel.transform.Find("DismissButton").GetComponent<Button>().onClick.AddListener(DismissPanel);
 
         _gameOverPanel.GetComponent<RectTransform>().SetParent(Canvas.GetComponent<RectTransform>(), false);*/
-        Debug.Log("Game Ended");
+      //  Debug.Log("Game Ended");
     }
 
     private void OnUnitAttacked(object sender, AttackEventArgs e)
@@ -132,13 +133,6 @@ public class GUIControllerScript : MonoBehaviour
         if (allUnitsMoved) CellGrid.EndTurn();
         if (carrier == null)
             Destroy(PlayersParent.gameObject.transform.GetChild(carrier.PlayerNumber));
-
-      //  Collectable[] spawns = ObstaclesParent.GetComponentsInChildren<Collectable>();
-        
-      /*  foreach (Collectable obj in spawns)
-        {
-            if (obj is Exit) exitReached = false;
-        }*/
 
         if (exitReached)
             CellGrid.EndGame();

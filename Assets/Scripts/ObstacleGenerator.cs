@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 [ExecuteInEditMode()]
-public class ObstacleGenerator : MonoBehaviour {
+public class ObstacleGenerator : Singleton<ObstacleGenerator> {
 
     public GameObject ExitPrefab;
   //  public GameObject HexagonWallPrefab;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UnitParentScript : MonoBehaviour
+public class UnitParentScript : Singleton<UnitParentScript>
 {
     public GameObject hexGrid;
     bool hasSelectedUnits = false;
