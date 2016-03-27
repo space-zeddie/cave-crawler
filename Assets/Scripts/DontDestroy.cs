@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DontDestroy : MonoBehaviour
+public class DontDestroy : Singleton<DontDestroy>
 {
 
     // Use this for initialization

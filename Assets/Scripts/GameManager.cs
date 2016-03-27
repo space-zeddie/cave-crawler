@@ -5,36 +5,37 @@ public class GameManager : Singleton<GameManager>
 {
     public GameObject loadingImage;
 
+    public void LoadMainMenu()
+    {
+        LoadScene(0);
+    }
 
     public void LoadEnterMenu()
     {
-        Debug.Log("Enter Menu");
     }
 
     public void LoadSingleplayerCave()
     {
-        Debug.Log("Enter Singleplayer Cave");
         LoadScene(1);
     }
 
     public void LoadMultiplayerCave()
     {
-        Debug.Log("Enter Multiplayer Cave");
     }
 
     public void LoadProfile()
     {
-        Debug.Log("Profile");
+    }
+
+    public void Quit()
+    {
+        // ??
+        Application.Quit();
     }
 
     void LoadScene(int level)
     {
         loadingImage.SetActive(true);
         Application.LoadLevel(level);
-    }
-
-    public void CallMenu()
-    {
-        Debug.Log("Menu Called");
     }
 }
