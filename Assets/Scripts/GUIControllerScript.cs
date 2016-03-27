@@ -11,6 +11,7 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
     public GameObject ObstaclesParent;
     public Camera CarrierCamera;
     public Camera OverheadCamera;
+    public GameObject RuntimeInstantiated;
 
     //public Button NextTurnButton;
 
@@ -63,7 +64,8 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
 
         _gameOverPanel.GetComponent<RectTransform>().SetParent(Canvas.GetComponent<RectTransform>(), false);*/
       //  Debug.Log("Game Ended");
-
+        RuntimeInstantiated.gameObject.transform.GetComponentInChildren<GameManager>().LoadGameEndedScreen();
+        
     }
 
     private void OnUnitAttacked(object sender, AttackEventArgs e)

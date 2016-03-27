@@ -17,6 +17,11 @@ public class GameManager : Singleton<GameManager>
         loadingImage.SetActive(false);
     }
 
+    public void LoadGameEndedScreen()
+    {
+        LoadScene(3);
+    }
+
     public void LoadMainMenu()
     {
         LoadScene(0);
