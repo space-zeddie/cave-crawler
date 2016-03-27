@@ -5,7 +5,12 @@ public class GameManager : Singleton<GameManager>
 {
     public GameObject loadingImage;
 
-    private int currentScene = Application.loadedLevel;
+    private int currentScene;
+
+    void Start()
+    {
+        currentScene = Application.loadedLevel;
+    }
 
     public void LoadMainMenu()
     {
@@ -14,11 +19,12 @@ public class GameManager : Singleton<GameManager>
 
     public void LoadEnterMenu()
     {
+        LoadScene(1);
     }
 
     public void LoadSingleplayerCave()
     {
-        LoadScene(1);
+        LoadScene(2);
     }
 
     public void LoadMultiplayerCave()
