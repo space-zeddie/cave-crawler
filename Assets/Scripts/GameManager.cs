@@ -5,6 +5,8 @@ public class GameManager : Singleton<GameManager>
 {
     public GameObject loadingImage;
 
+    private int currentScene = Application.loadedLevel;
+
     public void LoadMainMenu()
     {
         LoadScene(0);
@@ -37,6 +39,7 @@ public class GameManager : Singleton<GameManager>
     {
         loadingImage.SetActive(true);
         Application.LoadLevel(level);
+        currentScene = level;
         loadingImage.SetActive(false);
     }
 }

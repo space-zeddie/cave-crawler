@@ -4,11 +4,21 @@ using System.Collections;
 
 public class LinkToMainMenu : Singleton<LinkToMainMenu>
 {
-    private GameObject InstatiatedObjects;
+    public GameObject InstatiatedObjects;
+    public GameObject GMPrefab;
 
     void Awake()
     {
-        ///if
+        if (InstatiatedObjects != null)
+        {
+            if (InstatiatedObjects.transform.GetComponentInChildren<GameManager>() == null)
+            {
+
+                GameObject gm = Instantiate(GMPrefab);
+                gm.transform.parent = InstatiatedObjects.transform;
+            }
+        }
+        else Debug.LogError("The scene must contain one designated game object for storing runtime-generated objects");
     }
 
 

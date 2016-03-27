@@ -143,8 +143,7 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
         // switching cameras
         if (Input.GetKeyDown(KeyCode.C))
         {
-            CarrierCamera.enabled = !CarrierCamera.enabled;
-            OverheadCamera.enabled = !OverheadCamera.enabled;
+            SwitchCameras();
             return;
         }
 
@@ -154,8 +153,9 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
         CheckForEndingConditions();       
     }
 
-   /* void FixedUpdate()
-    {
-        CheckForEndingConditions();
-    }*/
+   public void SwitchCameras()
+   {
+       CarrierCamera.enabled = !CarrierCamera.enabled;
+       OverheadCamera.enabled = !OverheadCamera.enabled;
+   }
 }
