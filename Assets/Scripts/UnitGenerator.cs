@@ -48,13 +48,13 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
             cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<Cell>();
         }
 
-        Unit unit = Instantiate(prefab).GetComponent<Unit>();
+        GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
         cell.IsTaken = true;
         unit.Cell = cell;
         unit.transform.position = cell.transform.position;
         unit.Initialize();
-        cell.IsTaken = true;
         unit.transform.parent = UnitsParent;
+        Debug.Log(unit);
         return unit;
     }
 

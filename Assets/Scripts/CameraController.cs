@@ -14,21 +14,22 @@ public class CameraController : MonoBehaviour
         {
             FindPlayer();
         }
-        if (player != null) offset = transform.position - player.transform.position;
+        if (player != null)
+        {
+            this.transform.position = new Vector3(transform.position.x, transform.position.y, this.transform.position.z); 
+            offset = transform.position - player.transform.position;
+        }
 	}
 
     void FindPlayer()
     {
-        for (int i = 0; i < UnitsParent.childCount; i++)
+        Carrier[] carriers = UnitsParent.GetComponentsInChildren<Carrier>();
+        foreach (Carrier carrier in carriers)
         {
-            var unit = UnitsParent.GetChild(i).GetComponent<GameUnit>();
-            if (unit != null)
+            if (carrier.PlayerNumber == 0)
             {
-                if (unit is Carrier && unit.PlayerNumber == 0)
-                {
-                    player = unit.gameObject;
-                    return;
-                }
+                player = carrier.gameObject;
+                break;
             }
         }
     }
