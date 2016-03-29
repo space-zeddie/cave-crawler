@@ -9,10 +9,10 @@ public class CustomObstacleGenerator : MonoBehaviour
     public Transform ObstaclesParent;
     public CellGrid CellGrid;
 
-    public void Start()
+   /* public void Start()
     {
         StartCoroutine(SpawnObstacles());
-    }
+    }*/
     public IEnumerator SpawnObstacles()
     {
         while (CellGrid.Cells == null)

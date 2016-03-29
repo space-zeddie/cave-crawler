@@ -20,9 +20,10 @@ public class HexGridCellularAutomata : ICellGridGenerator
 
     void Start()
     {
-        seed = "bovine";
         ClearGrid();
         GenerateGrid();
+        StartCoroutine(this.gameObject.GetComponent<ObstacleGenerator>().SpawnObstacles());
+        StartCoroutine(this.gameObject.GetComponent<UnitGenerator>().SpawnUnits());
     }
 
     void ClearGrid()

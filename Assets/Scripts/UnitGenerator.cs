@@ -1,0 +1,109 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class UnitGenerator : MonoBehaviour, IUnitGenerator
+{
+    public Transform UnitsParent;
+    public Transform CellsParent;
+    public CellGrid CellGrid;
+    public HexGridCellularAutomata Hex;
+
+    public GameObject CarrierPrefab;
+    public GameObject SentinelPrefab;
+
+    public Camera CarrierCamera;
+
+    public IEnumerator SpawnUnits()
+    {
+        while (CellGrid.Cells == null)
+            yield return 0;
+        SpawnUnits(new List<Cell>(CellGrid.gameObject.transform.GetComponentsInChildren<Cell>()));
+    }
+
+    /// <summary>
+    /// Returns units that are already children of UnitsParent object.
+    /// </summary>
+    public List<Unit> SpawnUnits(List<Cell> cells)
+    {
+        List<Unit> ret = new List<Unit>();
+        ret.Add(InstantiateUnit(CarrierPrefab).GetComponent<Unit>());
+        ret.Add(InstantiateUnit(SentinelPrefab).GetComponent<Unit>());
+        return ret;
+    }
+
+    GameObject InstantiateUnit(GameObject prefab)
+    {
+        var cells = CellGrid.Cells;
+        int[,] map = Hex.GetMap();
+        System.Random rnd = new System.Random();
+        int i = rnd.Next(Hex.width * Hex.height);
+        var cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<Cell>();
+
+        while (cell == null || cell.IsTaken)
+        {
+            i = rnd.Next(Hex.width * Hex.height);
+            cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<Cell>();
+        }
+
+        GameObject unit = Instantiate(prefab);
+        cell.IsTaken = true;
+        Vector3 offset = new Vector3(0, 0, cell.GetCellDimensions().z);
+        unit.transform.position = cell.transform.position - offset;
+        unit.transform.parent = UnitsParent;
+        return unit;
+    }
+
+    List<Unit> ManualSpawn(List<Cell> cells)
+    {
+        List<Unit> ret = new List<Unit>();
+        for (int i = 0; i < UnitsParent.childCount; i++)
+        {
+            var unit = UnitsParent.GetChild(i).GetComponent<Unit>();
+            if (unit != null)
+            {
+                var cell = cells.OrderBy(h => Math.Abs((h.transform.position - unit.transform.position).magnitude)).First();
+                if (!cell.IsTaken)
+                {
+                    cell.IsTaken = true;
+                    unit.Cell = cell;
+                    unit.transform.position = cell.transform.position;
+                    unit.Initialize();
+                    ret.Add(unit);
+                }//Unit gets snapped to the nearest cell
+                else
+                {
+                    Destroy(unit.gameObject);
+                }//If the nearest cell is taken, the unit gets destroyed.
+            }
+            else
+            {
+                Debug.LogError("Invalid object in Units Parent game object");
+            }
+
+        }
+        return ret;
+    }
+
+    public void SnapToGrid()
+    {
+        List<Transform> cells = new List<Transform>();
+
+        foreach (Transform cell in CellsParent)
+        {
+            cells.Add(cell);
+        }
+
+        foreach (Transform unit in UnitsParent)
+        {
+            var closestCell = cells.OrderBy(h => Math.Abs((h.transform.position - unit.transform.position).magnitude)).First();
+            if (!closestCell.GetComponent<Cell>().IsTaken)
+            {
+                Vector3 offset = new Vector3(0, 0, closestCell.GetComponent<Cell>().GetCellDimensions().z);
+                unit.position = closestCell.transform.position - offset;
+            }//Unit gets snapped to the nearest cell
+        }
+    }
+}
