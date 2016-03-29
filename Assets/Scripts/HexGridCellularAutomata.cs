@@ -18,6 +18,23 @@ public class HexGridCellularAutomata : ICellGridGenerator
 
     int[,] map;
 
+    void Start()
+    {
+        seed = "bovine";
+        ClearGrid();
+        GenerateGrid();
+    }
+
+    void ClearGrid()
+    {
+        var children = new List<GameObject>();
+        foreach (Transform cell in this.CellsParent)
+        {
+            children.Add(cell.gameObject);
+        }
+        children.ForEach(c => DestroyImmediate(c));
+    }
+    
     public override List<Cell> GenerateGrid()
     {
         HexGridType hexGridType = width % 2 == 0 ? HexGridType.even_q : HexGridType.odd_q;

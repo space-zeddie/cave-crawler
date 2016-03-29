@@ -23,10 +23,13 @@ public class ObstacleGenerator : Singleton<ObstacleGenerator> {
     {
         while (CellGrid.Cells == null)
             yield return 0;
-
+        InstantiateObstacle(ExitPrefab);
         // temporary Manual Spawn code
-        ManualSpawn();
+       // ManualSpawn();
+    }
 
+    void InstantiateObstacle(GameObject prefab)
+    {
         var cells = CellGrid.Cells;
         int[,] map = Hex.GetMap();
         System.Random rnd = new System.Random();
@@ -38,11 +41,7 @@ public class ObstacleGenerator : Singleton<ObstacleGenerator> {
             i = rnd.Next(Hex.width * Hex.height);
             cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<Cell>();
         }
-        InstantiateObstacle(cell, ExitPrefab);
-    }
 
-    void InstantiateObstacle(Cell cell, GameObject prefab)
-    {
         GameObject obstacle = Instantiate(prefab);
         obstacle.AddComponent<Collectable>();
         if (cell is FloorCell) (cell as FloorCell).spawn = obstacle.GetComponent<Collectable>();
