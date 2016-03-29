@@ -29,12 +29,12 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
     public List<Unit> SpawnUnits(List<Cell> cells)
     {
         List<Unit> ret = new List<Unit>();
-        ret.Add(InstantiateUnit(CarrierPrefab).GetComponent<Unit>());
-        ret.Add(InstantiateUnit(SentinelPrefab).GetComponent<Unit>());
+        ret.Add(InstantiateUnit(CarrierPrefab));
+        ret.Add(InstantiateUnit(SentinelPrefab));
         return ret;
     }
 
-    GameObject InstantiateUnit(GameObject prefab)
+    Unit InstantiateUnit(GameObject prefab)
     {
         var cells = CellGrid.Cells;
         int[,] map = Hex.GetMap();
@@ -48,10 +48,12 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
             cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<Cell>();
         }
 
-        GameObject unit = Instantiate(prefab);
+        Unit unit = Instantiate(prefab).GetComponent<Unit>();
         cell.IsTaken = true;
-        Vector3 offset = new Vector3(0, 0, cell.GetCellDimensions().z);
-        unit.transform.position = cell.transform.position - offset;
+        unit.Cell = cell;
+        unit.transform.position = cell.transform.position;
+        unit.Initialize();
+        cell.IsTaken = true;
         unit.transform.parent = UnitsParent;
         return unit;
     }

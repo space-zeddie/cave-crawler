@@ -134,8 +134,8 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
             }
         }
         if (allUnitsMoved) CellGrid.EndTurn();
-        if (carrier == null)
-            Destroy(PlayersParent.gameObject.transform.GetChild(carrier.PlayerNumber));
+        /*if (carrier == null)
+            Destroy(PlayersParent.gameObject.transform.GetChild(carrier.PlayerNumber));*/
 
         if (exitReached)
             CellGrid.EndGame();

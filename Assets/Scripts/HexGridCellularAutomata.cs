@@ -18,7 +18,7 @@ public class HexGridCellularAutomata : ICellGridGenerator
 
     int[,] map;
 
-    void Start()
+    void Awake()
     {
         ClearGrid();
         GenerateGrid();
