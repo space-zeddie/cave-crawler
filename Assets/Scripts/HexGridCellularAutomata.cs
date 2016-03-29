@@ -17,6 +17,7 @@ public class HexGridCellularAutomata : ICellGridGenerator
     public int randomFillPercent;
 
     int[,] map;
+   // public Camera carrierCamera;
 
     void Awake()
     {
@@ -24,6 +25,8 @@ public class HexGridCellularAutomata : ICellGridGenerator
         GenerateGrid();
         StartCoroutine(this.gameObject.GetComponent<ObstacleGenerator>().SpawnObstacles());
         StartCoroutine(this.gameObject.GetComponent<UnitGenerator>().SpawnUnits());
+
+      //  carrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
     }
 
     void ClearGrid()

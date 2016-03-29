@@ -10,16 +10,25 @@ public class CameraController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        
+	}
+
+    public void RelocateToPlayer()
+    {
         if (player == null)
         {
             FindPlayer();
+
         }
         if (player != null)
         {
-            this.transform.position = new Vector3(transform.position.x, transform.position.y, this.transform.position.z); 
+            this.transform.position = new Vector3(player.transform.position.x, player.transform.position.y);
             offset = transform.position - player.transform.position;
         }
-	}
+        else Debug.Log("No carrier found");
+    }
+
+ //   public IEnumerator 
 
     void FindPlayer()
     {

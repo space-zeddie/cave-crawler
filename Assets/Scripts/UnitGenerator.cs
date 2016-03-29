@@ -29,8 +29,10 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
     public List<Unit> SpawnUnits(List<Cell> cells)
     {
         List<Unit> ret = new List<Unit>();
-        ret.Add(InstantiateUnit(CarrierPrefab));
+        ret.Add(InstantiateUnit(CarrierPrefab));        
         ret.Add(InstantiateUnit(SentinelPrefab));
+        
+        CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
         return ret;
     }
 
@@ -48,6 +50,18 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
             cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<Cell>();
         }
 
+        GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
+        cell.IsTaken = true;
+        unit.Cell = cell;
+        unit.transform.position = cell.transform.position;
+        unit.Initialize();
+        unit.transform.parent = UnitsParent;
+        Debug.Log(unit);
+        return unit;
+    }
+
+    Unit InstantiateUnit(GameObject prefab, Cell cell)
+    {
         GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
         cell.IsTaken = true;
         unit.Cell = cell;
