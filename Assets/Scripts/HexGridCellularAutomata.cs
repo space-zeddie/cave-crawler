@@ -18,6 +18,7 @@ public class HexGridCellularAutomata : ICellGridGenerator
 
     int[,] map;
     HexGridType hexGridType;
+
    // public Camera carrierCamera;
 
     void Awake()
@@ -98,7 +99,7 @@ public class HexGridCellularAutomata : ICellGridGenerator
 
         map[i, j] = 0;
         Destroy(wallCell);
-        InstantiateHexagon(i, j);
+        GameObject hex = InstantiateHexagon(i, j);
     }
 
     public int[,] GetMap()

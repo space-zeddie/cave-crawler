@@ -10,6 +10,7 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
     public Transform CellsParent;
     public CellGrid CellGrid;
     public HexGridCellularAutomata Hex;
+    bool instantiated = false;
 
     public GameObject CarrierPrefab;
     public GameObject SentinelPrefab;
@@ -20,7 +21,12 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
     {
         while (CellGrid.Cells == null)
             yield return 0;
-        SpawnUnits(new List<Cell>(CellGrid.gameObject.transform.GetComponentsInChildren<Cell>()));
+        if (!instantiated)
+        { 
+            SpawnUnits(new List<Cell>(CellGrid.gameObject.transform.GetComponentsInChildren<Cell>()));
+           // instantiated = true; 
+        }
+        
     }
 
     /// <summary>
@@ -28,6 +34,8 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
     /// </summary>
     public List<Unit> SpawnUnits(List<Cell> cells)
     {
+        if (instantiated) return null;
+        instantiated = true;
         List<Unit> ret = new List<Unit>();
         ret.Add(InstantiateUnit(CarrierPrefab));
         

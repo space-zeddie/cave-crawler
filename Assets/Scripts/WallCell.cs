@@ -10,10 +10,17 @@ public class WallCell : Hexagon
     {
         if (moveable == null) { return; }
         if (!moveable.canShoot || moveable.Cell.GetDistance(this as Cell) > moveable.AttackRange || moveable.HitPoints <= 0) return;
-        moveable.SetHasMoved(true);
+        //moveable.SetHasMoved(true);
         isReachable = true;
         moveable.UnSelect();
+        this.UnReach();
         this.transform.parent.gameObject.GetComponent<HexGridCellularAutomata>().DemolishWallOnCell(this);
+    }
+
+    protected override void OnMouseExit()
+    {
+        base.OnMouseExit();
+        if (isReachable) MarkAsReachable();
     }
 
     public override Vector3 GetCellDimensions()
@@ -30,17 +37,18 @@ public class WallCell : Hexagon
     }
     public override void MarkAsReachable()
     {
+        if (!isReachable) isReachable = true;
         GetComponent<Renderer>().material.color = Color.red;
     }
     public override void UnMark()
     {
-       // if (isReachable) isReachable = false;
+        if (isReachable) isReachable = false;
         GetComponent<Renderer>().material.color = Color.black;
     }
 
     public void UnReach()
     {
-        //if (isReachable) isReachable = false;
+        if (isReachable) isReachable = false;
         moveable = null;
         UnMark();
     }

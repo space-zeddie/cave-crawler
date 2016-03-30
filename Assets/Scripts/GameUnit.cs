@@ -42,14 +42,12 @@ public class GameUnit : Unit
         if (!this.isSelected) this.MarkAsSelected();
         else
         {
-            this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().ClearSelectedUnit();
             this.UnSelect();
             return;
         }
         GameUnit unit = this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SelectedUnit();
         if (unit != null) unit.UnSelect();
         this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
-        int limit = this.MovementPoints;
         PopulateAvailableCells();
         foreach (Cell cell in available)
         {
@@ -57,10 +55,7 @@ public class GameUnit : Unit
             if (cell is FloorCell)
                 (cell as FloorCell).moveable = this;
             else if (cell is WallCell && this.canShoot)
-            {
-              //  Debug.Log("Wall Cell within reach");
                 (cell as WallCell).moveable = this;
-            }
         }
     }
 
@@ -147,6 +142,7 @@ public class GameUnit : Unit
 
     public void UnSelect()
     {
+        Debug.Log("Unselected");
         if (isSelected) isSelected = false;
         this.gameObject.transform.parent.GetComponent<UnitParentScript>().ClearSelectedUnit();
         if (available.Count != 0)

@@ -14,22 +14,22 @@ public class ObstacleGenerator : Singleton<ObstacleGenerator> {
     public CellGrid CellGrid;
     public HexGridCellularAutomata Hex;
 
-    public void Start()
-    {
-        StartCoroutine(SpawnObstacles());
-    }
+    bool instantiated = false;
 
     public IEnumerator SpawnObstacles()
     {
         while (CellGrid.Cells == null)
             yield return 0;
-        InstantiateObstacle(ExitPrefab);
-        // temporary Manual Spawn code
-       // ManualSpawn();
+        if (!instantiated)
+        {
+            InstantiateObstacle(ExitPrefab);
+        }
     }
 
     void InstantiateObstacle(GameObject prefab)
     {
+        if (instantiated) return;
+        instantiated = true;
         var cells = CellGrid.Cells;
         int[,] map = Hex.GetMap();
         System.Random rnd = new System.Random();
