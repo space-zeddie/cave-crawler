@@ -29,8 +29,9 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
     public List<Unit> SpawnUnits(List<Cell> cells)
     {
         List<Unit> ret = new List<Unit>();
-        ret.Add(InstantiateUnit(CarrierPrefab));        
-        ret.Add(InstantiateUnit(SentinelPrefab));
+        ret.Add(InstantiateUnit(CarrierPrefab));
+        
+        ret.Add(InstantiateUnit(SentinelPrefab, ret[0].gameObject.GetComponent<GameUnit>().Cell.GetNeighbours(CellGrid.Cells)));
         
         CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
         return ret;
@@ -60,16 +61,39 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
         return unit;
     }
 
-    Unit InstantiateUnit(GameObject prefab, Cell cell)
+    Unit InstantiateUnit(GameObject prefab, List<Cell> cells)
     {
+        var c = GetRandomCloseFreeCell(cells);
+        // random if the search for a cell close by failed to complete in time
+        if (c == null) return InstantiateUnit(prefab);
         GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
-        cell.IsTaken = true;
-        unit.Cell = cell;
-        unit.transform.position = cell.transform.position;
+        c.IsTaken = true;
+        unit.Cell = c;
+        unit.transform.position = c.transform.position;
         unit.Initialize();
         unit.transform.parent = UnitsParent;
         Debug.Log(unit);
         return unit;
+    }
+
+    Cell GetRandomCloseFreeCell(List<Cell> cells, int iteration = 0)
+    {
+        System.Random rnd = new System.Random();
+        int i = rnd.Next(cells.Count);
+        Cell c = null;
+        foreach (Cell cell in cells)
+        {
+            if (cell != null && !cell.IsTaken)
+            {
+                c = cell;
+                break;
+            }
+        }
+        ++iteration;
+        if (iteration == 10) return null;
+        if (c == null)
+            return GetRandomCloseFreeCell(cells[0].GetNeighbours(CellGrid.Cells));
+        return c;
     }
 
     List<Unit> ManualSpawn(List<Cell> cells)
