@@ -72,7 +72,7 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
         unit.transform.position = c.transform.position;
         unit.Initialize();
         unit.transform.parent = UnitsParent;
-        Debug.Log(unit);
+        //Debug.Log(unit);
         return unit;
     }
 

@@ -17,6 +17,7 @@ public class HexGridCellularAutomata : ICellGridGenerator
     public int randomFillPercent;
 
     int[,] map;
+    HexGridType hexGridType;
    // public Camera carrierCamera;
 
     void Awake()
@@ -41,7 +42,7 @@ public class HexGridCellularAutomata : ICellGridGenerator
     
     public override List<Cell> GenerateGrid()
     {
-        HexGridType hexGridType = width % 2 == 0 ? HexGridType.even_q : HexGridType.odd_q;
+        hexGridType = width % 2 == 0 ? HexGridType.even_q : HexGridType.odd_q;
         var hexagons = new List<Cell>();
 
         if (HexagonFreePrefab.GetComponent<Hexagon>() == null || HexagonWallPrefab.GetComponent<Hexagon>() == null)
@@ -60,28 +61,44 @@ public class HexGridCellularAutomata : ICellGridGenerator
         {
             for (int j = 0; j < width; j++)
             {
-                GameObject hexagon;
-                if (map[j, i] == 1)
-                {
-                    hexagon = Instantiate(HexagonWallPrefab);
-                    hexagon.GetComponent<Hexagon>().IsTaken = true;
-                }
-                else hexagon = Instantiate(HexagonFreePrefab);
-
-                var hexSize = hexagon.GetComponent<Cell>().GetCellDimensions();
-
-                hexagon.transform.position = new Vector3((j * hexSize.x * 0.75f), (i * hexSize.y) + (j % 2 == 0 ? 0 : hexSize.y * 0.5f));
-                hexagon.GetComponent<Hexagon>().OffsetCoord = new Vector2(width - j - 1, height - i - 1);
-                hexagon.GetComponent<Hexagon>().HexGridType = hexGridType;
-                hexagon.GetComponent<Hexagon>().MovementCost = 1;
-                hexagon.GetComponent<Hexagon>().i = j;
-                hexagon.GetComponent<Hexagon>().j = i;
+                GameObject hexagon = InstantiateHexagon(j, i);
                 hexagons.Add(hexagon.GetComponent<Cell>());
-
                 hexagon.transform.parent = CellsParent;
             }
         }
         return hexagons;
+    }
+
+    GameObject InstantiateHexagon(int i, int j)
+    {
+        GameObject hexagon;
+        if (map[i, j] == 1)
+        {
+            hexagon = Instantiate(HexagonWallPrefab);
+            hexagon.GetComponent<Hexagon>().IsTaken = true;
+        }
+        else hexagon = Instantiate(HexagonFreePrefab);
+
+        var hexSize = hexagon.GetComponent<Cell>().GetCellDimensions();
+
+        hexagon.transform.position = new Vector3((i * hexSize.x * 0.75f), (j * hexSize.y) + (i % 2 == 0 ? 0 : hexSize.y * 0.5f));
+        hexagon.GetComponent<Hexagon>().OffsetCoord = new Vector2(width - i - 1, height - j - 1);
+        hexagon.GetComponent<Hexagon>().HexGridType = hexGridType;
+        hexagon.GetComponent<Hexagon>().MovementCost = 1;
+        hexagon.GetComponent<Hexagon>().i = i;
+        hexagon.GetComponent<Hexagon>().j = j;
+
+        return hexagon;
+    }
+
+    public void DemolishWallOnCell(WallCell wallCell)
+    {
+        int i = (wallCell as Hexagon).i;
+        int j = (wallCell as Hexagon).j;
+
+        map[i, j] = 0;
+        Destroy(wallCell);
+        InstantiateHexagon(i, j);
     }
 
     public int[,] GetMap()
