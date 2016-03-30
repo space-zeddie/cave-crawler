@@ -13,7 +13,7 @@ public class FloorCell : Hexagon
         if (moveable == null) return;
         if (spawn != null)
         {
-            if (!(spawn is Exit)) { Debug.Log("is Exit");  Destroy(spawn); }
+            if (!(spawn is Exit)) { Destroy(spawn); }
             IsTaken = false;
         }
         if (!(spawn is Exit)) moveable.Move(this, moveable.FindPath(moveable.GetAvailableCells(), this));

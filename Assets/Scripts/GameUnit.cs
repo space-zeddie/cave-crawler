@@ -56,6 +56,11 @@ public class GameUnit : Unit
             (cell as Hexagon).MarkAsReachable();
             if (cell is FloorCell)
                 (cell as FloorCell).moveable = this;
+            else if (cell is WallCell && this.canShoot)
+            {
+              //  Debug.Log("Wall Cell within reach");
+                (cell as WallCell).moveable = this;
+            }
         }
     }
 

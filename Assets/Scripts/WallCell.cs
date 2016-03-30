@@ -4,12 +4,14 @@ using System.Collections;
 public class WallCell : Hexagon
 {
     public GameUnit moveable = null;
+    bool isReachable = false;
 
     void OnMouseDown()
     {
-        if (moveable == null) return;
+        if (moveable == null) { return; }
         if (!moveable.canShoot || moveable.Cell.GetDistance(this as Cell) > moveable.AttackRange || moveable.HitPoints <= 0) return;
-        
+        moveable.SetHasMoved(true);
+        isReachable = true;
         moveable.UnSelect();
         this.transform.parent.gameObject.GetComponent<HexGridCellularAutomata>().DemolishWallOnCell(this);
     }
@@ -39,6 +41,8 @@ public class WallCell : Hexagon
     public void UnReach()
     {
         //if (isReachable) isReachable = false;
+        moveable = null;
+        UnMark();
     }
 		
 }
