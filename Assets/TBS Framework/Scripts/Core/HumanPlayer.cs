@@ -11,14 +11,14 @@ public class HumanPlayer : Player
     int numberOfDeployedUnits = 2; // STUB
     public int Score;
 
-    public GameObject RuntimeInstantiated;
+    public PlayerStatistics localPlayerData = new PlayerStatistics();
 
     public void LoadFromGlobal()
     {
-        StatManager sm = RuntimeInstantiated.GetComponentInChildren<StatManager>();
-        gameUnits = new GameObject[sm.DeployedUnits.GetLength(0)];
-        sm.DeployedUnits.CopyTo(gameUnits, 0);
-        Score = sm.Score;
+        localPlayerData = StatManager.Instance.savedPlayerData;
+        gameUnits = new GameObject[localPlayerData.DeployedUnits.GetLength(0)];
+        localPlayerData.DeployedUnits.CopyTo(gameUnits, 0);
+        Score = localPlayerData.Score;
     }
 
     public override void Play(CellGrid cellGrid)
@@ -28,10 +28,6 @@ public class HumanPlayer : Player
 
     public void SaveStats()
     {
-        StatManager sm = RuntimeInstantiated.GetComponentInChildren<StatManager>();
-        gameUnits = allUnits.GetComponentsInChildren<GameObject>();
-        sm.Score = Score;
-        sm.DeployedUnits = new GameObject[gameUnits.GetLength(0)];
-        gameUnits.CopyTo(sm.DeployedUnits, 0);
+        StatManager.Instance.savedPlayerData = localPlayerData;
     }
 }

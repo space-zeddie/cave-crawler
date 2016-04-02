@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class UnitGenerator : MonoBehaviour, IUnitGenerator
+public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
 {
     public Transform UnitsParent;
     public Transform CellsParent;

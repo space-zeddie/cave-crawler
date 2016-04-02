@@ -25,8 +25,8 @@ public class HexGridCellularAutomata : ICellGridGenerator
     {
         ClearGrid();
         GenerateGrid();
-        StartCoroutine(this.gameObject.GetComponent<ObstacleGenerator>().SpawnObstacles());
-        StartCoroutine(this.gameObject.GetComponent<UnitGenerator>().SpawnUnits());
+        StartCoroutine(ObstacleGenerator.Instance.SpawnObstacles());
+        StartCoroutine(UnitGenerator.Instance.SpawnUnits());
 
       //  carrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
     }

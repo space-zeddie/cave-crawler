@@ -12,27 +12,27 @@ public class Loader : Singleton<Loader>
     {
         if (InstatiatedObjects != null)
         {
-            if (InstatiatedObjects.transform.GetComponentInChildren<GameManager>() == null)
+            if (GameManager.Instance == null)
             {
                 GameManager gm = Instantiate(GMPrefab);
                 gm.transform.parent = InstatiatedObjects.transform;
-                AssignButtonHandlers(gm);
+                AssignButtonHandlers();
             }
         }
         else Debug.LogError("The scene must contain one designated game object for storing runtime-generated objects");
     }
 
-    void AssignButtonHandlers(GameManager gm)
+    void AssignButtonHandlers()
     {
         SingleplayerButton sb = canvas.gameObject.transform.GetComponentInChildren<SingleplayerButton>();
         MultiplayerButton mb = canvas.gameObject.transform.GetComponentInChildren<MultiplayerButton>();
         ReturnToMenuButton rmb = canvas.gameObject.transform.GetComponentInChildren<ReturnToMenuButton>();
         if (sb != null)
-            (sb as Button).onClick.AddListener(delegate { gm.LoadSingleplayerCave(); });
+            (sb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadSingleplayerCave(); });
         if (mb != null)
-            (mb as Button).onClick.AddListener(delegate { gm.LoadMultiplayerCave(); });
+            (mb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadMultiplayerCave(); });
         if (rmb != null)
-            (rmb as Button).onClick.AddListener(delegate { gm.LoadMainMenu(); });
+            (rmb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadMainMenu(); });
     }
 
 

@@ -76,9 +76,10 @@ public class GameUnit : Unit
             this.UnSelect();
             return;
         }
-        GameUnit unit = this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SelectedUnit();
+        GameUnit unit = UnitParentScript.Instance.SelectedUnit();
         if (unit != null) unit.UnSelect();
-        this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
+        UnitParentScript.Instance.SetSelectedUnit(this);
+        //this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
         if (available.Count == 0) PopulateAvailableCells();
         foreach (Cell cell in available)
         {
@@ -172,7 +173,7 @@ public class GameUnit : Unit
     {
         Debug.Log("Unselected");
         if (isSelected) isSelected = false;
-        this.gameObject.transform.parent.GetComponent<UnitParentScript>().ClearSelectedUnit();
+        UnitParentScript.Instance.ClearSelectedUnit();
         if (available.Count != 0)
         {
             foreach (Cell cell in available)
