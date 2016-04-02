@@ -64,7 +64,6 @@ public class HexGridCellularAutomata : ICellGridGenerator
             {
                 GameObject hexagon = InstantiateHexagon(j, i);
                 hexagons.Add(hexagon.GetComponent<Cell>());
-                hexagon.transform.parent = CellsParent;
             }
         }
         return hexagons;
@@ -88,6 +87,7 @@ public class HexGridCellularAutomata : ICellGridGenerator
         hexagon.GetComponent<Hexagon>().MovementCost = 1;
         hexagon.GetComponent<Hexagon>().i = i;
         hexagon.GetComponent<Hexagon>().j = j;
+        hexagon.transform.parent = CellsParent;
 
         return hexagon;
     }

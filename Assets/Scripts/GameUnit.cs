@@ -48,7 +48,7 @@ public class GameUnit : Unit
         GameUnit unit = this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SelectedUnit();
         if (unit != null) unit.UnSelect();
         this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
-        PopulateAvailableCells();
+        if (available.Count == 0) PopulateAvailableCells();
         foreach (Cell cell in available)
         {
             (cell as Hexagon).MarkAsReachable();
@@ -59,10 +59,9 @@ public class GameUnit : Unit
         }
     }
 
-    void PopulateAvailableCells(Cell cell = null, int limit = 0)
+    public void PopulateAvailableCells(Cell cell = null, int limit = 0)
     {
-      //  if (available.Count != 0) return;
-
+        // if (limit == 0) Debug.Log("Populating available cells for " + this);
         // default values
         if (cell == null) cell = this.Cell;
         if (available == null) available = new List<Cell>();
@@ -70,10 +69,8 @@ public class GameUnit : Unit
         if (limit == this.MovementPoints) return;
         available.AddRange((cell as Hexagon).GetNeighbours(new List<Cell>(cell.gameObject.transform.parent.GetComponentsInChildren<Cell>())));
         List<Cell> cells = new List<Cell>(available);
-      //  Debug.Log(available.Count + ", limit: " + limit);
         foreach (Cell c in cells)
         {
-           // Debug.Log("In cycle");
             PopulateAvailableCells(c, limit + c.MovementCost);
         }
     }

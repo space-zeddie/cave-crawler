@@ -10,7 +10,7 @@ public class WallCell : Hexagon
     {
         if (moveable == null) { return; }
         if (!moveable.canShoot || moveable.Cell.GetDistance(this as Cell) > moveable.AttackRange || moveable.HitPoints <= 0) return;
-        //moveable.SetHasMoved(true);
+        moveable.SetHasMoved(true);
         isReachable = true;
         moveable.UnSelect();
         this.UnReach();
