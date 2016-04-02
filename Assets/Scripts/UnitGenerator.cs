@@ -12,6 +12,8 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
     public HexGridCellularAutomata Hex;
     bool instantiated = false;
 
+    public HumanPlayer player;
+
     public GameObject CarrierPrefab;
     public GameObject SentinelPrefab;
 
@@ -24,7 +26,6 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
         if (!instantiated)
         { 
             SpawnUnits(new List<Cell>(CellGrid.gameObject.transform.GetComponentsInChildren<Cell>()));
-           // instantiated = true; 
         }
         
     }
@@ -37,9 +38,18 @@ public class UnitGenerator : MonoBehaviour, IUnitGenerator
         if (instantiated) return null;
         instantiated = true;
         List<Unit> ret = new List<Unit>();
-        ret.Add(InstantiateUnit(CarrierPrefab));
+        player.LoadFromGlobal();
+
+        ret.Add(InstantiateUnit(player.gameUnits[0].gameObject));
+
+        for (int i = 1; i < player.gameUnits.GetLength(0); ++i )
+        {
+            ret.Add(InstantiateUnit(player.gameUnits[i].gameObject, ret[i - 1].gameObject.GetComponent<GameUnit>().Cell.GetNeighbours(CellGrid.Cells)));
+        }
+
+        //    ret.Add(InstantiateUnit(CarrierPrefab));
         
-        ret.Add(InstantiateUnit(SentinelPrefab, ret[0].gameObject.GetComponent<GameUnit>().Cell.GetNeighbours(CellGrid.Cells)));
+        //ret.Add(InstantiateUnit(SentinelPrefab, ret[0].gameObject.GetComponent<GameUnit>().Cell.GetNeighbours(CellGrid.Cells)));
         
         CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
         return ret;

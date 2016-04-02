@@ -3,24 +3,35 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-class HumanPlayer : Player
+public class HumanPlayer : Player
 {
     public UnitParentScript allUnits;
-    int numberOfDeployedUnits = 2; // STUB
 
-    public bool MovedAllUnits()
+    public GameObject[] gameUnits;
+    int numberOfDeployedUnits = 2; // STUB
+    public int Score;
+
+    public GameObject RuntimeInstantiated;
+
+    public void LoadFromGlobal()
     {
-        GameUnit[] gameUnits = allUnits.GetComponentsInChildren<GameUnit>();
-        foreach (GameUnit gu in gameUnits)
-        {
-            if (gu.PlayerNumber == this.PlayerNumber && !gu.HasMoved())
-                return false;
-        }
-        return true;
+        StatManager sm = RuntimeInstantiated.GetComponentInChildren<StatManager>();
+        gameUnits = new GameObject[sm.DeployedUnits.GetLength(0)];
+        sm.DeployedUnits.CopyTo(gameUnits, 0);
+        Score = sm.Score;
     }
 
     public override void Play(CellGrid cellGrid)
     {
         cellGrid.CellGridState = new CellGridStateWaitingForInput(cellGrid);
+    }
+
+    public void SaveStats()
+    {
+        StatManager sm = RuntimeInstantiated.GetComponentInChildren<StatManager>();
+        gameUnits = allUnits.GetComponentsInChildren<GameObject>();
+        sm.Score = Score;
+        sm.DeployedUnits = new GameObject[gameUnits.GetLength(0)];
+        gameUnits.CopyTo(sm.DeployedUnits, 0);
     }
 }

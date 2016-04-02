@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class GameUnit : Unit
 {
+    static int totalUnits = 0;
+
     public Color LeadingColor;
     public bool canShoot;
     bool hasMoved;
@@ -12,15 +14,44 @@ public class GameUnit : Unit
     List<Cell> available;
     bool isSelected;
 
+    int id;
+
     public override void Initialize()
     {
         base.Initialize();
+        ++totalUnits;
         available = new List<Cell>();
         transform.position += new Vector3(0, 0, -1);
         GetComponent<Renderer>().material.color = LeadingColor;
         isDeployed = true;
         hasMoved = false;
         isSelected = false;
+
+        id = (this.ToString() + PlayerNumber + totalUnits).GetHashCode();
+    }
+
+    public override bool Equals(object o)
+    {
+        var t1 = this.GetType();
+        var t2 = o.GetType();
+
+        if (t1.IsAssignableFrom(t2) || t2.IsAssignableFrom(t1))
+        {
+            GameUnit gu = o as GameUnit;
+            if (this.ID() == gu.ID())
+                return true;
+        }
+        return false;
+    }
+
+    public override string ToString()
+    {
+        return base.ToString() + " #" + id;
+    }
+
+    public int ID()
+    {
+        return id;
     }
 
     public bool HasMoved()
