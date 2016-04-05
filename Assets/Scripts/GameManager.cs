@@ -37,6 +37,24 @@ public class GameManager : Singleton<GameManager>
         LoadScene(2);
     }
 
+    public void SaveGame()
+    {
+        if (Application.loadedLevel == 2)
+        {
+            PlayerState.Instance.SaveToGlobal();
+
+            StatManager.Instance.LocalCopyOfPlayerData.SceneID = Application.loadedLevel;
+            StatManager.Instance.SaveData();
+        }
+    }
+
+    public void LoadGame()
+    {
+        StatManager.Instance.LoadData();
+        StatManager.Instance.IsSceneBeingLoaded = true;
+        LoadSingleplayerCave();
+    }
+
     public void LoadMultiplayerCave()
     {
     }

@@ -7,68 +7,93 @@ using System.Collections;
 /// <summary>
 /// Base class for all units in the game.
 /// </summary>
+[Serializable]
 public abstract class Unit : MonoBehaviour
 {
     /// <summary>
     /// UnitClicked event is invoked when user clicks the unit. It requires a collider on the unit game object to work.
     /// </summary>
+    [SerializeField]
     public event EventHandler UnitClicked;
     /// <summary>
     /// UnitSelected event is invoked when user clicks on unit that belongs to him. It requires a collider on the unit game object to work.
     /// </summary>
+    [SerializeField]
     public event EventHandler UnitSelected;
+    [SerializeField]
     public event EventHandler UnitDeselected;
     /// <summary>
     /// UnitHighlighted event is invoked when user moves cursor over the unit. It requires a collider on the unit game object to work.
     /// </summary>
+    [SerializeField]
     public event EventHandler UnitHighlighted;
+    [SerializeField]
     public event EventHandler UnitDehighlighted;
+    [SerializeField]
     public event EventHandler<AttackEventArgs> UnitAttacked;
+    [SerializeField]
     public event EventHandler<AttackEventArgs> UnitDestroyed;
+    [SerializeField]
     public event EventHandler<MovementEventArgs> UnitMoved;
 
+    [SerializeField]
     public UnitState UnitState { get; set; }
+
     public void SetState(UnitState state)
     {
         UnitState.MakeTransition(state);
     }
 
+    [SerializeField]
     public List<Buff> Buffs { get; private set; }
 
+    [SerializeField]
     public int TotalHitPoints { get; private set; }
+    [SerializeField]
     protected int TotalMovementPoints;
+    [SerializeField]
     protected int TotalActionPoints;
 
     /// <summary>
     /// Cell that the unit is currently occupying.
     /// </summary>
+    [SerializeField]
     public Cell Cell { get; set; }
 
+    [SerializeField]
     public int HitPoints;
+    [SerializeField]
     public int AttackRange;
+    [SerializeField]
     public int AttackFactor;
+    [SerializeField]
     public int DefenceFactor;
     /// <summary>
     /// Determines how far on the grid the unit can move.
     /// </summary>
+    [SerializeField]
     public int MovementPoints;
     /// <summary>
     /// Determines speed of movement animation.
     /// </summary>
+   [SerializeField]
     public float MovementSpeed;
     /// <summary>
     /// Determines how many attacks unit can perform in one turn.
     /// </summary>
+    [SerializeField]
     public int ActionPoints;
 
     /// <summary>
     /// Indicates the player that the unit belongs to. Should correspoond with PlayerNumber variable on Player script.
     /// </summary>
+    [SerializeField]
     public int PlayerNumber;
 
     /// <summary>
     /// Indicates if movement animation is playing.
     /// </summary>
+   [SerializeField]
     public bool isMoving { get; set; }
 
     private static IPathfinding _pathfinder = new AStarPathfinding();
@@ -343,6 +368,7 @@ public abstract class Unit : MonoBehaviour
     public abstract void UnMark();
 }
 
+[Serializable]
 public class MovementEventArgs : EventArgs
 {
     public Cell OriginCell;
@@ -356,6 +382,7 @@ public class MovementEventArgs : EventArgs
         Path = path;
     }
 }
+[Serializable]
 public class AttackEventArgs : EventArgs
 {
     public Unit Attacker;

@@ -12,7 +12,7 @@ public class Loader : Singleton<Loader>
     {
         if (InstatiatedObjects != null)
         {
-            if (GameManager.Instance == null)
+            if (GameManager.instance == null)
             {
                 GameManager gm = Instantiate(GMPrefab);
                 gm.transform.parent = InstatiatedObjects.transform;
@@ -28,7 +28,7 @@ public class Loader : Singleton<Loader>
         MultiplayerButton mb = canvas.gameObject.transform.GetComponentInChildren<MultiplayerButton>();
         ReturnToMenuButton rmb = canvas.gameObject.transform.GetComponentInChildren<ReturnToMenuButton>();
         if (sb != null)
-            (sb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadSingleplayerCave(); });
+            (sb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadGame(); });
         if (mb != null)
             (mb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadMultiplayerCave(); });
         if (rmb != null)

@@ -1,11 +1,14 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using UnityEngine;
 
+[Serializable]
 public class PlayerStatistics
 {
-    public int Score = 0;
-    public GameUnit[] Units = new GameUnit[2];
-    public GameObject[] DeployedUnits = new GameObject[2];
+    public int Score;
+    // saved by type number
+    public int[] Units;
+    // saved by type number
+    public int[] DeployedUnits;
+
+    public int SceneID;
 }

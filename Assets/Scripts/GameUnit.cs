@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
+[Serializable]
 public class GameUnit : Unit
 {
     static int totalUnits = 0;
@@ -11,10 +12,16 @@ public class GameUnit : Unit
     public bool canShoot;
     bool hasMoved;
     public bool isDeployed;
-    List<Cell> available;
     bool isSelected;
+    string id = "";
 
-    int id;
+    [NonSerialized]
+    List<Cell> available;    
+
+    void Start()
+    {
+        InitID();
+    }
 
     public override void Initialize()
     {
@@ -26,9 +33,24 @@ public class GameUnit : Unit
         isDeployed = true;
         hasMoved = false;
         isSelected = false;
-
-        id = (this.ToString() + PlayerNumber + totalUnits).GetHashCode();
+        if (id.Length == 0) InitID();
     }
+
+    void InitID()
+    {
+        id = this.GetType().ToString() + "," + this.TotalHitPoints + "," + this.AttackRange + "," + this.MovementPoints + "," + this.PlayerNumber;
+    }
+
+   /* public static GameUnit ParseGameUnitFromID(string id)
+    {
+        if (id.Length == 0 || id.IndexOf(',') == -1) return null;
+        string[] tags = id.Split(',');
+        if (tags.GetLength(0) == 0) return null;
+        switch(tags[0])
+        {
+            case "Carrier"
+        }
+    }*/
 
     public override bool Equals(object o)
     {
@@ -38,7 +60,7 @@ public class GameUnit : Unit
         if (t1.IsAssignableFrom(t2) || t2.IsAssignableFrom(t1))
         {
             GameUnit gu = o as GameUnit;
-            if (this.ID() == gu.ID())
+            if (this.ID().Equals(gu.ID()))
                 return true;
         }
         return false;
@@ -49,7 +71,7 @@ public class GameUnit : Unit
         return base.ToString() + " #" + id;
     }
 
-    public int ID()
+    public string ID()
     {
         return id;
     }

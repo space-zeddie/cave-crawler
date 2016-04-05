@@ -1,20 +1,55 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class StatManager : Singleton<StatManager>
 {
-    public PlayerStatistics savedPlayerData = new PlayerStatistics();
+    public PlayerStatistics LocalCopyOfPlayerData = new PlayerStatistics();
+    public bool IsSceneBeingLoaded = false;
 
-    public GameObject CarrierPrefab;
-    public GameObject SentinelPrefab;
-
-    void Awake()
+   /* void Awake()
     {
         // STUB
-        savedPlayerData.Score = 1;
-        savedPlayerData.DeployedUnits = new GameObject[2];
-        savedPlayerData.DeployedUnits[0] = CarrierPrefab;
-        savedPlayerData.DeployedUnits[1] = SentinelPrefab;
+        LocalCopyOfPlayerData.Score = 1;
+        LocalCopyOfPlayerData.DeployedUnits = new GameObject[2];
+        LocalCopyOfPlayerData.DeployedUnits[0] = CarrierPrefab;
+        LocalCopyOfPlayerData.DeployedUnits[1] = SentinelPrefab;
+    }*/
+
+    public void SaveData()
+    {
+        if (!Directory.Exists("Saves"))
+            Directory.CreateDirectory("Saves");
+
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream saveFile = File.Create("Saves/save.binary");
+
+        LocalCopyOfPlayerData = PlayerState.Instance.LocalPlayerData;
+
+        formatter.Serialize(saveFile, LocalCopyOfPlayerData);
+
+        saveFile.Close();
+    }
+
+    public void LoadData()
+    {
+        if (Directory.Exists("Saves") && File.Exists("Saves/save.binary"))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream saveFile = File.Open("Saves/save.binary", FileMode.Open);
+
+            LocalCopyOfPlayerData = (PlayerStatistics)formatter.Deserialize(saveFile);
+
+            saveFile.Close();
+        }
+        else
+        {
+            LocalCopyOfPlayerData.Score = 0;
+            LocalCopyOfPlayerData.DeployedUnits = null;
+           // LocalCopyOfPlayerData.DeployedUnits[0] = CarrierPrefab;
+           // LocalCopyOfPlayerData.DeployedUnits[1] = SentinelPrefab;
+        }
     }
 
 }

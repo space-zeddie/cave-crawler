@@ -23,8 +23,16 @@ public class HexGridCellularAutomata : ICellGridGenerator
 
     void Awake()
     {
-        ClearGrid();
-        GenerateGrid();
+        Debug.Log("Awake HexGridCellularAutomata is called");
+        if (StatManager.Instance.IsSceneBeingLoaded)
+        {
+            PlayerState.Instance.LoadFromGlobal();
+        }
+        else
+        {
+            ClearGrid();
+            GenerateGrid();
+        }
         StartCoroutine(ObstacleGenerator.Instance.SpawnObstacles());
         StartCoroutine(UnitGenerator.Instance.SpawnUnits());
 

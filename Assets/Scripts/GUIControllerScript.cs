@@ -141,6 +141,17 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
             CellGrid.EndGame();
     }
 
+    public void SaveGame()
+    {
+        PlayersParent.GetComponentInChildren<HumanPlayer>().SaveStats();
+        GameManager.Instance.SaveGame();
+    }
+
+    public void LoadGame()
+    {
+        GameManager.Instance.LoadGame();
+    }
+
     void Update () 
     {
         // switching cameras

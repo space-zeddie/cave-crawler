@@ -39,7 +39,7 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         instantiated = true;
         List<Unit> ret = new List<Unit>();
         player.LoadFromGlobal();
-
+        
         ret.Add(InstantiateUnit(player.gameUnits[0].gameObject));
 
         for (int i = 1; i < player.gameUnits.GetLength(0); ++i )
