@@ -23,7 +23,7 @@ public class HexGridCellularAutomata : ICellGridGenerator
 
     void Awake()
     {
-        Debug.Log("Awake HexGridCellularAutomata is called");
+        StatManager.Instance.LoadData();
         if (StatManager.Instance.IsSceneBeingLoaded)
         {
             PlayerState.Instance.LoadFromGlobal();

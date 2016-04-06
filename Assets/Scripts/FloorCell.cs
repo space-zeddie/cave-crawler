@@ -16,10 +16,18 @@ public class FloorCell : Hexagon
             if (!(spawn is Exit)) { Destroy(spawn); }
             IsTaken = false;
         }
+        int priorMovementPoints = moveable.MovementPoints;
         if (!(spawn is Exit)) moveable.Move(this, moveable.FindPath(moveable.GetAvailableCells(), this));
+        int deltaPoints = priorMovementPoints - moveable.MovementPoints;
+        PlayersParent.Instance.GetComponentInChildren<HumanPlayer>().Score -= deltaPoints;
+
         moveable.SetHasMoved(true);
 
-        if (spawn is Exit) (spawn as Exit).VanishUnit(moveable);
+        if (spawn is Exit)
+        {
+            UnitParentScript.Instance.GetComponentInChildren<HumanPlayer>().Score += Exit.BUFF_POINTS;
+            (spawn as Exit).VanishUnit(moveable);
+        }
         moveable.UnSelect();
         this.UnReach();
         //Debug.Log("done moving to cell");

@@ -36,10 +36,12 @@ public class StatManager : Singleton<StatManager>
     {
         if (Directory.Exists("Saves") && File.Exists("Saves/save.binary"))
         {
+            Debug.Log("Loading Data");
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream saveFile = File.Open("Saves/save.binary", FileMode.Open);
 
             LocalCopyOfPlayerData = (PlayerStatistics)formatter.Deserialize(saveFile);
+            IsSceneBeingLoaded = true;
 
             saveFile.Close();
         }

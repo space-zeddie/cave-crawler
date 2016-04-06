@@ -3,7 +3,6 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-[Serializable]
 public class GameUnit : Unit
 {
     static int totalUnits = 0;
@@ -15,7 +14,6 @@ public class GameUnit : Unit
     bool isSelected;
     string id = "";
 
-    [NonSerialized]
     List<Cell> available;    
 
     void Start()

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Exit : Collectable 
 {
+    public static readonly int BUFF_POINTS = 30;
 
     public void VanishUnit(GameUnit unit)
     {

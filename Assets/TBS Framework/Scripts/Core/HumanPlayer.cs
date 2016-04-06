@@ -29,7 +29,6 @@ public class HumanPlayer : Player
             else if (unitTypeCode == 2) gameUnits[i] = SentinelPrefab;
             ++i;
         }
-        //PlayerState.Instance.LocalPlayerData.DeployedUnits.CopyTo(gameUnits, 0);
         Score = PlayerState.Instance.LocalPlayerData.Score;
     }
 

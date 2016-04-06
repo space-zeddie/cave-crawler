@@ -149,7 +149,8 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
 
     public void LoadGame()
     {
-        GameManager.Instance.LoadGame();
+        //GameManager.Instance.LoadGame();
+        StatManager.Instance.LoadData();
     }
 
     void Update () 

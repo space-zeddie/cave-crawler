@@ -38,12 +38,13 @@ public class Loader : Singleton<Loader>
 
     public void LoadMainMenu()
     {
-        Application.LoadLevel(0);
+        GameManager.Instance.LoadMainMenu();
     }
 
     public void LoadSingplayerScene()
     {
-        Application.LoadLevel(2);
+        GameManager.Instance.LoadGame();
+        
     }
     public void LoadMultiplayerScene()
     {

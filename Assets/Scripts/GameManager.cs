@@ -41,6 +41,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (Application.loadedLevel == 2)
         {
+            Debug.Log("Saving game");
             PlayerState.Instance.SaveToGlobal();
 
             StatManager.Instance.LocalCopyOfPlayerData.SceneID = Application.loadedLevel;
@@ -50,8 +51,6 @@ public class GameManager : Singleton<GameManager>
 
     public void LoadGame()
     {
-        StatManager.Instance.LoadData();
-        StatManager.Instance.IsSceneBeingLoaded = true;
         LoadSingleplayerCave();
     }
 
