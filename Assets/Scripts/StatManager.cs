@@ -7,16 +7,8 @@ public class StatManager : Singleton<StatManager>
 {
     public PlayerStatistics LocalCopyOfPlayerData = new PlayerStatistics();
     public bool IsSceneBeingLoaded = false;
-
-   /* void Awake()
-    {
-        // STUB
-        LocalCopyOfPlayerData.Score = 1;
-        LocalCopyOfPlayerData.DeployedUnits = new GameObject[2];
-        LocalCopyOfPlayerData.DeployedUnits[0] = CarrierPrefab;
-        LocalCopyOfPlayerData.DeployedUnits[1] = SentinelPrefab;
-    }*/
-
+    public bool IsNewCave;
+    
     public void SaveData()
     {
         if (!Directory.Exists("Saves"))
@@ -42,11 +34,13 @@ public class StatManager : Singleton<StatManager>
 
             LocalCopyOfPlayerData = (PlayerStatistics)formatter.Deserialize(saveFile);
             IsSceneBeingLoaded = true;
+           // IsNewCave = false;
 
             saveFile.Close();
         }
         else
         {
+            IsNewCave = true;
             LocalCopyOfPlayerData.Score = 0;
             LocalCopyOfPlayerData.DeployedUnits = null;
            // LocalCopyOfPlayerData.DeployedUnits[0] = CarrierPrefab;

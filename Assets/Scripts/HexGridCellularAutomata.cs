@@ -24,19 +24,32 @@ public class HexGridCellularAutomata : ICellGridGenerator
     void Awake()
     {
         StatManager.Instance.LoadData();
-        if (StatManager.Instance.IsSceneBeingLoaded)
+        if (!StatManager.Instance.IsSceneBeingLoaded || StatManager.Instance.IsNewCave)
+        {
+            map = new int[width, height];
+            GenerateMap();
+        }
+        if (StatManager.Instance.IsSceneBeingLoaded && !StatManager.Instance.IsNewCave)
         {
             PlayerState.Instance.LoadFromGlobal();
+            width = PlayerState.Instance.LocalPlayerData.map.GetLength(0);
+            height = PlayerState.Instance.LocalPlayerData.map.GetLength(1);
+            map = new int[PlayerState.Instance.LocalPlayerData.map.GetLength(0), PlayerState.Instance.LocalPlayerData.map.GetLength(1)];
+            for (int i = 0; i < width; ++i)
+                for (int j = 0; j < height; ++j)
+                    map[i, j] = PlayerState.Instance.LocalPlayerData.map[i, j];
         }
-        else
-        {
-            ClearGrid();
-            GenerateGrid();
-        }
+        ClearGrid();
+        GenerateGrid();
         StartCoroutine(ObstacleGenerator.Instance.SpawnObstacles());
         StartCoroutine(UnitGenerator.Instance.SpawnUnits());
 
       //  carrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
+    }
+
+    public void SaveGrid()
+    {
+
     }
 
     void ClearGrid()
@@ -62,9 +75,6 @@ public class HexGridCellularAutomata : ICellGridGenerator
         int adjust = (int)((width * height) / 1000);
         Debug.Log("Grid Adjusted by " + adjust);
         if (adjustFillPercent) randomFillPercent += adjust;
-
-        map = new int[width, height];
-        GenerateMap();
 
         for (int i = 0; i < height; i++)
         {

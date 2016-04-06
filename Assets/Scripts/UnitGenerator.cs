@@ -39,17 +39,22 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         instantiated = true;
         List<Unit> ret = new List<Unit>();
         player.LoadFromGlobal();
-        
-        ret.Add(InstantiateUnit(player.gameUnits[0].gameObject));
 
-        for (int i = 1; i < player.gameUnits.GetLength(0); ++i )
+        if (StatManager.Instance.IsNewCave)
         {
-            ret.Add(InstantiateUnit(player.gameUnits[i].gameObject, ret[i - 1].gameObject.GetComponent<GameUnit>().Cell.GetNeighbours(CellGrid.Cells)));
-        }
+            ret.Add(InstantiateUnit(player.gameUnits[0].gameObject));
 
-        //    ret.Add(InstantiateUnit(CarrierPrefab));
+            for (int i = 1; i < player.gameUnits.GetLength(0); ++i)
+            {
+                ret.Add(InstantiateUnit(player.gameUnits[i].gameObject, ret[i - 1].gameObject.GetComponent<GameUnit>().Cell.GetNeighbours(CellGrid.Cells)));
+            }
+        }
         
-        //ret.Add(InstantiateUnit(SentinelPrefab, ret[0].gameObject.GetComponent<GameUnit>().Cell.GetNeighbours(CellGrid.Cells)));
+        else
+        {
+            foreach (GameUnit gu in player.gameUnits)
+                ret.Add(InstantiateUnit(gu.gameObject, CellGrid.gameObject.transform.GetChild(gu.CellNumber).GetComponent<Cell>()));
+        }
         
         CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
         return ret;
@@ -68,6 +73,22 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
             i = rnd.Next(Hex.width * Hex.height);
             cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<Cell>();
         }
+
+        GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
+        cell.IsTaken = true;
+        unit.Cell = cell;
+        unit.transform.position = cell.transform.position;
+        unit.Initialize();
+        unit.transform.parent = UnitsParent;
+        unit.CellNumber = i;
+        Debug.Log(unit);
+        return unit;
+    }
+
+    Unit InstantiateUnit(GameObject prefab, Cell cell)
+    {
+        if (cell == null || cell.IsTaken)
+            return null;
 
         GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
         cell.IsTaken = true;

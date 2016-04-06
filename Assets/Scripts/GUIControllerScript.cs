@@ -64,7 +64,8 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
 
         _gameOverPanel.GetComponent<RectTransform>().SetParent(Canvas.GetComponent<RectTransform>(), false);*/
       //  Debug.Log("Game Ended");
-        RuntimeInstantiated.gameObject.transform.GetComponentInChildren<GameManager>().LoadGameEndedScreen();
+        StatManager.Instance.IsNewCave = true;
+        GameManager.Instance.LoadGameEndedScreen();
         
     }
 
@@ -143,6 +144,7 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
 
     public void SaveGame()
     {
+        StatManager.Instance.IsNewCave = false;
         PlayersParent.GetComponentInChildren<HumanPlayer>().SaveStats();
         GameManager.Instance.SaveGame();
     }

@@ -9,6 +9,7 @@ public class GameUnit : Unit
 
     public Color LeadingColor;
     public bool canShoot;
+    public int CellNumber; // the number of the cell as a child of HexGrid
     bool hasMoved;
     public bool isDeployed;
     bool isSelected;
