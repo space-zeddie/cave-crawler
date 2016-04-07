@@ -24,23 +24,29 @@ public class HexGridCellularAutomata : ICellGridGenerator
     void Awake()
     {
         StatManager.Instance.LoadData();
-        if (!StatManager.Instance.IsSceneBeingLoaded || StatManager.Instance.IsNewCave)
-        {
-            map = new int[width, height];
-            GenerateMap();
-        }
         if (StatManager.Instance.IsSceneBeingLoaded && !StatManager.Instance.IsNewCave)
         {
             PlayerState.Instance.LoadFromGlobal();
+            Debug.Log("Loading map");
+            ClearGrid();
             width = PlayerState.Instance.LocalPlayerData.map.GetLength(0);
             height = PlayerState.Instance.LocalPlayerData.map.GetLength(1);
             map = new int[PlayerState.Instance.LocalPlayerData.map.GetLength(0), PlayerState.Instance.LocalPlayerData.map.GetLength(1)];
             for (int i = 0; i < width; ++i)
                 for (int j = 0; j < height; ++j)
                     map[i, j] = PlayerState.Instance.LocalPlayerData.map[i, j];
+            if (this.gameObject.transform.GetChildCount() == 0) { Debug.Log("Redrawing"); GenerateGrid(); }
         }
-        ClearGrid();
-        GenerateGrid();
+        else
+        {
+            ClearGrid();
+            Debug.Log("New map");
+            map = new int[width, height];
+            GenerateMap();
+            GenerateGrid();
+        }
+       // ClearGrid();
+        
         StartCoroutine(ObstacleGenerator.Instance.SpawnObstacles());
         StartCoroutine(UnitGenerator.Instance.SpawnUnits());
 
@@ -49,10 +55,10 @@ public class HexGridCellularAutomata : ICellGridGenerator
 
     public void SaveGrid()
     {
-
+        
     }
 
-    void ClearGrid()
+    public void ClearGrid()
     {
         var children = new List<GameObject>();
         foreach (Transform cell in this.CellsParent)

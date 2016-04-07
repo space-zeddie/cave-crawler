@@ -64,6 +64,7 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
 
         _gameOverPanel.GetComponent<RectTransform>().SetParent(Canvas.GetComponent<RectTransform>(), false);*/
       //  Debug.Log("Game Ended");
+        GameObject.FindObjectOfType<HexGridCellularAutomata>().ClearGrid();
         StatManager.Instance.IsNewCave = true;
         GameManager.Instance.LoadGameEndedScreen();
         

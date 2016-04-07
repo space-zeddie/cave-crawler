@@ -38,6 +38,9 @@ public class Loader : Singleton<Loader>
 
     public void LoadMainMenu()
     {
+        HexGridCellularAutomata hex = GameObject.FindObjectOfType<HexGridCellularAutomata>();
+        if (hex != null)
+            hex.ClearGrid();
         GameManager.Instance.LoadMainMenu();
     }
 

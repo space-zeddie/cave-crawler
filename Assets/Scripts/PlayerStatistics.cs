@@ -9,12 +9,10 @@ public class PlayerStatistics
     public int[] Units;
     // saved by type number
     public int[] DeployedUnits;
-    // saved by the number of the cell in the hierarchy
-    public int[] DeployedUnitCell;
-    // saved by the number of the cell in the hierarchy
-    public int[] SpawnCells;
 
     public int[,] map;
+   // public int[] i;
+   // public int[] j;
 
     public int SceneID;
 }
