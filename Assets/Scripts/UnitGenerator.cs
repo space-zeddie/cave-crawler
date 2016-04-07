@@ -40,21 +40,21 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         List<Unit> ret = new List<Unit>();
         player.LoadFromGlobal();
 
-       // if (StatManager.Instance.IsNewCave)
-       // {
+        if (StatManager.Instance.IsNewCave)
+        {
             ret.Add(InstantiateUnit(player.gameUnits[0].gameObject));
 
             for (int i = 1; i < player.gameUnits.GetLength(0); ++i)
             {
                 ret.Add(InstantiateUnit(player.gameUnits[i].gameObject, ret[i - 1].gameObject.GetComponent<GameUnit>().Cell.GetNeighbours(CellGrid.Cells)));
             }
-        //}
+        }
         
-       /* else
+        else
         {
             foreach (GameUnit gu in player.gameUnits)
-                ret.Add(InstantiateUnit(gu.gameObject, CellGrid.gameObject.transform.GetChild(gu.CellNumber).GetComponent<Cell>()));
-        }*/
+                ret.Add(InstantiateUnit(gu.gameObject, (gu.Cell as Hexagon).i, (gu.Cell as Hexagon).j));
+        }
         
         CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
         return ret;
@@ -85,8 +85,9 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         return unit;
     }
 
-    Unit InstantiateUnit(GameObject prefab, Cell cell)
+    Unit InstantiateUnit(GameObject prefab, int i, int j)
     {
+        var cell = Hex.cells[i, j];
         if (cell == null || cell.IsTaken)
             return null;
 

@@ -9,10 +9,15 @@ public class PlayerStatistics
     public int[] Units;
     // saved by type number
     public int[] DeployedUnits;
+   // public int[] DeployedUnitCell;
+    public int[] Spawns;
 
     public int[,] map;
-   // public int[] i;
-   // public int[] j;
+    public int[] unitI;
+    public int[] unitJ;
+
+    public int[] spawnI;
+    public int[] spawnJ;
 
     public int SceneID;
 }

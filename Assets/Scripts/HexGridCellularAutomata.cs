@@ -17,6 +17,7 @@ public class HexGridCellularAutomata : ICellGridGenerator
     public int randomFillPercent;
 
     int[,] map;
+    public Cell[,] cells;
     HexGridType hexGridType;
 
    // public Camera carrierCamera;
@@ -24,9 +25,9 @@ public class HexGridCellularAutomata : ICellGridGenerator
     void Awake()
     {
         StatManager.Instance.LoadData();
+        if (!PlayerState.Instance.Loaded) PlayerState.Instance.LoadFromGlobal();
         if (StatManager.Instance.IsSceneBeingLoaded && !StatManager.Instance.IsNewCave)
         {
-            PlayerState.Instance.LoadFromGlobal();
             Debug.Log("Loading map");
             ClearGrid();
             width = PlayerState.Instance.LocalPlayerData.map.GetLength(0);
@@ -72,6 +73,7 @@ public class HexGridCellularAutomata : ICellGridGenerator
     {
         hexGridType = width % 2 == 0 ? HexGridType.even_q : HexGridType.odd_q;
         var hexagons = new List<Cell>();
+        cells = new Cell[width, height];
 
         if (HexagonFreePrefab.GetComponent<Hexagon>() == null || HexagonWallPrefab.GetComponent<Hexagon>() == null)
         {
@@ -88,6 +90,7 @@ public class HexGridCellularAutomata : ICellGridGenerator
             {
                 GameObject hexagon = InstantiateHexagon(j, i);
                 hexagons.Add(hexagon.GetComponent<Cell>());
+                cells[j, i] = hexagon.GetComponent<Cell>();
             }
         }
         return hexagons;
