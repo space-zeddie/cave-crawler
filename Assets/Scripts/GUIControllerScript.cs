@@ -146,6 +146,7 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
     public void SaveGame()
     {
         StatManager.Instance.IsNewCave = false;
+        ObstacleGenerator.Instance.SaveSpawns();
         PlayersParent.GetComponentInChildren<HumanPlayer>().SaveStats();
         GameManager.Instance.SaveGame();
     }

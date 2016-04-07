@@ -3,21 +3,7 @@ using System.Collections;
 
 public class Collectable : MonoBehaviour
 {
-   // public Cell cell;
+    public int i;
+    public int j;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-
-    void OnMouseDown()
-    {
-
-    }
-	
-	// Update is called once per frame
-	void Update () 
-    {
-        	
-	}
 }
