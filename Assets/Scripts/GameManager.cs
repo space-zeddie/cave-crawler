@@ -56,6 +56,7 @@ public class GameManager : Singleton<GameManager>
 
     public void LoadMultiplayerCave()
     {
+        LoadScene(4);
     }
 
     public void LoadProfile()

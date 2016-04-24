@@ -12,6 +12,14 @@ public class HumanPlayer : Player
     public GameUnit[] gameUnits = new GameUnit[0];
     public int Score;
 
+    void Start()
+    {
+        if (PlayersParent.Instance != null)
+            this.gameObject.transform.parent = PlayersParent.Instance.gameObject.transform;
+        if (UnitParentScript.Instance != null)
+            allUnits = UnitParentScript.Instance;
+    }
+
     public void LoadFromGlobal()
     {
         if (!PlayerState.Instance.Loaded) PlayerState.Instance.LoadFromGlobal();
