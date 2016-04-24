@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
 public class HexGCANetwork : HexGridCellularAutomata 
 {
     void Awake()
     {
-        Debug.Log("Awaking Hex GCA");
-        base.LoadGrid();
+        GameObject.FindObjectOfType<NetworkManager>().StartHost();
+        if (GameObject.FindObjectOfType<NetworkManager>().isNetworkActive) Debug.Log("Is in Network");
+        base.LoadGrid(false);
     }
 }
