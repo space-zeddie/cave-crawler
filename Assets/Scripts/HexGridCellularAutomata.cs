@@ -24,11 +24,13 @@ public class HexGridCellularAutomata : ICellGridGenerator
 
     void Awake()
     {
+        Debug.Log("Awaking Hexgrid");
         LoadGrid();
     }
 
-    void LoadGrid()
+    protected void LoadGrid()
     {
+        Debug.Log("Loading HexGrid");
         StatManager.Instance.LoadData();
         if (!PlayerState.Instance.Loaded) PlayerState.Instance.LoadFromGlobal();
         if (StatManager.Instance.IsSceneBeingLoaded && !StatManager.Instance.IsNewCave)

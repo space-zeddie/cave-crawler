@@ -73,6 +73,7 @@ public class GameManager : Singleton<GameManager>
     {
         loadingImage.SetActive(true);
         Application.LoadLevel(level);
+        Debug.Log("loading " + level);
         currentScene = level;
     }
 }
