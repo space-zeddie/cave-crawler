@@ -24,6 +24,11 @@ public class HexGridCellularAutomata : ICellGridGenerator
 
     void Awake()
     {
+        LoadGrid();
+    }
+
+    void LoadGrid()
+    {
         StatManager.Instance.LoadData();
         if (!PlayerState.Instance.Loaded) PlayerState.Instance.LoadFromGlobal();
         if (StatManager.Instance.IsSceneBeingLoaded && !StatManager.Instance.IsNewCave)
@@ -46,12 +51,8 @@ public class HexGridCellularAutomata : ICellGridGenerator
             GenerateMap();
             GenerateGrid();
         }
-       // ClearGrid();
-        
         StartCoroutine(ObstacleGenerator.Instance.SpawnObstacles());
         StartCoroutine(UnitGenerator.Instance.SpawnUnits());
-
-      //  carrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
     }
 
     public void SaveGrid()
