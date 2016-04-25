@@ -18,6 +18,7 @@ public class HumanPlayer : Player
             this.gameObject.transform.parent = PlayersParent.Instance.gameObject.transform;
         if (UnitParentScript.Instance != null)
             allUnits = UnitParentScript.Instance;
+        this.gameObject.SetActive(true);
     }
 
     public void LoadFromGlobal()

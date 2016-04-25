@@ -19,6 +19,7 @@ public class FloorCell : Hexagon
         int priorMovementPoints = moveable.MovementPoints;
         if (!(spawn is Exit)) moveable.Move(this, moveable.FindPath(moveable.GetAvailableCells(), this));
         int deltaPoints = priorMovementPoints - moveable.MovementPoints;
+        Debug.Log(PlayersParent.Instance.GetComponentInChildren<HumanPlayer>());
         PlayersParent.Instance.GetComponentInChildren<HumanPlayer>().Score -= deltaPoints;
 
         moveable.SetHasMoved(true);

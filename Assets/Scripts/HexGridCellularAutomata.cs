@@ -25,6 +25,8 @@ public class HexGridCellularAutomata : ICellGridGenerator
     void Awake()
     {
         LoadGrid(true);
+        for (int i = 0; i < PlayersParent.Instance.gameObject.transform.childCount; ++i)
+            PlayersParent.Instance.gameObject.transform.GetChild(i).gameObject.SetActive(true);
     }
 
     protected void LoadGrid(bool gridFromLocalSaveFile)
