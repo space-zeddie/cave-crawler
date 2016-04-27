@@ -26,7 +26,7 @@ public class FloorCell : Hexagon
 
         if (spawn is Exit)
         {
-            UnitParentScript.Instance.GetComponentInChildren<HumanPlayer>().Score += Exit.BUFF_POINTS;
+            PlayersParent.Instance.GetComponentInChildren<HumanPlayer>().Score += Exit.BUFF_POINTS;
             (spawn as Exit).VanishUnit(moveable);
         }
         moveable.UnSelect();

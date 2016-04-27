@@ -27,12 +27,19 @@ public class Loader : Singleton<Loader>
         SingleplayerButton sb = canvas.gameObject.transform.GetComponentInChildren<SingleplayerButton>();
         MultiplayerButton mb = canvas.gameObject.transform.GetComponentInChildren<MultiplayerButton>();
         ReturnToMenuButton rmb = canvas.gameObject.transform.GetComponentInChildren<ReturnToMenuButton>();
+        JoinHostButton jhb = canvas.gameObject.transform.GetComponentInChildren<JoinHostButton>();
+        CreateHostButton chb = canvas.gameObject.transform.GetComponentInChildren<CreateHostButton>();
         if (sb != null)
             (sb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadGame(); });
         if (mb != null)
-            (mb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadMultiplayerCave(); });
+            (mb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadHostChoice(); });
         if (rmb != null)
             (rmb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadMainMenu(); });
+        // STUBS
+        if (chb != null)
+            (chb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadMultiplayerCave(); });
+        if (jhb != null)
+            (jhb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadMultiplayerCave(); });
     }
 
 
