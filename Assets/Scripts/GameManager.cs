@@ -64,6 +64,11 @@ public class GameManager : Singleton<GameManager>
         LoadScene(5);
     }
 
+    public void LoadLobby()
+    {
+        LoadScene(6);
+    }
+
     public void LoadProfile()
     {
     }

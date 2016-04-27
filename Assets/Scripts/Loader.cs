@@ -39,7 +39,7 @@ public class Loader : Singleton<Loader>
         if (chb != null)
             (chb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadMultiplayerCave(); });
         if (jhb != null)
-            (jhb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadMultiplayerCave(); });
+            (jhb as Button).onClick.AddListener(delegate { GameManager.Instance.LoadLobby(); });
     }
 
 
