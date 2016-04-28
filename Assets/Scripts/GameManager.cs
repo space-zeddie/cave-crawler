@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameManager : Singleton<GameManager> 
 {
     public GameObject loadingImage;
-
+    
     private int currentScene;
 
     void Start()
     {
-        currentScene = Application.loadedLevel;
+        currentScene = SceneManager.GetActiveScene().buildIndex;
     }
 
     void Awake()
@@ -40,7 +41,7 @@ public class GameManager : Singleton<GameManager>
 
     public void SaveGame()
     {
-        if (Application.loadedLevel == 2)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
             Debug.Log("Saving game");
             PlayerState.Instance.SaveToGlobal();
@@ -59,7 +60,6 @@ public class GameManager : Singleton<GameManager>
     {
         LoadScene(4);
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
-        DontDestroyOnLoad(nm.playerPrefab);
         nm.StartHost();
     }
 
@@ -87,7 +87,7 @@ public class GameManager : Singleton<GameManager>
     void LoadScene(int level)
     {
         loadingImage.SetActive(true);
-        Application.LoadLevel(level);
+        SceneManager.LoadScene(level, LoadSceneMode.Single);
         Debug.Log("loading " + level);
         currentScene = level;
     }

@@ -15,13 +15,14 @@ public class HumanPlayer : Player
    // void Start() { }
 
    // void OnLevelWasLoaded(int level)
-    void OnStartServer()
+    void OnServerAddPlayer()
     {
         if (PlayersParent.Instance != null)
             this.gameObject.transform.parent = PlayersParent.Instance.gameObject.transform;
         if (UnitParentScript.Instance != null)
             allUnits = UnitParentScript.Instance;
         this.gameObject.SetActive(true);
+        Debug.Log("Added Player");
     }
 
     public void LoadFromGlobal()

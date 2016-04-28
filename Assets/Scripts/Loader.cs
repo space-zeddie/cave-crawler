@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class Loader : Singleton<Loader>
 {
     public GameObject InstatiatedObjects;
     public GameManager GMPrefab;
+    public GameObject spawnerPrefab;
     public Canvas canvas;
 
     void Awake()
@@ -20,6 +23,12 @@ public class Loader : Singleton<Loader>
             }
         }
         else Debug.LogError("The scene must contain one designated game object for storing runtime-generated objects");
+
+        if (SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            GameObject spawner = (GameObject)GameObject.Instantiate(spawnerPrefab);
+            NetworkServer.Spawn(spawner);
+        }
     }
 
     void AssignButtonHandlers()

@@ -12,15 +12,19 @@ public class Spawner : NetworkBehaviour
         nm = GameObject.FindObjectOfType<NetworkManager>();
     }
 
-	void OnStartServer () 
+	//void OnStartServer () 
+    void OnLevelWasLoaded(int level)
     {
-       
-      //  m_bools = new SyncListBool();
-        ClientScene.AddPlayer(0);
-        //GameObject player = (GameObject)Instantiate(nm.playerPrefab);
-       // player.GetComponent<HumanPlayer>().PlayerNumber = GameObject.FindObjectOfType<PlayersParent>().gameObject.transform.childCount;
-        
-       // NetworkServer.Spawn(player);
+        if (level == 4)
+        {
+            //  m_bools = new SyncListBool();
+            ClientScene.AddPlayer(0);
+            Debug.Log("Server Started in " + Application.loadedLevel + ", about to spawn client player");
+            //GameObject player = (GameObject)Instantiate(nm.playerPrefab);
+            // player.GetComponent<HumanPlayer>().PlayerNumber = GameObject.FindObjectOfType<PlayersParent>().gameObject.transform.childCount;
+
+            // NetworkServer.Spawn(player);
+        }
 	}
 
     public void Spawn()
