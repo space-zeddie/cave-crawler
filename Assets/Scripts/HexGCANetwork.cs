@@ -4,6 +4,7 @@ using System.Collections;
 
 public class HexGCANetwork : HexGridCellularAutomata 
 {
+    public bool mapped = false;
 
     void Awake()
     {
@@ -29,6 +30,7 @@ public class HexGCANetwork : HexGridCellularAutomata
             this.gameObject.GetComponent<UnitGenerator>().CarrierCamera = maincam.GetComponent<Camera>();
         //GameObject.FindObjectOfType<NetworkManager>().StartHost();
         if (nm.isNetworkActive) Debug.Log("Is in Network");
+        if (!mapped) base.GenerateMap();
         base.LoadGrid(false);
         GUIControllerScript.Instance.CellGrid = this.gameObject.GetComponent<CellGrid>();
         UnitParentScript.Instance.hexGrid = this.gameObject;

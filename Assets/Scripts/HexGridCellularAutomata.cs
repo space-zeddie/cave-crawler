@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections.Generic;
 using System.Collections;
 using System;
@@ -15,7 +16,6 @@ public class HexGridCellularAutomata : ICellGridGenerator
     public string seed;
     [Range(0, 100)]
     public int randomFillPercent;
-
     int[,] map;
     public Cell[,] cells;
     HexGridType hexGridType;
@@ -50,8 +50,7 @@ public class HexGridCellularAutomata : ICellGridGenerator
         {
             ClearGrid();
             Debug.Log("New map");
-            map = new int[width, height];
-            GenerateMap();
+            if (gridFromLocalSaveFile) GenerateMap();
             GenerateGrid();
         }
         StartCoroutine(ObstacleGenerator.Instance.SpawnObstacles());
@@ -143,8 +142,9 @@ public class HexGridCellularAutomata : ICellGridGenerator
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
-    void GenerateMap()
+    public void GenerateMap()
     {
+        map = new int[width, height];
         RandomFillMap();
 
         SmoothMap();
