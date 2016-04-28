@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 
@@ -13,6 +14,8 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
     public Camera OverheadCamera;
     public GameObject RuntimeInstantiated;
 
+    bool init = false;
+
     //public Button NextTurnButton;
 
    // public Image UnitImage;
@@ -21,12 +24,24 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
 
     void Start()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            Init();
+        }
+        
+    }
+
+    public void Init()
+    {
+        Debug.Log( "GUI CONTROLLER STARTED ON: " + CellGrid);
         CellGrid.GameStarted += OnGameStarted;
         CellGrid.TurnEnded += OnTurnEnded;
         CellGrid.GameEnded += OnGameEnded;
 
         CarrierCamera.enabled = true;
         OverheadCamera.enabled = false;
+
+        init = true;
     }
 
     private void OnGameStarted(object sender, EventArgs e)
@@ -159,17 +174,20 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
 
     void Update () 
     {
-        // switching cameras
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (init)
         {
-            SwitchCameras();
-            return;
-        }
+            // switching cameras
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                SwitchCameras();
+                return;
+            }
 
-        // ending turn
-        if(Input.GetKeyDown(KeyCode.N))
-            CellGrid.EndTurn(); //User ends his turn by pressing "n" on keyboard.
-        CheckForEndingConditions();       
+            // ending turn
+            if (Input.GetKeyDown(KeyCode.N))
+                CellGrid.EndTurn(); //User ends his turn by pressing "n" on keyboard.
+            CheckForEndingConditions();      
+        }
     }
 
    public void SwitchCameras()

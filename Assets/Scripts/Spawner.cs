@@ -5,6 +5,7 @@ using System.Collections;
 public class Spawner : NetworkBehaviour
 {
     NetworkManager nm;
+    public GameObject hex;
    // SyncListBool m_bools;
 
     void Awake()
@@ -18,18 +19,18 @@ public class Spawner : NetworkBehaviour
         if (level == 4)
         {
             //  m_bools = new SyncListBool();
-            ClientScene.AddPlayer(0);
-            Debug.Log("Server Started in " + Application.loadedLevel + ", about to spawn client player");
-            //GameObject player = (GameObject)Instantiate(nm.playerPrefab);
-            // player.GetComponent<HumanPlayer>().PlayerNumber = GameObject.FindObjectOfType<PlayersParent>().gameObject.transform.childCount;
-
-            // NetworkServer.Spawn(player);
+            Spawn();
         }
 	}
 
     public void Spawn()
     {
+        ClientScene.AddPlayer(0);
+        GameObject hexgrid = (GameObject)Instantiate(hex);
+        // player.GetComponent<HumanPlayer>().PlayerNumber = GameObject.FindObjectOfType<PlayersParent>().gameObject.transform.childCount;
 
+        NetworkServer.Spawn(hexgrid);
+        GUIControllerScript.Instance.Init();
     }
 	
 }
