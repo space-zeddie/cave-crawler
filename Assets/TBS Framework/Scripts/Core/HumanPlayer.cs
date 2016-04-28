@@ -12,7 +12,9 @@ public class HumanPlayer : Player
     public GameUnit[] gameUnits = new GameUnit[0];
     public int Score;
 
-    void Start()
+    void Start() { }
+
+    void OnLevelWasLoaded(int level)
     {
         if (PlayersParent.Instance != null)
             this.gameObject.transform.parent = PlayersParent.Instance.gameObject.transform;

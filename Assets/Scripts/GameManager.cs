@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
 public class GameManager : Singleton<GameManager> 
@@ -57,6 +58,9 @@ public class GameManager : Singleton<GameManager>
     public void LoadMultiplayerCave()
     {
         LoadScene(4);
+        NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
+        DontDestroyOnLoad(nm.playerPrefab);
+        nm.StartHost();
     }
 
     public void LoadHostChoice()
@@ -67,6 +71,7 @@ public class GameManager : Singleton<GameManager>
     public void LoadLobby()
     {
         LoadScene(6);
+        
     }
 
     public void LoadProfile()

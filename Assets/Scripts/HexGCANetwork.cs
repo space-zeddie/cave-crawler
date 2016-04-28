@@ -4,9 +4,11 @@ using System.Collections;
 
 public class HexGCANetwork : HexGridCellularAutomata 
 {
-    void Awake()
+    void Start() { }
+
+    void OnLevelWasLoaded(int level)
     {
-        GameObject.FindObjectOfType<NetworkManager>().StartHost();
+        //GameObject.FindObjectOfType<NetworkManager>().StartHost();
         if (GameObject.FindObjectOfType<NetworkManager>().isNetworkActive) Debug.Log("Is in Network");
         base.LoadGrid(false);
     }
