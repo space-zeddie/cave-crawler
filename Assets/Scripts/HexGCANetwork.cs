@@ -8,8 +8,9 @@ public class HexGCANetwork : HexGridCellularAutomata
 
     void OnLevelWasLoaded(int level)
     {
+        NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
         //GameObject.FindObjectOfType<NetworkManager>().StartHost();
-        if (GameObject.FindObjectOfType<NetworkManager>().isNetworkActive) Debug.Log("Is in Network");
+        if (nm.isNetworkActive) Debug.Log("Is in Network");
         base.LoadGrid(false);
     }
 }
