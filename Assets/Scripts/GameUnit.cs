@@ -35,6 +35,15 @@ public class GameUnit : Unit
         if (id.Length == 0) InitID();
     }
 
+    protected override IEnumerator MovementAnimation(List<Cell> path)
+    {
+       /* NetworkGameUnit net = this.gameObject.GetComponent<NetworkGameUnit>();
+        if (net != null)
+            return net.CmdMove(path, this.MovementSpeed);
+        else */
+            return base.MovementAnimation(path);        
+    }
+
     void InitID()
     {
         id = this.GetType().ToString() + "," + this.TotalHitPoints + "," + this.AttackRange + "," + this.MovementPoints + "," + this.PlayerNumber;

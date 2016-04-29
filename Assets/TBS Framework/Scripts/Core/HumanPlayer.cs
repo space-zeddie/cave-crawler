@@ -7,10 +7,10 @@ using System.Collections.Generic;
 public class HumanPlayer : Player
 {
     public UnitParentScript allUnits;
-    public GameUnit CarrierPrefab;
-    public GameUnit SentinelPrefab;
+    public GameObject CarrierPrefab;
+    public GameObject SentinelPrefab;
 
-    public GameUnit[] gameUnits = new GameUnit[0];
+    public GameObject[] gameUnits = new GameObject[0];
     public int Score;
 
    // void Start() { }
@@ -31,6 +31,7 @@ public class HumanPlayer : Player
         if (!PlayerState.Instance.Loaded) PlayerState.Instance.LoadFromGlobal();
         if (PlayerState.Instance.LocalPlayerData.DeployedUnits == null || PlayerState.Instance.LocalPlayerData.DeployedUnits.GetLength(0) == 0)
         {
+            Debug.Log("Assigning Units");
             PlayerState.Instance.LocalPlayerData.DeployedUnits = new int[2];
             PlayerState.Instance.LocalPlayerData.DeployedUnits[0] = 1; // carrier
             PlayerState.Instance.LocalPlayerData.DeployedUnits[1] = 2; // sentinel
@@ -38,19 +39,20 @@ public class HumanPlayer : Player
             PlayerState.Instance.LocalPlayerData.unitJ = new int[2] { -1, -1 };
           //  PlayerState.Instance.LocalPlayerData.DeployedUnitCell = new int[2]{-1, -1};
         }
-        gameUnits = new GameUnit[PlayerState.Instance.LocalPlayerData.DeployedUnits.GetLength(0)];
+        gameUnits = new GameObject[PlayerState.Instance.LocalPlayerData.DeployedUnits.GetLength(0)];
         Debug.Log(PlayerState.Instance.LocalPlayerData.unitI);
         int i = 0;
         foreach (int unitTypeCode in PlayerState.Instance.LocalPlayerData.DeployedUnits)
         {
+            Debug.Log("In UnitTypeCode: " + CarrierPrefab);
             if (unitTypeCode == 1) gameUnits[i] = CarrierPrefab;
             else if (unitTypeCode == 2) gameUnits[i] = SentinelPrefab;
            // gameUnits[i].CellNumber = PlayerState.Instance.LocalPlayerData.DeployedUnitCell[i];
             if (!StatManager.Instance.IsNewCave)
             {
-                gameUnits[i].Cell = new FloorCell();
-                (gameUnits[i].Cell as Hexagon).i = PlayerState.Instance.LocalPlayerData.unitI[i];
-                (gameUnits[i].Cell as Hexagon).j = PlayerState.Instance.LocalPlayerData.unitJ[i];
+                gameUnits[i].GetComponent<GameUnit>().Cell = new FloorCell();
+                (gameUnits[i].GetComponent<GameUnit>().Cell as Hexagon).i = PlayerState.Instance.LocalPlayerData.unitI[i];
+                (gameUnits[i].GetComponent<GameUnit>().Cell as Hexagon).j = PlayerState.Instance.LocalPlayerData.unitJ[i];
             }
             ++i;
         }
@@ -65,18 +67,21 @@ public class HumanPlayer : Player
     public void SaveStats()
     {
         PlayerState.Instance.LocalPlayerData.map = GameObject.FindObjectOfType<HexGridCellularAutomata>().GetMap();
-        gameUnits = allUnits.GetComponentsInChildren<GameUnit>();
+        int i = 0;
+        gameUnits = new GameObject[allUnits.transform.childCount];
+        foreach (GameUnit gu in allUnits.GetComponentsInChildren<GameUnit>())
+            gameUnits[i++] = gu.gameObject;
         PlayerState.Instance.LocalPlayerData.DeployedUnits = new int[gameUnits.GetLength(0)];
         PlayerState.Instance.LocalPlayerData.unitI = new int[gameUnits.GetLength(0)];
         PlayerState.Instance.LocalPlayerData.unitJ = new int[gameUnits.GetLength(0)];
-        int i = 0;
-        foreach (GameUnit gu in gameUnits)
+        i = 0;
+        foreach (GameObject gu in gameUnits)
         {
-            if (gu is Carrier) PlayerState.Instance.LocalPlayerData.DeployedUnits[i] = 1;
-            else if (gu is Sentinel) PlayerState.Instance.LocalPlayerData.DeployedUnits[i] = 2;
+            if (gu.GetComponent<GameUnit>() is Carrier) PlayerState.Instance.LocalPlayerData.DeployedUnits[i] = 1;
+            else if (gu.GetComponent<GameUnit>() is Sentinel) PlayerState.Instance.LocalPlayerData.DeployedUnits[i] = 2;
            // PlayerState.Instance.LocalPlayerData.DeployedUnitCell[i] = gu.CellNumber;
-            PlayerState.Instance.LocalPlayerData.unitI[i] = (gu.Cell as Hexagon).i;
-            PlayerState.Instance.LocalPlayerData.unitJ[i] = (gu.Cell as Hexagon).j;
+            PlayerState.Instance.LocalPlayerData.unitI[i] = (gu.GetComponent<GameUnit>().Cell as Hexagon).i;
+            PlayerState.Instance.LocalPlayerData.unitJ[i] = (gu.GetComponent<GameUnit>().Cell as Hexagon).j;
             Debug.Log(PlayerState.Instance.LocalPlayerData.unitI[i] + ", " + PlayerState.Instance.LocalPlayerData.unitJ[i]);
             ++i;
         }

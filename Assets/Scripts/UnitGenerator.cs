@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
 {
@@ -42,6 +43,7 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
 
         if (StatManager.Instance.IsNewCave)
         {
+            Debug.Log(player.gameUnits[0]);
             ret.Add(InstantiateUnit(player.gameUnits[0].gameObject));
 
             for (int i = 1; i < player.gameUnits.GetLength(0); ++i)
@@ -52,8 +54,8 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         
         else
         {
-            foreach (GameUnit gu in player.gameUnits)
-                ret.Add(InstantiateUnit(gu.gameObject, (gu.Cell as Hexagon).i, (gu.Cell as Hexagon).j));
+            foreach (GameObject gu in player.gameUnits)
+                ret.Add(InstantiateUnit(gu, (gu.GetComponent<GameUnit>().Cell as Hexagon).i, (gu.GetComponent<GameUnit>().Cell as Hexagon).j));
         }
         
         CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
@@ -82,6 +84,8 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         unit.transform.parent = UnitsParent;
         unit.CellNumber = i;
         Debug.Log(unit);
+        if (unit.GetComponent<NetworkGameUnit>() != null)
+            NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
         return unit;
     }
 
@@ -97,7 +101,9 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         unit.transform.position = cell.transform.position;
         unit.Initialize();
         unit.transform.parent = UnitsParent;
-        Debug.Log(unit);
+        //Debug.Log(unit);
+        if (unit.GetComponent<NetworkGameUnit>() != null)
+            NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
         return unit;
     }
 
@@ -113,6 +119,8 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         unit.Initialize();
         unit.transform.parent = UnitsParent;
         //Debug.Log(unit);
+        if (unit.GetComponent<NetworkGameUnit>() != null)
+            NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
         return unit;
     }
 
