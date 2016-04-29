@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [ExecuteInEditMode()]
 public class ObstacleGenerator : Singleton<ObstacleGenerator> {
@@ -81,6 +82,8 @@ public class ObstacleGenerator : Singleton<ObstacleGenerator> {
         Vector3 offset = new Vector3(0, 0, cell.GetCellDimensions().z);
         obstacle.transform.position = cell.transform.position - offset;
         obstacle.transform.parent = ObstaclesParent;
+        if (obstacle.GetComponent<NetworkIdentity>() != null)
+            NetworkServer.Spawn(obstacle);
     }
 
     void InstantiateObstacle(GameObject prefab, int i, int j)
@@ -97,6 +100,8 @@ public class ObstacleGenerator : Singleton<ObstacleGenerator> {
         Vector3 offset = new Vector3(0, 0, cell.GetCellDimensions().z);
         obstacle.transform.position = cell.transform.position - offset;
         obstacle.transform.parent = ObstaclesParent;
+        if (obstacle.GetComponent<NetworkIdentity>() != null)
+            NetworkServer.Spawn(obstacle);
     }
 
     void ManualSpawn()
