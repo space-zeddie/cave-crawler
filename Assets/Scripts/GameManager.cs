@@ -60,7 +60,17 @@ public class GameManager : Singleton<GameManager>
     {
         LoadScene(4);
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
-        nm.StartHost();
+        if (Network.connections.GetLength(0) > 0)
+            nm.StartClient();
+        else nm.StartHost();
+    }
+
+    public void LoadClientMultiplayer()
+    {
+        LoadScene(4);
+       // while (SceneManager.GetActiveScene().buildIndex != 4) { }
+        NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
+        nm.StartClient();
     }
 
     public void LoadHostChoice()
