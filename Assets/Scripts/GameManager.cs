@@ -8,10 +8,14 @@ public class GameManager : Singleton<GameManager>
     public GameObject loadingImage;
     
     private int currentScene;
+    private HostData[] hostList;
+    private int totalHosts;
 
     void Start()
     {
         currentScene = SceneManager.GetActiveScene().buildIndex;
+        hostList = new HostData[10];
+        totalHosts = 0;
     }
 
     void Awake()
@@ -60,17 +64,39 @@ public class GameManager : Singleton<GameManager>
     {
         LoadScene(4);
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
-        if (Network.connections.GetLength(0) > 0)
-            nm.StartClient();
-        else nm.StartHost();
+        //NetworkServer.serverHostId;
+        nm.StartHost();
+        hostList[totalHosts] = new HostData();
+        hostList[totalHosts].port = NetworkServer.listenPort;
+        hostList[totalHosts].ip = new string[1];
+        hostList[totalHosts].ip[0] = Network.player.ipAddress;
+        hostList[totalHosts].playerLimit = 2;
+        totalHosts++;
     }
 
     public void LoadClientMultiplayer()
     {
+
         LoadScene(4);
        // while (SceneManager.GetActiveScene().buildIndex != 4) { }
+       /* int server = -1;
+        for (server = 0; server < totalHosts; ++server)
+            if (hostList[server].connectedPlayers < hostList[server].playerLimit)
+                break;*/
+        NetworkClient client = new NetworkClient();
+        client.RegisterHandler(MsgType.Connect, OnConnected);
+        client.Connect("localhost", 7777);
+        
+       // client.Connect(hostList[server].ip[0], hostList[server].port);
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
+        nm.client = client;
         nm.StartClient();
+    }
+
+    public void OnConnected(NetworkMessage netMsg)
+    {
+        Debug.Log("Connected to server");
+        Debug.Log(NetworkServer.active + ": " + NetworkServer.listenPort);
     }
 
     public void LoadHostChoice()
