@@ -43,8 +43,8 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
 
         if (StatManager.Instance.IsNewCave)
         {
-            Debug.Log(player.gameUnits[0]);
-            ret.Add(InstantiateUnit(player.gameUnits[0].gameObject));
+            Debug.Log(player.gameUnits[0].gameObject);
+            ret.Add(InstantiateUnit(player.gameUnits[0]));
 
             for (int i = 1; i < player.gameUnits.GetLength(0); ++i)
             {
@@ -84,8 +84,11 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         unit.transform.parent = UnitsParent;
         unit.CellNumber = i;
         Debug.Log(unit);
-        if (unit.GetComponent<NetworkGameUnit>() != null)
+        if (unit.GetComponent<NetworkIdentity>() != null)
+        {
+            Debug.Log(prefab + " has NetwrokIdentity");
             NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
+        }
         return unit;
     }
 
@@ -102,8 +105,11 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         unit.Initialize();
         unit.transform.parent = UnitsParent;
         //Debug.Log(unit);
-        if (unit.GetComponent<NetworkGameUnit>() != null)
+        if (unit.GetComponent<NetworkIdentity>() != null)
+        {
+            Debug.Log(prefab + " has NetwrokIdentity");
             NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
+        }
         return unit;
     }
 
@@ -119,8 +125,11 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         unit.Initialize();
         unit.transform.parent = UnitsParent;
         //Debug.Log(unit);
-        if (unit.GetComponent<NetworkGameUnit>() != null)
+        if (unit.GetComponent<NetworkIdentity>() != null)
+        {
+            Debug.Log(prefab + " has NetwrokIdentity");
             NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
+        }
         return unit;
     }
 
