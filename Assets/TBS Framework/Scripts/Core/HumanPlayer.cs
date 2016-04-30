@@ -31,7 +31,7 @@ public class HumanPlayer : Player
         if (!PlayerState.Instance.Loaded) PlayerState.Instance.LoadFromGlobal();
         if (PlayerState.Instance.LocalPlayerData.DeployedUnits == null || PlayerState.Instance.LocalPlayerData.DeployedUnits.GetLength(0) == 0)
         {
-            Debug.Log("Assigning Units");
+           // Debug.Log("Assigning Units");
             PlayerState.Instance.LocalPlayerData.DeployedUnits = new int[2];
             PlayerState.Instance.LocalPlayerData.DeployedUnits[0] = 1; // carrier
             PlayerState.Instance.LocalPlayerData.DeployedUnits[1] = 2; // sentinel
@@ -40,11 +40,10 @@ public class HumanPlayer : Player
           //  PlayerState.Instance.LocalPlayerData.DeployedUnitCell = new int[2]{-1, -1};
         }
         gameUnits = new GameObject[PlayerState.Instance.LocalPlayerData.DeployedUnits.GetLength(0)];
-        Debug.Log(PlayerState.Instance.LocalPlayerData.unitI);
+        //Debug.Log(PlayerState.Instance.LocalPlayerData.unitI);
         int i = 0;
         foreach (int unitTypeCode in PlayerState.Instance.LocalPlayerData.DeployedUnits)
         {
-            Debug.Log("In UnitTypeCode: " + CarrierPrefab);
             if (unitTypeCode == 1) gameUnits[i] = CarrierPrefab;
             else if (unitTypeCode == 2) gameUnits[i] = SentinelPrefab;
            // gameUnits[i].CellNumber = PlayerState.Instance.LocalPlayerData.DeployedUnitCell[i];

@@ -43,7 +43,6 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
 
         if (StatManager.Instance.IsNewCave)
         {
-            Debug.Log(player.gameUnits[0].gameObject);
             ret.Add(InstantiateUnit(player.gameUnits[0]));
 
             for (int i = 1; i < player.gameUnits.GetLength(0); ++i)
@@ -79,15 +78,14 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
         cell.IsTaken = true;
         unit.Cell = cell;
-        unit.transform.position = cell.transform.position;
+        unit.gameObject.transform.position = cell.transform.position;
         unit.Initialize();
-        unit.transform.parent = UnitsParent;
+        unit.gameObject.transform.parent = UnitsParent;
         unit.CellNumber = i;
-        Debug.Log(unit);
-        if (unit.GetComponent<NetworkIdentity>() != null)
+        if (unit.gameObject.GetComponent<NetworkIdentity>() != null)
         {
             Debug.Log(prefab + " has NetwrokIdentity");
-            NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
+            //NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
         }
         return unit;
     }
@@ -101,14 +99,14 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
         cell.IsTaken = true;
         unit.Cell = cell;
-        unit.transform.position = cell.transform.position;
+        unit.gameObject.transform.position = cell.transform.position;
         unit.Initialize();
-        unit.transform.parent = UnitsParent;
+        unit.gameObject.transform.parent = UnitsParent;
         //Debug.Log(unit);
-        if (unit.GetComponent<NetworkIdentity>() != null)
+        if (unit.gameObject.GetComponent<NetworkIdentity>() != null)
         {
             Debug.Log(prefab + " has NetwrokIdentity");
-            NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
+            //NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
         }
         return unit;
     }
@@ -121,14 +119,14 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
         c.IsTaken = true;
         unit.Cell = c;
-        unit.transform.position = c.transform.position;
+        unit.gameObject.transform.position = c.transform.position;
         unit.Initialize();
-        unit.transform.parent = UnitsParent;
+        unit.gameObject.transform.parent = UnitsParent;
         //Debug.Log(unit);
-        if (unit.GetComponent<NetworkIdentity>() != null)
+        if (unit.gameObject.GetComponent<NetworkIdentity>() != null)
         {
             Debug.Log(prefab + " has NetwrokIdentity");
-            NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
+           // NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
         }
         return unit;
     }
