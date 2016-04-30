@@ -97,19 +97,20 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
 
     Unit InitUnit(GameObject prefab, Cell cell, int i = -1)
     {
-        GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
-        cell.IsTaken = true;
-        unit.Cell = cell;
-        unit.gameObject.transform.position = cell.transform.position;
-        unit.gameObject.transform.parent = UnitsParent;
-        if (i != -1) unit.CellNumber = i;
-        if (unit.gameObject.GetComponent<NetworkIdentity>() != null)
+        GameObject unit;
+        if (prefab.GetComponent<NetworkIdentity>() != null)
         {
-            GameObject.FindObjectOfType<Spawner>().Spawn(unit.gameObject, unit.gameObject.transform.position);
+            unit = GameObject.FindObjectOfType<Spawner>().Spawn(prefab, prefab.transform.position);
             //NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
         }
-        else unit.Initialize();
-        return unit;
+        else unit = Instantiate(prefab);
+        cell.IsTaken = true;
+        unit.GetComponent<GameUnit>().Cell = cell;
+        unit.transform.position = cell.transform.position;
+        unit.transform.parent = UnitsParent;
+        if (i != -1) unit.GetComponent<GameUnit>().CellNumber = i;
+        unit.GetComponent<GameUnit>().Initialize();
+        return unit.GetComponent<GameUnit>();
     }
 
     Cell GetRandomCloseFreeCell(List<Cell> cells, int iteration = 0)
