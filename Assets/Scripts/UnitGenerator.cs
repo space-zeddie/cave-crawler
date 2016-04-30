@@ -84,7 +84,7 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         unit.CellNumber = i;
         if (unit.gameObject.GetComponent<NetworkIdentity>() != null)
         {
-            Debug.Log(prefab + " has NetwrokIdentity");
+            GameObject.FindObjectOfType<Spawner>().Spawn(unit.gameObject, unit.gameObject.transform.position);
             //NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
         }
         return unit;
@@ -105,7 +105,7 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         //Debug.Log(unit);
         if (unit.gameObject.GetComponent<NetworkIdentity>() != null)
         {
-            Debug.Log(prefab + " has NetwrokIdentity");
+            GameObject.FindObjectOfType<Spawner>().Spawn(unit.gameObject, unit.gameObject.transform.position);
             //NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
         }
         return unit;
@@ -125,7 +125,7 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         //Debug.Log(unit);
         if (unit.gameObject.GetComponent<NetworkIdentity>() != null)
         {
-            Debug.Log(prefab + " has NetwrokIdentity");
+            GameObject.FindObjectOfType<Spawner>().Spawn(unit.gameObject, unit.gameObject.transform.position);
            // NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
         }
         return unit;

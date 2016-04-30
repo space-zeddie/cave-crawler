@@ -32,5 +32,24 @@ public class Spawner : NetworkBehaviour
         NetworkServer.Spawn(hexgrid);
         GUIControllerScript.Instance.Init();
     }
+
+    public void Spawn(GameObject prefab, Vector3 position)
+    {
+        if (prefab.GetComponent<NetworkIdentity>() == null) return;
+        var go = (GameObject)Instantiate(prefab, position, Quaternion.identity);
+        NetworkServer.SpawnWithClientAuthority(go, LocalPlayer());
+        Debug.Log("Spawned " + prefab + " on " + position + " with " + LocalPlayer() + " authority");
+    }
+
+    public GameObject LocalPlayer()
+    {
+        var players = GameObject.FindObjectOfType<PlayersParent>().gameObject.transform;
+        GameObject player = null;
+        for (int i = 0; i < players.childCount; ++i)
+            if (players.GetChild(i).GetComponent<NetworkIdentity>().isLocalPlayer)
+                player = players.GetChild(i).gameObject;
+        return player;
+
+    }
 	
 }

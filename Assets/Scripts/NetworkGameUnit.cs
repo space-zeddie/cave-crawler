@@ -15,14 +15,14 @@ public class NetworkGameUnit : NetworkBehaviour
         z = this.gameObject.transform.position.z;
     }
 
-    [Command]
+   /* [Command]
     public static void CmdSpawn(GameObject prefab, Vector3 position)
     {
         if (prefab.GetComponent<NetworkIdentity>() == null) return;
         var go = (GameObject)Instantiate(prefab, position, Quaternion.identity);
         NetworkServer.SpawnWithClientAuthority(go, LocalPlayer());
 
-    }
+    }*/
 
     public static GameObject LocalPlayer()
     {
