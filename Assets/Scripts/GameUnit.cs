@@ -110,6 +110,7 @@ public class GameUnit : Unit
         if (unit != null) unit.UnSelect();
         UnitParentScript.Instance.SetSelectedUnit(this);
         //this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
+        Debug.Log(available);
         if (available.Count == 0) PopulateAvailableCells();
         foreach (Cell cell in available)
         {

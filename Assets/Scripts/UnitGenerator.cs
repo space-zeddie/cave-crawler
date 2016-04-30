@@ -75,19 +75,7 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
             cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<Cell>();
         }
 
-        GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
-        cell.IsTaken = true;
-        unit.Cell = cell;
-        unit.gameObject.transform.position = cell.transform.position;
-        unit.Initialize();
-        unit.gameObject.transform.parent = UnitsParent;
-        unit.CellNumber = i;
-        if (unit.gameObject.GetComponent<NetworkIdentity>() != null)
-        {
-            GameObject.FindObjectOfType<Spawner>().Spawn(unit.gameObject, unit.gameObject.transform.position);
-            //NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
-        }
-        return unit;
+        return InitUnit(prefab, cell, i);
     }
 
     Unit InstantiateUnit(GameObject prefab, int i, int j)
@@ -96,19 +84,7 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         if (cell == null || cell.IsTaken)
             return null;
 
-        GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
-        cell.IsTaken = true;
-        unit.Cell = cell;
-        unit.gameObject.transform.position = cell.transform.position;
-        unit.Initialize();
-        unit.gameObject.transform.parent = UnitsParent;
-        //Debug.Log(unit);
-        if (unit.gameObject.GetComponent<NetworkIdentity>() != null)
-        {
-            GameObject.FindObjectOfType<Spawner>().Spawn(unit.gameObject, unit.gameObject.transform.position);
-            //NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
-        }
-        return unit;
+        return InitUnit(prefab, cell);
     }
 
     Unit InstantiateUnit(GameObject prefab, List<Cell> cells)
@@ -116,18 +92,23 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
         var c = GetRandomCloseFreeCell(cells);
         // random if the search for a cell close by failed to complete in time
         if (c == null) return InstantiateUnit(prefab);
+        return InitUnit(prefab, c);
+    }
+
+    Unit InitUnit(GameObject prefab, Cell cell, int i = -1)
+    {
         GameUnit unit = Instantiate(prefab).GetComponent<GameUnit>();
-        c.IsTaken = true;
-        unit.Cell = c;
-        unit.gameObject.transform.position = c.transform.position;
-        unit.Initialize();
+        cell.IsTaken = true;
+        unit.Cell = cell;
+        unit.gameObject.transform.position = cell.transform.position;
         unit.gameObject.transform.parent = UnitsParent;
-        //Debug.Log(unit);
+        if (i != -1) unit.CellNumber = i;
         if (unit.gameObject.GetComponent<NetworkIdentity>() != null)
         {
             GameObject.FindObjectOfType<Spawner>().Spawn(unit.gameObject, unit.gameObject.transform.position);
-           // NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
+            //NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
         }
+        else unit.Initialize();
         return unit;
     }
 
