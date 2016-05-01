@@ -10,11 +10,16 @@ using System;
 /// </summary>
 public class CellGridNet : NetworkBehaviour
 {
+    [SyncEvent]
     public event EventHandler GameStarted;
+    [SyncEvent]
     public event EventHandler GameEnded;
+    [SyncEvent]
     public event EventHandler TurnEnded;
     
+    [SyncVar]
     private CellGridState _cellGridState;//The grid delegates some of its behaviours to cellGridState object.
+    [SyncVar]
     public CellGridState CellGridState
     {
         private get
@@ -30,19 +35,25 @@ public class CellGridNet : NetworkBehaviour
         }
     }
 
+    [SyncVar]
     public int NumberOfPlayers { get; private set; }
 
+    [SyncVar]
     public Player CurrentPlayer
     {
         get { return Players.Find(p => p.PlayerNumber.Equals(CurrentPlayerNumber)); }
     }
+    [SyncVar]
     public int CurrentPlayerNumber { get; private set; }
 
     public Transform PlayersParent;
 
+    [SyncVar]
     public List<Player> Players { get; private set; }
-    public List<Cell> Cells { get; private set; }
-    public List<Unit> Units { get; private set; }
+    [SyncVar]
+    public List<CellNet> Cells { get; private set; }
+    [SyncVar]
+    public List<UnitNet> Units { get; private set; }
 
     void Start()
     {
@@ -58,10 +69,10 @@ public class CellGridNet : NetworkBehaviour
         NumberOfPlayers = Players.Count;
         CurrentPlayerNumber = Players.Min(p => p.PlayerNumber);
 
-        Cells = new List<Cell>();
+        Cells = new List<CellNet>();
         for (int i = 0; i < transform.childCount; i++)
         {
-            var cell = transform.GetChild(i).gameObject.GetComponent<Cell>();
+            var cell = transform.GetChild(i).gameObject.GetComponent<CellNet>();
             if (cell != null)
                 Cells.Add(cell);
             else
@@ -94,24 +105,24 @@ public class CellGridNet : NetworkBehaviour
 
     private void OnCellDehighlighted(object sender, EventArgs e)
     {
-        CellGridState.OnCellDeselected(sender as Cell);
+        CellGridState.OnCellDeselected(sender as CellNet);
     }
     private void OnCellHighlighted(object sender, EventArgs e)
     {
-        CellGridState.OnCellSelected(sender as Cell);
+        CellGridState.OnCellSelected(sender as CellNet);
     } 
     private void OnCellClicked(object sender, EventArgs e)
     {
-        CellGridState.OnCellClicked(sender as Cell);
+        CellGridState.OnCellClicked(sender as CellNet);
     }
 
     private void OnUnitClicked(object sender, EventArgs e)
     {
-        CellGridState.OnUnitClicked(sender as Unit);
+        CellGridState.OnUnitClicked(sender as UnitNet);
     }
     private void OnUnitDestroyed(object sender, AttackEventArgs e)
     {
-        Units.Remove(sender as Unit);
+        Units.Remove(sender as UnitNet);
         var totalPlayersAlive = Units.Select(u => u.PlayerNumber).Distinct().ToList(); //Checking if the game is over
         if (totalPlayersAlive.Count == 1)
         {
