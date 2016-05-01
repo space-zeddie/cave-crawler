@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Implementation of hexagonal cell.
 /// </summary>
-public abstract class Hexagon : Cell
+public abstract class HexagonNet : CellNet
 {
     /// <summary>
     /// HexGrids comes in four types regarding the layout. This distinction is necessary to convert cube coordinates to offset and vice versa.
@@ -12,7 +13,9 @@ public abstract class Hexagon : Cell
     [HideInInspector]
     public HexGridType HexGridType;
 
+    [SyncVar]
     public int i = -1;
+    [SyncVar]
     public int j = -1;
 
     /// <summary>
@@ -70,15 +73,15 @@ public abstract class Hexagon : Cell
         new Vector3(+1, -1, 0), new Vector3(+1, 0, -1), new Vector3(0, +1, -1),
         new Vector3(-1, +1, 0), new Vector3(-1, 0, +1), new Vector3(0, -1, +1)};
 
-    public override int GetDistance(Cell other)
+    public override int GetDistance(CellNet other)
     {
-        var _other = other as Hexagon;
+        var _other = other as HexagonNet;
         int distance = (int)(Mathf.Abs(CubeCoord.x - _other.CubeCoord.x) + Mathf.Abs(CubeCoord.y - _other.CubeCoord.y) + Mathf.Abs(CubeCoord.z - _other.CubeCoord.z)) / 2;
         return distance;
     }//Distance is given using Manhattan Norm.
-    public override List<Cell> GetNeighbours(List<Cell> cells)
+    public override List<CellNet> GetNeighbours(List<CellNet> cells)
     {
-        List<Cell> ret = new List<Cell>();
+        List<CellNet> ret = new List<CellNet>();
         foreach (var direction in _directions)
         {
             var neighbour = cells.Find(c => c.OffsetCoord == CubeToOffsetCoords(CubeCoord + direction));
@@ -88,11 +91,3 @@ public abstract class Hexagon : Cell
         return ret;
     }//Each square cell has six neighbors, which positions on grid relative to the cell are stored in _directions constant.
 }
-
-public enum HexGridType
-{
-    even_q,
-    odd_q,
-    even_r,
-    odd_r
-};
