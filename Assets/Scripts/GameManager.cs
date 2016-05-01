@@ -10,12 +10,14 @@ public class GameManager : Singleton<GameManager>
     private int currentScene;
     private HostData[] hostList;
     private int totalHosts;
+    private int connectedTo;
 
     void Start()
     {
         currentScene = SceneManager.GetActiveScene().buildIndex;
         hostList = new HostData[10];
         totalHosts = 0;
+        connectedTo = -1;
     }
 
     void Awake()
@@ -76,9 +78,7 @@ public class GameManager : Singleton<GameManager>
 
     public void LoadClientMultiplayer()
     {
-
         LoadScene(4);
-       // while (SceneManager.GetActiveScene().buildIndex != 4) { }
        /* int server = -1;
         for (server = 0; server < totalHosts; ++server)
             if (hostList[server].connectedPlayers < hostList[server].playerLimit)
@@ -90,13 +90,13 @@ public class GameManager : Singleton<GameManager>
        // client.Connect(hostList[server].ip[0], hostList[server].port);
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
         nm.client = client;
-        nm.StartClient();
+       // nm.StartClient();
     }
 
     public void OnConnected(NetworkMessage netMsg)
     {
         Debug.Log("Connected to server");
-        Debug.Log(NetworkServer.active + ": " + NetworkServer.listenPort);
+        // Debug.Log(NetworkServer.active + ": " + NetworkServer.listenPort);
     }
 
     public void LoadHostChoice()
