@@ -106,7 +106,7 @@ public class GameUnit : Unit
             this.UnSelect();
             return;
         }
-        GameUnit unit = UnitParentScript.Instance.SelectedUnit();
+        GameUnit unit = UnitParentScript.Instance.SelectedUnit().GetComponent<GameUnit>();
         if (unit != null) unit.UnSelect();
         UnitParentScript.Instance.SetSelectedUnit(this);
         //this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);

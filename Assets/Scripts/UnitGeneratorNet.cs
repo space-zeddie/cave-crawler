@@ -47,14 +47,14 @@ public class UnitGeneratorNet : Singleton<UnitGenerator>, IUnitGeneratorNet
 
             for (int i = 1; i < player.gameUnits.GetLength(0); ++i)
             {
-                ret.Add(InstantiateUnit(player.gameUnits[i].gameObject, ret[i - 1].gameObject.GetComponent<GameUnit>().Cell.GetNeighbours(CellGrid.Cells)));
+                ret.Add(InstantiateUnit(player.gameUnits[i].gameObject, ret[i - 1].gameObject.GetComponent<GameUnitNet>().Cell.GetNeighbours(CellGrid.Cells)));
             }
         }
 
         else
         {
             foreach (GameObject gu in player.gameUnits)
-                ret.Add(InstantiateUnit(gu, (gu.GetComponent<GameUnit>().Cell as Hexagon).i, (gu.GetComponent<GameUnit>().Cell as Hexagon).j));
+                ret.Add(InstantiateUnit(gu, (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).i, (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).j));
         }
 
         CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
@@ -97,19 +97,19 @@ public class UnitGeneratorNet : Singleton<UnitGenerator>, IUnitGeneratorNet
 
     UnitNet InitUnit(GameObject prefab, CellNet cell, int i = -1)
     {
-        GameObject unit;
+        GameObject unit = null;
         if (prefab.GetComponent<NetworkIdentity>() != null)
         {
-            unit = GameObject.FindObjectOfType<Spawner>().Spawn(prefab, prefab.transform.position);
+            if (NetworkServer.active) unit = GameObject.FindObjectOfType<Spawner>().Spawn(prefab, prefab.transform.position);
             //NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
         }
         else unit = Instantiate(prefab);
         cell.IsTaken = true;
-        unit.GetComponent<GameUnit>().Cell = cell;
+        unit.GetComponent<GameUnitNet>().Cell = cell;
         unit.transform.position = cell.transform.position;
         unit.transform.parent = UnitsParent;
-        if (i != -1) unit.GetComponent<GameUnit>().CellNumber = i;
-        unit.GetComponent<GameUnit>().Initialize();
+        if (i != -1) unit.GetComponent<GameUnitNet>().CellNumber = i;
+        unit.GetComponent<GameUnitNet>().Initialize();
         return unit.GetComponent<UnitNet>();
     }
 

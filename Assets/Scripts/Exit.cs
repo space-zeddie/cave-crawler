@@ -10,5 +10,11 @@ public class Exit : Collectable
         unit.enabled = false;
         unit.gameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
+
+    public void VanishUnit(GameUnitNet unit)
+    {
+        unit.enabled = false;
+        unit.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+    }
 	
 }

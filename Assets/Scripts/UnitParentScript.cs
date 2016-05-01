@@ -3,20 +3,26 @@ using System.Collections;
 
 public class UnitParentScript : Singleton<UnitParentScript>
 {
-    public GameObject hexGrid;
     bool hasSelectedUnits = false;
     GameUnit selectedUnit = null;
+    GameUnitNet selectedUnitNet = null;
 
     public void SetSelectedUnit(GameUnit unit)
     {
         hasSelectedUnits = true;
         selectedUnit = unit;
     }
+    public void SetSelectedUnit(GameUnitNet unit)
+    {
+        hasSelectedUnits = true;
+        selectedUnitNet = unit;
+    }
 
     public void ClearSelectedUnit()
     {
         hasSelectedUnits = false;
         selectedUnit = null;
+        selectedUnitNet = null;
     }
 
     public bool HasSelectedUnits()
@@ -24,8 +30,9 @@ public class UnitParentScript : Singleton<UnitParentScript>
         return hasSelectedUnits;
     }
 
-    public GameUnit SelectedUnit()
+    public GameObject SelectedUnit()
     {
-        return selectedUnit;
+        if (selectedUnit != null) return selectedUnit.gameObject;
+        else return selectedUnitNet.gameObject;
     }
 }

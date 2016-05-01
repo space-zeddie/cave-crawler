@@ -106,7 +106,7 @@ public class GameUnitNet : UnitNet
             this.UnSelect();
             return;
         }
-        GameUnitNet unit = UnitParentScript.Instance.SelectedUnit();
+        GameUnitNet unit = UnitParentScript.Instance.SelectedUnit().GetComponent<GameUnitNet>();
         if (unit != null) unit.UnSelect();
         UnitParentScript.Instance.SetSelectedUnit(this);
         //this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
@@ -115,10 +115,10 @@ public class GameUnitNet : UnitNet
         foreach (CellNet cell in available)
         {
             (cell as HexagonNet).MarkAsReachable();
-            if (cell is FloorCell)
-                (cell as FloorCell).moveable = this;
-            else if (cell is WallCell && this.canShoot)
-                (cell as WallCell).moveable = this;
+            if (cell is FloorCellNet)
+                (cell as FloorCellNet).moveable = this;
+            else if (cell is WallCellNet && this.canShoot)
+                (cell as WallCellNet).moveable = this;
         }
     }
 
@@ -209,8 +209,8 @@ public class GameUnitNet : UnitNet
         {
             foreach (CellNet cell in available)
             {
-                if (cell is FloorCell) (cell as FloorCell).UnReach();
-                else if (cell is WallCell) (cell as WallCell).UnReach();
+                if (cell is FloorCellNet) (cell as FloorCellNet).UnReach();
+                else if (cell is WallCellNet) (cell as WallCellNet).UnReach();
             }
 
             available = new List<CellNet>();
