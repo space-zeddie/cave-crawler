@@ -15,7 +15,7 @@ public abstract class UnitNet : NetworkBehaviour
     /// UnitClicked event is invoked when user clicks the unit. It requires a collider on the unit game object to work.
     /// </summary>
     [SerializeField]
-    [SyncVar]
+    [SyncEvent]
     public event EventHandler UnitClicked;
     /// <summary>
     /// UnitSelected event is invoked when user clicks on unit that belongs to him. It requires a collider on the unit game object to work.
@@ -37,16 +37,15 @@ public abstract class UnitNet : NetworkBehaviour
     public event EventHandler UnitDehighlighted;
     [SerializeField]
     [SyncEvent]
-    public event EventHandler<AttackEventArgs> UnitAttacked;
+    public event EventHandler<AttackEventArgsNet> UnitAttacked;
     [SerializeField]
     [SyncEvent]
-    public event EventHandler<AttackEventArgs> UnitDestroyed;
+    public event EventHandler<AttackEventArgsNet> UnitDestroyed;
     [SerializeField]
     [SyncEvent]
-    public event EventHandler<MovementEventArgs> UnitMoved;
+    public event EventHandler<MovementEventArgsNet> UnitMoved;
 
     [SerializeField]
-    [SyncEvent]
     public UnitState UnitState { get; set; }
 
     public void SetState(UnitState state)
@@ -55,11 +54,9 @@ public abstract class UnitNet : NetworkBehaviour
     }
 
     [SerializeField]
-    [SyncVar]
     public List<Buff> Buffs { get; private set; }
 
     [SerializeField]
-    [SyncVar]
     public int TotalHitPoints { get; private set; }
     [SerializeField]
     [SyncVar]
@@ -72,7 +69,6 @@ public abstract class UnitNet : NetworkBehaviour
     /// Cell that the unit is currently occupying.
     /// </summary>
     [SerializeField]
-    [SyncVar]
     public CellNet Cell { get; set; }
 
     [SerializeField]
@@ -117,7 +113,6 @@ public abstract class UnitNet : NetworkBehaviour
     /// Indicates if movement animation is playing.
     /// </summary>
    [SerializeField]
-   [SyncVar]
     public bool isMoving { get; set; }
 
     private static IPathfinding _pathfinder = new AStarPathfinding();
@@ -393,7 +388,6 @@ public abstract class UnitNet : NetworkBehaviour
 }
 
 [Serializable]
-[SyncVar]
 public class MovementEventArgsNet : EventArgs
 {
     public CellNet OriginCell;
@@ -408,7 +402,6 @@ public class MovementEventArgsNet : EventArgs
     }
 }
 [Serializable]
-[SyncVar]
 public class AttackEventArgsNet : EventArgs
 {
     public UnitNet Attacker;

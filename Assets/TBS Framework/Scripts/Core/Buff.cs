@@ -12,10 +12,12 @@ public interface Buff
     /// Describes how the unit should be upgraded.
     /// </summary>
     void Apply(Unit unit);
+    void Apply(UnitNet unit);
     /// <summary>
     /// Returns units stats to normal.
     /// </summary>
     void Undo(Unit unit);
+    void Undo(UnitNet unit);
 
     /// <summary>
     /// Returns deep copy of the object.

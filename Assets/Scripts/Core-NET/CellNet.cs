@@ -9,7 +9,6 @@ public abstract class CellNet : NetworkBehaviour, IGraphNode
     [SerializeField]
     [SyncVar]
     private Vector2 _offsetCoord;
-    [SyncVar]
     public Vector2 OffsetCoord { get { return _offsetCoord; } set { _offsetCoord = value; } }
 
     /// <summary>

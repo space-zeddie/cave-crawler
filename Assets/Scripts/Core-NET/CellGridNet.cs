@@ -19,7 +19,7 @@ public class CellGridNet : NetworkBehaviour
     
     [SyncVar]
     private CellGridState _cellGridState;//The grid delegates some of its behaviours to cellGridState object.
-    [SyncVar]
+
     public CellGridState CellGridState
     {
         private get
@@ -35,24 +35,23 @@ public class CellGridNet : NetworkBehaviour
         }
     }
 
-    [SyncVar]
-    public int NumberOfPlayers { get; private set; }
 
-    [SyncVar]
+    public int NumberOfPlayers { get; private set; }
+    
     public Player CurrentPlayer
     {
         get { return Players.Find(p => p.PlayerNumber.Equals(CurrentPlayerNumber)); }
     }
-    [SyncVar]
+    
     public int CurrentPlayerNumber { get; private set; }
 
     public Transform PlayersParent;
 
-    [SyncVar]
+    
     public List<Player> Players { get; private set; }
-    [SyncVar]
+    
     public List<CellNet> Cells { get; private set; }
-    [SyncVar]
+    
     public List<UnitNet> Units { get; private set; }
 
     void Start()
@@ -120,7 +119,7 @@ public class CellGridNet : NetworkBehaviour
     {
         CellGridState.OnUnitClicked(sender as UnitNet);
     }
-    private void OnUnitDestroyed(object sender, AttackEventArgs e)
+    private void OnUnitDestroyed(object sender, AttackEventArgsNet e)
     {
         Units.Remove(sender as UnitNet);
         var totalPlayersAlive = Units.Select(u => u.PlayerNumber).Distinct().ToList(); //Checking if the game is over

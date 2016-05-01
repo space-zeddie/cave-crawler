@@ -3,6 +3,10 @@
     public UnitStateMarkedAsFinished(Unit unit) : base(unit)
     {      
     }
+    public UnitStateMarkedAsFinished(UnitNet unit)
+        : base(unit)
+    {
+    }
 
     public override void Apply()
     {

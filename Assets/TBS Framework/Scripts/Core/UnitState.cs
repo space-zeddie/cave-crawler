@@ -5,10 +5,18 @@
 public abstract class UnitState
 {
     protected Unit _unit;
+    protected UnitNet _unitNet;
+    private bool network;
 
     public UnitState(Unit unit)
     {
         _unit = unit;
+        network = false;
+    }
+    public UnitState(UnitNet unit)
+    {
+        _unitNet = unit;
+        network = true;
     }
 
     public abstract void Apply();

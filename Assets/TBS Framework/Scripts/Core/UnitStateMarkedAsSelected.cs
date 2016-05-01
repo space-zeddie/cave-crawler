@@ -3,6 +3,11 @@
     public UnitStateMarkedAsSelected(Unit unit) : base(unit)
     {      
     }
+    public UnitStateMarkedAsSelected(UnitNet unit)
+        : base(unit)
+    {
+    }
+
 
     public override void Apply()
     {

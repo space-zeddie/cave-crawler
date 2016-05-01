@@ -3,6 +3,10 @@
     public UnitStateNormal(Unit unit) : base(unit)
     {       
     }
+    public UnitStateNormal(UnitNet unit)
+        : base(unit)
+    {
+    }
 
     public override void Apply()
     {
