@@ -33,6 +33,7 @@ public class UnitParentScript : Singleton<UnitParentScript>
     public GameObject SelectedUnit()
     {
         if (selectedUnit != null) return selectedUnit.gameObject;
-        else return selectedUnitNet.gameObject;
+        else if (selectedUnitNet != null) return selectedUnitNet.gameObject;
+        else return null;
     }
 }

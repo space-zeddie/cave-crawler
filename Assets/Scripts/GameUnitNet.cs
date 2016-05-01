@@ -106,8 +106,8 @@ public class GameUnitNet : UnitNet
             this.UnSelect();
             return;
         }
-        GameUnitNet unit = UnitParentScript.Instance.SelectedUnit().GetComponent<GameUnitNet>();
-        if (unit != null) unit.UnSelect();
+        GameObject unit_go = UnitParentScript.Instance.SelectedUnit();
+        if (unit_go != null) unit_go.GetComponent<GameUnitNet>().UnSelect();
         UnitParentScript.Instance.SetSelectedUnit(this);
         //this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
         Debug.Log(available);
