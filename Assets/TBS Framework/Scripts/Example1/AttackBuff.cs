@@ -13,8 +13,17 @@
     {
         unit.AttackFactor += _factor;
     }
+    public void Apply(UnitNet unit)
+    {
+        unit.AttackFactor += _factor;
+    }
+
 
     public void Undo(Unit unit)
+    {
+        unit.AttackFactor -= _factor;
+    }
+    public void Undo(UnitNet unit)
     {
         unit.AttackFactor -= _factor;
     }

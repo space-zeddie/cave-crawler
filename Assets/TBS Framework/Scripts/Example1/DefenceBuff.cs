@@ -13,10 +13,17 @@
     {
         unit.DefenceFactor += _factor;
     }
-
+    public void Undo(UnitNet unit)
+    {
+        unit.DefenceFactor -= _factor;
+    }
     public void Undo(Unit unit)
     {
         unit.DefenceFactor -= _factor;
+    }
+    public void Apply(UnitNet unit)
+    {
+        unit.DefenceFactor += _factor;
     }
 
     public Buff Clone()

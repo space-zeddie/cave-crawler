@@ -25,14 +25,11 @@ public abstract class CellNet : NetworkBehaviour, IGraphNode
     /// <summary>
     /// CellClicked event is invoked when user clicks the unit. It requires a collider on the cell game object to work.
     /// </summary>
-    [SyncEvent]
     public event EventHandler CellClicked;
     /// <summary>
     /// CellHighlighed event is invoked when user moves cursor over the cell. It requires a collider on the cell game object to work.
     /// </summary>
-    [SyncEvent]
     public event EventHandler CellHighlighted;
-    [SyncEvent]
     public event EventHandler CellDehighlighted;
 
     protected virtual void OnMouseEnter()

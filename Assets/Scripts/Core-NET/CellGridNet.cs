@@ -10,11 +10,8 @@ using System;
 /// </summary>
 public class CellGridNet : NetworkBehaviour
 {
-    [SyncEvent]
     public event EventHandler GameStarted;
-    [SyncEvent]
     public event EventHandler GameEnded;
-    [SyncEvent]
     public event EventHandler TurnEnded;
     
     [SyncVar]
@@ -85,7 +82,7 @@ public class CellGridNet : NetworkBehaviour
             cell.CellDehighlighted += OnCellDehighlighted;
         }
              
-        var unitGenerator = GetComponent<IUnitGenerator>();
+        var unitGenerator = GetComponent<IUnitGeneratorNet>();
         if (unitGenerator != null)
         {
             Units = unitGenerator.SpawnUnits(Cells);

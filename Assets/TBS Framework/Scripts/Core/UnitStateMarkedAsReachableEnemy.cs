@@ -4,6 +4,12 @@
     {        
     }
 
+    public UnitStateMarkedAsReachableEnemy(UnitNet unit)
+        : base(unit)
+    {
+    }
+
+
     public override void Apply()
     {
         _unit.MarkAsReachableEnemy();

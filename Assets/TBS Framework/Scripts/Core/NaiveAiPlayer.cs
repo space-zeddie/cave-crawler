@@ -16,6 +16,11 @@ public class NaiveAiPlayer : Player
         _rnd = new System.Random();
     }
 
+    public override void Play(CellGridNet cellGrid)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void Play(CellGrid cellGrid)
     {
         cellGrid.CellGridState = new CellGridStateAiTurn(cellGrid);

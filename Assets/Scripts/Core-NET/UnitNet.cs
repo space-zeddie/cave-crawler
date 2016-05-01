@@ -15,34 +15,26 @@ public abstract class UnitNet : NetworkBehaviour
     /// UnitClicked event is invoked when user clicks the unit. It requires a collider on the unit game object to work.
     /// </summary>
     [SerializeField]
-    [SyncEvent]
     public event EventHandler UnitClicked;
     /// <summary>
     /// UnitSelected event is invoked when user clicks on unit that belongs to him. It requires a collider on the unit game object to work.
     /// </summary>
     [SerializeField]
-    [SyncEvent]
     public event EventHandler UnitSelected;
     [SerializeField]
-    [SyncEvent]
     public event EventHandler UnitDeselected;
     /// <summary>
     /// UnitHighlighted event is invoked when user moves cursor over the unit. It requires a collider on the unit game object to work.
     /// </summary>
     [SerializeField]
-    [SyncEvent]
     public event EventHandler UnitHighlighted;
     [SerializeField]
-    [SyncEvent]
     public event EventHandler UnitDehighlighted;
     [SerializeField]
-    [SyncEvent]
     public event EventHandler<AttackEventArgsNet> UnitAttacked;
     [SerializeField]
-    [SyncEvent]
     public event EventHandler<AttackEventArgsNet> UnitDestroyed;
     [SerializeField]
-    [SyncEvent]
     public event EventHandler<MovementEventArgsNet> UnitMoved;
 
     [SerializeField]

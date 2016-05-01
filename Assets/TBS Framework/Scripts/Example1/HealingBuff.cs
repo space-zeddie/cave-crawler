@@ -15,10 +15,19 @@ class HealingBuff : Buff
     {
         AddHitPoints(unit, _healingFactor);
     }
+    public void Apply(UnitNet unit)
+    {
+        AddHitPoints(unit, _healingFactor);
+    }
     public void Undo(Unit unit)
     {
         //Note that healing buff has empty Undo method implementation.
     }
+    public void Undo(UnitNet unit)
+    {
+        //Note that healing buff has empty Undo method implementation.
+    }
+
 
     public Buff Clone()
     {
@@ -26,6 +35,10 @@ class HealingBuff : Buff
     }
 
     private void AddHitPoints(Unit unit, int amount)
+    {
+        unit.HitPoints = Mathf.Clamp(unit.HitPoints + amount, 0, unit.TotalHitPoints);
+    }
+    private void AddHitPoints(UnitNet unit, int amount)
     {
         unit.HitPoints = Mathf.Clamp(unit.HitPoints + amount, 0, unit.TotalHitPoints);
     }

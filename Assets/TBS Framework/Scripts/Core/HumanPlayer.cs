@@ -62,6 +62,10 @@ public class HumanPlayer : Player
     {
         cellGrid.CellGridState = new CellGridStateWaitingForInput(cellGrid);
     }
+    public override void Play(CellGridNet cellGrid)
+    {
+        cellGrid.CellGridState = new CellGridStateWaitingForInput(cellGrid);
+    }
 
     public void SaveStats()
     {
