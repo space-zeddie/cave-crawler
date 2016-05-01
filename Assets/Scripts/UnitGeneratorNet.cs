@@ -9,8 +9,8 @@ public class UnitGeneratorNet : Singleton<UnitGenerator>, IUnitGeneratorNet
 {
     public Transform UnitsParent;
     public Transform CellsParent;
-    public CellGrid CellGrid;
-    public HexGridCellularAutomata Hex;
+    public CellGridNet CellGrid;
+    public HexGCANetwork Hex;
     bool instantiated = false;
 
     public HumanPlayer player;
@@ -26,7 +26,7 @@ public class UnitGeneratorNet : Singleton<UnitGenerator>, IUnitGeneratorNet
             yield return 0;
         if (!instantiated)
         {
-            SpawnUnits(new List<Cell>(CellGrid.gameObject.transform.GetComponentsInChildren<Cell>()));
+            SpawnUnits(new List<CellNet>(CellGrid.gameObject.transform.GetComponentsInChildren<CellNet>()));
         }
 
     }
@@ -34,11 +34,11 @@ public class UnitGeneratorNet : Singleton<UnitGenerator>, IUnitGeneratorNet
     /// <summary>
     /// Returns units that are already children of UnitsParent object.
     /// </summary>
-    public List<Unit> SpawnUnits(List<Cell> cells)
+    public List<UnitNet> SpawnUnits(List<CellNet> cells)
     {
         if (instantiated) return null;
         instantiated = true;
-        List<Unit> ret = new List<Unit>();
+        List<UnitNet> ret = new List<UnitNet>();
         player.LoadFromGlobal();
 
         if (StatManager.Instance.IsNewCave)
@@ -61,24 +61,24 @@ public class UnitGeneratorNet : Singleton<UnitGenerator>, IUnitGeneratorNet
         return ret;
     }
 
-    Unit InstantiateUnit(GameObject prefab)
+    UnitNet InstantiateUnit(GameObject prefab)
     {
         var cells = CellGrid.Cells;
         int[,] map = Hex.GetMap();
         System.Random rnd = new System.Random();
         int i = rnd.Next(Hex.width * Hex.height);
-        var cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<Cell>();
+        var cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<CellNet>();
 
         while (cell == null || cell.IsTaken)
         {
             i = rnd.Next(Hex.width * Hex.height);
-            cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<Cell>();
+            cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<CellNet>();
         }
 
         return InitUnit(prefab, cell, i);
     }
 
-    Unit InstantiateUnit(GameObject prefab, int i, int j)
+    UnitNet InstantiateUnit(GameObject prefab, int i, int j)
     {
         var cell = Hex.cells[i, j];
         if (cell == null || cell.IsTaken)
@@ -87,7 +87,7 @@ public class UnitGeneratorNet : Singleton<UnitGenerator>, IUnitGeneratorNet
         return InitUnit(prefab, cell);
     }
 
-    Unit InstantiateUnit(GameObject prefab, List<Cell> cells)
+    UnitNet InstantiateUnit(GameObject prefab, List<CellNet> cells)
     {
         var c = GetRandomCloseFreeCell(cells);
         // random if the search for a cell close by failed to complete in time
@@ -95,7 +95,7 @@ public class UnitGeneratorNet : Singleton<UnitGenerator>, IUnitGeneratorNet
         return InitUnit(prefab, c);
     }
 
-    Unit InitUnit(GameObject prefab, Cell cell, int i = -1)
+    UnitNet InitUnit(GameObject prefab, CellNet cell, int i = -1)
     {
         GameObject unit;
         if (prefab.GetComponent<NetworkIdentity>() != null)
@@ -110,15 +110,15 @@ public class UnitGeneratorNet : Singleton<UnitGenerator>, IUnitGeneratorNet
         unit.transform.parent = UnitsParent;
         if (i != -1) unit.GetComponent<GameUnit>().CellNumber = i;
         unit.GetComponent<GameUnit>().Initialize();
-        return unit.GetComponent<GameUnit>();
+        return unit.GetComponent<UnitNet>();
     }
 
-    Cell GetRandomCloseFreeCell(List<Cell> cells, int iteration = 0)
+    CellNet GetRandomCloseFreeCell(List<CellNet> cells, int iteration = 0)
     {
         System.Random rnd = new System.Random();
         int i = rnd.Next(cells.Count);
-        Cell c = null;
-        foreach (Cell cell in cells)
+        CellNet c = null;
+        foreach (CellNet cell in cells)
         {
             if (cell != null && !cell.IsTaken)
             {
@@ -133,7 +133,7 @@ public class UnitGeneratorNet : Singleton<UnitGenerator>, IUnitGeneratorNet
         return c;
     }
 
-    List<Unit> ManualSpawn(List<Cell> cells)
+   /* List<Unit> ManualSpawn(List<Cell> cells)
     {
         List<Unit> ret = new List<Unit>();
         for (int i = 0; i < UnitsParent.childCount; i++)
@@ -162,7 +162,7 @@ public class UnitGeneratorNet : Singleton<UnitGenerator>, IUnitGeneratorNet
 
         }
         return ret;
-    }
+    }*/
 
     public void SnapToGrid()
     {
