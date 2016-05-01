@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
-public interface IUnitGenerator
+public interface IUnitGeneratorNet
 {
-     List<Unit> SpawnUnits(List<Cell> cells);
+     List<UnitNet> SpawnUnits(List<CellNet> cells);
 }
 
