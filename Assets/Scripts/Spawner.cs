@@ -30,7 +30,7 @@ public class Spawner : NetworkBehaviour
         GameObject hexgrid = (GameObject)Instantiate(hex);
         // player.GetComponent<HumanPlayer>().PlayerNumber = GameObject.FindObjectOfType<PlayersParent>().gameObject.transform.childCount; 
         NetworkServer.Spawn(hexgrid);
-        GUIControllerScript.Instance.Init();
+        GUIControllerNet.Instance.Init();
     }
 
     public GameObject Spawn(GameObject prefab, Vector3 position)

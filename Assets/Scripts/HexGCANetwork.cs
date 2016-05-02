@@ -9,10 +9,13 @@ public class HexGCANetwork : ICellGridGeneratorNet
 {
     public GameObject HexagonFreePrefab;
     public GameObject HexagonWallPrefab;
+    [SyncVar]
     public int height;
+    [SyncVar]
     public int width;
     public bool useRandomSeed;
     public bool adjustFillPercent = true;
+    [SyncVar]
     public string seed;
     [Range(0, 100)]
     public int randomFillPercent;
@@ -20,13 +23,37 @@ public class HexGCANetwork : ICellGridGeneratorNet
     public CellNet[,] cells;
     HexGridType hexGridType;
 
-    // public Camera carrierCamera;
+    [SyncVar]
+    bool mapped = false;
+    SyncListInt _syncMap = new SyncListInt();
 
     void Awake()
     {
-        LoadGrid(true);
+        NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
+        if (PlayersParent.Instance != null)
+            this.gameObject.GetComponent<CellGrid>().PlayersParent = PlayersParent.Instance.gameObject.transform;
+        if (UnitParentScript.Instance != null)
+            this.gameObject.GetComponent<UnitGeneratorNet>().UnitsParent = UnitParentScript.Instance.gameObject.transform;
+        HumanPlayer thisPlayer = null;
         for (int i = 0; i < PlayersParent.Instance.gameObject.transform.childCount; ++i)
-            PlayersParent.Instance.gameObject.transform.GetChild(i).gameObject.SetActive(true);
+        {
+            GameObject p = PlayersParent.Instance.gameObject.transform.GetChild(i).gameObject;
+            if (p.GetComponent<NetworkIdentity>().isLocalPlayer || p.GetComponent<HumanPlayer>().PlayerNumber == 0)
+                thisPlayer = p.GetComponent<HumanPlayer>();
+        }
+        if (thisPlayer != null)
+            this.gameObject.GetComponent<UnitGeneratorNet>().player = thisPlayer;
+        GameObject obst = GameObject.FindGameObjectWithTag("ObstacleParent");
+        GameObject maincam = GameObject.FindGameObjectWithTag("MainCamera");
+        if (obst != null)
+            this.gameObject.GetComponent<ObstacleGeneratorNet>().ObstaclesParent = obst.transform;
+        if (maincam != null)
+            this.gameObject.GetComponent<UnitGeneratorNet>().CarrierCamera = maincam.GetComponent<Camera>();
+        if (nm.isNetworkActive) Debug.Log("Is in Network");
+        if (!mapped) GenerateMap();
+        UpdateSyncedMap();
+        LoadGrid(false);
+        GUIControllerNet.Instance.CellGrid = this.gameObject.GetComponent<CellGridNet>();
     }
 
     protected void LoadGrid(bool gridFromLocalSaveFile)
@@ -57,9 +84,16 @@ public class HexGCANetwork : ICellGridGeneratorNet
         StartCoroutine(UnitGeneratorNet.Instance.SpawnUnits());
     }
 
-    public void SaveGrid()
+    public void UpdateSyncedMap()
     {
-
+        _syncMap = new SyncListInt();
+        for (int i = 0; i < height; ++i)
+        {
+            for (int j = 0; j < width; ++j)
+            {
+                _syncMap[i * height + j] = map[i, j];
+            }
+        }
     }
 
     public void ClearGrid()
@@ -154,7 +188,7 @@ public class HexGCANetwork : ICellGridGeneratorNet
 
     void RandomFillMap()
     {
-        if (useRandomSeed)
+        if (useRandomSeed && NetworkServer.active)
             seed = Time.time.ToString();
 
         System.Random pseudoRandom = new System.Random(seed.GetHashCode());
