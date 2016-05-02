@@ -31,7 +31,7 @@ public class HexGCANetwork : ICellGridGeneratorNet
     {
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
         if (PlayersParent.Instance != null)
-            this.gameObject.GetComponent<CellGrid>().PlayersParent = PlayersParent.Instance.gameObject.transform;
+            this.gameObject.GetComponent<CellGridNet>().PlayersParent = PlayersParent.Instance.gameObject.transform;
         if (UnitParentScript.Instance != null)
             this.gameObject.GetComponent<UnitGeneratorNet>().UnitsParent = UnitParentScript.Instance.gameObject.transform;
         HumanPlayer thisPlayer = null;
