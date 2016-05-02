@@ -83,14 +83,14 @@ public class GameManager : Singleton<GameManager>
         for (server = 0; server < totalHosts; ++server)
             if (hostList[server].connectedPlayers < hostList[server].playerLimit)
                 break;*/
-        NetworkClient client = new NetworkClient();
-        client.RegisterHandler(MsgType.Connect, OnConnected);
-        client.Connect("localhost", 7777);
+       // NetworkClient client = new NetworkClient();
+       // client.RegisterHandler(MsgType.Connect, OnConnected);
+       // client.Connect("localhost", 7777);
         
        // client.Connect(hostList[server].ip[0], hostList[server].port);
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
-        nm.client = client;
-       // nm.StartClient();
+        //nm.client = client;
+        nm.StartClient();
     }
 
     public void OnConnected(NetworkMessage netMsg)

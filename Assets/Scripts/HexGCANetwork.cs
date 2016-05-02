@@ -53,12 +53,12 @@ public class HexGCANetwork : ICellGridGeneratorNet
         if (NetworkServer.active)
         {
             if (!mapped) GenerateMap();
-            UpdateSyncedMap();
+            //UpdateSyncedMap();
             LoadGrid(false);
         }
         else
         {
-            GetMapFromSyncMap();
+           // GetMapFromSyncMap();
             LoadGridForClient();
         }
         GUIControllerNet.Instance.CellGrid = this.gameObject.GetComponent<CellGridNet>();
