@@ -3,20 +3,21 @@ using System.Collections;
 using System;
 
 [Serializable]
-public class Carrier : GameUnit
+public class SentinelNet : GameUnitNet 
 {
-    void Start()
+
+    void Awake()
     {
         TotalMovementPoints = 0;
         TotalActionPoints = 0;
-        AttackRange = 0;
-        AttackFactor = 0;
-        DefenceFactor = 5;
+        HitPoints = 5;
+        AttackRange = 4;
+        AttackFactor = 5;
+        DefenceFactor = 3;
         MovementPoints = 2;
         MovementSpeed = 3;
-        ActionPoints = 3;
-        canShoot = false;
+        ActionPoints = 4;
+        canShoot = true;
         isDeployed = true;
     }
-
 }

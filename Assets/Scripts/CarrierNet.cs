@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 using System;
 
 [Serializable]
-public class Carrier : GameUnit
-{
-    void Start()
+public class CarrierNet : GameUnitNet 
+{  
+    void Awake()
     {
         TotalMovementPoints = 0;
         TotalActionPoints = 0;

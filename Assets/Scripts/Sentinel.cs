@@ -2,7 +2,8 @@
 using System.Collections;
 using System;
 
-public class Sentinel : GameUnit 
+[Serializable]
+public class Sentinel : GameUnit
 {
 
 
