@@ -14,7 +14,6 @@ public class CellGridNet : NetworkBehaviour
     public event EventHandler GameEnded;
     public event EventHandler TurnEnded;
     
-    [SyncVar]
     private CellGridState _cellGridState;//The grid delegates some of its behaviours to cellGridState object.
 
     public CellGridState CellGridState

@@ -10,13 +10,15 @@
 
     public override void Apply()
     {
-        _unit.UnMark();
+        if (_unit != null) _unit.UnMark();
+        if (_unitNet != null) _unitNet.UnMark();
     }
 
     public override void MakeTransition(UnitState state)
     {
         state.Apply();
-        _unit.UnitState = state;
+        if (_unit != null) _unit.UnitState = state;
+        if (_unitNet != null) _unitNet.UnitState = state;
     }
 }
 

@@ -14,13 +14,15 @@
 
     public override void Apply()
     {
-        _unit.MarkAsFriendly();
+        if (_unit != null) _unit.MarkAsFriendly();
+        if (_unitNet != null) _unitNet.MarkAsFriendly();
     }
 
     public override void MakeTransition(UnitState state)
     {
         state.Apply();
-        _unit.UnitState = state;
+        if (_unit != null) _unit.UnitState = state;
+        if (_unitNet != null) _unitNet.UnitState = state;
     }
 }
 

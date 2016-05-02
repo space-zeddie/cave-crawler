@@ -12,13 +12,15 @@
 
     public override void Apply()
     {
-        _unit.MarkAsReachableEnemy();
+        if (_unit != null) _unit.MarkAsReachableEnemy();
+        if (_unitNet != null) _unitNet.MarkAsReachableEnemy();
     }
 
     public override void MakeTransition(UnitState state)
     {
         state.Apply();
-        _unit.UnitState = state;
+        if (_unit != null) _unit.UnitState = state;
+        if (_unitNet != null) _unitNet.UnitState = state;
     }
 }
 

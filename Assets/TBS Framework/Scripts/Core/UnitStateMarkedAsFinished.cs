@@ -10,7 +10,8 @@
 
     public override void Apply()
     {
-        _unit.MarkAsFinished();
+        if (_unit != null) _unit.MarkAsFinished();
+        if (_unitNet != null) _unitNet.MarkAsFinished();
     }
 
     public override void MakeTransition(UnitState state)
@@ -18,7 +19,8 @@
         if(state is UnitStateNormal)
         {
             state.Apply();
-            _unit.UnitState = state;
+            if (_unit != null) _unit.UnitState = state;
+            if (_unitNet != null) _unitNet.UnitState = state;
         }
     }
 }

@@ -25,7 +25,7 @@ public class HexGCANetwork : ICellGridGeneratorNet
 
     [SyncVar]
     bool mapped = false;
-    SyncListInt _syncMap = new SyncListInt();
+   // SyncListInt _syncMap = new SyncListInt();
 
     void Awake()
     {
@@ -51,7 +51,7 @@ public class HexGCANetwork : ICellGridGeneratorNet
             this.gameObject.GetComponent<UnitGeneratorNet>().CarrierCamera = maincam.GetComponent<Camera>();
         if (nm.isNetworkActive) Debug.Log("Is in Network");
         if (!mapped) GenerateMap();
-        UpdateSyncedMap();
+      //  UpdateSyncedMap();
         LoadGrid(false);
         GUIControllerNet.Instance.CellGrid = this.gameObject.GetComponent<CellGridNet>();
     }
@@ -80,13 +80,13 @@ public class HexGCANetwork : ICellGridGeneratorNet
             if (gridFromLocalSaveFile) GenerateMap();
             GenerateGrid();
         }
-        StartCoroutine(ObstacleGeneratorNet.Instance.SpawnObstacles());
-        StartCoroutine(UnitGeneratorNet.Instance.SpawnUnits());
+        StartCoroutine(this.gameObject.GetComponent<ObstacleGeneratorNet>().SpawnObstacles());
+        StartCoroutine(this.gameObject.GetComponent<UnitGeneratorNet>().SpawnUnits());
     }
 
-    public void UpdateSyncedMap()
+   /* public void UpdateSyncedMap()
     {
-        _syncMap = new SyncListInt();
+      //  _syncMap = new SyncListInt(height*width);
         for (int i = 0; i < height; ++i)
         {
             for (int j = 0; j < width; ++j)
@@ -94,7 +94,7 @@ public class HexGCANetwork : ICellGridGeneratorNet
                 _syncMap[i * height + j] = map[i, j];
             }
         }
-    }
+    }*/
 
     public void ClearGrid()
     {

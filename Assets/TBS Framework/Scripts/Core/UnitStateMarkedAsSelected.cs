@@ -11,13 +11,15 @@
 
     public override void Apply()
     {
-        _unit.MarkAsSelected();
+        if (_unit != null) _unit.MarkAsSelected();
+        if (_unitNet != null) _unitNet.MarkAsSelected();
     }
 
     public override void MakeTransition(UnitState state)
     {
         state.Apply();
-        _unit.UnitState = state;
+        if (_unit != null) _unit.UnitState = state;
+        if (_unitNet != null) _unitNet.UnitState = state;
     }
 }
 
