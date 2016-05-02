@@ -25,7 +25,7 @@ public class HexGCANetwork : ICellGridGeneratorNet
 
     [SyncVar]
     bool mapped = false;
-   // SyncListInt _syncMap = new SyncListInt();
+    SyncListInt _syncMap = new SyncListInt();
 
     void Awake()
     {
@@ -50,9 +50,17 @@ public class HexGCANetwork : ICellGridGeneratorNet
         if (maincam != null)
             this.gameObject.GetComponent<UnitGeneratorNet>().CarrierCamera = maincam.GetComponent<Camera>();
         if (nm.isNetworkActive) Debug.Log("Is in Network");
-        if (!mapped) GenerateMap();
-      //  UpdateSyncedMap();
-        LoadGrid(false);
+        if (NetworkServer.active)
+        {
+            if (!mapped) GenerateMap();
+            UpdateSyncedMap();
+            LoadGrid(false);
+        }
+        else
+        {
+            GetMapFromSyncMap();
+            LoadGridForClient();
+        }
         GUIControllerNet.Instance.CellGrid = this.gameObject.GetComponent<CellGridNet>();
     }
 
@@ -84,17 +92,58 @@ public class HexGCANetwork : ICellGridGeneratorNet
         StartCoroutine(this.gameObject.GetComponent<UnitGeneratorNet>().SpawnUnits());
     }
 
-   /* public void UpdateSyncedMap()
+    void LoadGridForClient()
     {
-      //  _syncMap = new SyncListInt(height*width);
-        for (int i = 0; i < height; ++i)
+        StatManager.Instance.LoadData();
+        if (!PlayerState.Instance.Loaded) PlayerState.Instance.LoadFromGlobal();
+       // if (!gridFromLocalSaveFile) StatManager.Instance.IsNewCave = true;
+        //if (StatManager.Instance.IsSceneBeingLoaded && !StatManager.Instance.IsNewCave)
+        //{
+            Debug.Log("Loading map");
+         //   ClearGrid();
+         //   width = PlayerState.Instance.LocalPlayerData.map.GetLength(0);
+         //   height = PlayerState.Instance.LocalPlayerData.map.GetLength(1);
+         //   map = new int[PlayerState.Instance.LocalPlayerData.map.GetLength(0), PlayerState.Instance.LocalPlayerData.map.GetLength(1)];
+         //   for (int i = 0; i < width; ++i)
+         //       for (int j = 0; j < height; ++j)
+          //          map[i, j] = PlayerState.Instance.LocalPlayerData.map[i, j];
+            if (this.gameObject.transform.childCount == 0) { Debug.Log("Redrawing"); GenerateGrid(); }
+       // }
+       // else
+       // {
+       //     ClearGrid();
+       //     Debug.Log("New map");
+       //     if (gridFromLocalSaveFile) GenerateMap();
+            GenerateGrid();
+       // }
+        StartCoroutine(this.gameObject.GetComponent<ObstacleGeneratorNet>().SpawnObstacles());
+        StartCoroutine(this.gameObject.GetComponent<UnitGeneratorNet>().SpawnUnits());
+    }
+
+    public void UpdateSyncedMap()
+    {
+        _syncMap = new SyncListInt();
+        for (int j = 0; j < width; ++j)
         {
-            for (int j = 0; j < width; ++j)
+            for (int i = 0; i < height; ++i)
             {
-                _syncMap[i * height + j] = map[i, j];
+                _syncMap.Add(map[i, j]);
             }
         }
-    }*/
+    }
+
+    public void GetMapFromSyncMap()
+    {
+        map = new int[width, height];
+        for (int x = 0; x < _syncMap.Count; ++x)
+        {
+            int i = x % width;
+            int j = x / width;
+            map[i, j] = _syncMap[x];
+        }
+    }
+
+    
 
     public void ClearGrid()
     {
@@ -152,6 +201,8 @@ public class HexGCANetwork : ICellGridGeneratorNet
         hexagon.GetComponent<HexagonNet>().i = i;
         hexagon.GetComponent<HexagonNet>().j = j;
         hexagon.transform.parent = CellsParent;
+        if (NetworkServer.active) NetworkServer.Spawn(hexagon);
+        else ClientScene.RegisterPrefab(hexagon);
 
         return hexagon;
     }

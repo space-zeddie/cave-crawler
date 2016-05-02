@@ -101,7 +101,7 @@ public class UnitGeneratorNet : Singleton<UnitGenerator>, IUnitGeneratorNet
         if (prefab.GetComponent<NetworkIdentity>() != null)
         {
             if (NetworkServer.active) unit = GameObject.FindObjectOfType<Spawner>().Spawn(prefab, prefab.transform.position);
-            //NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
+            else ClientScene.RegisterPrefab(unit);
         }
         else unit = Instantiate(prefab);
         cell.IsTaken = true;

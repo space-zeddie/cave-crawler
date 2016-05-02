@@ -29,7 +29,8 @@ public class Spawner : NetworkBehaviour
         //nm.GetComponent<GridManager>().GenMap(hex.GetComponent<HexGCANetwork>());
         GameObject hexgrid = (GameObject)Instantiate(hex);
         // player.GetComponent<HumanPlayer>().PlayerNumber = GameObject.FindObjectOfType<PlayersParent>().gameObject.transform.childCount; 
-        NetworkServer.Spawn(hexgrid);
+        if (NetworkServer.active) NetworkServer.Spawn(hexgrid);
+        else ClientScene.RegisterPrefab(hexgrid);
         GUIControllerNet.Instance.Init();
     }
 

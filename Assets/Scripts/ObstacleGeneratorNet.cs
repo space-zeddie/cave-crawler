@@ -84,7 +84,10 @@ public class ObstacleGeneratorNet : Singleton<ObstacleGeneratorNet>
         obstacle.transform.position = cell.transform.position - offset;
         obstacle.transform.parent = ObstaclesParent;
         if (obstacle.GetComponent<NetworkIdentity>() != null)
+        {
             if (NetworkServer.active) NetworkServer.Spawn(obstacle);
+            else ClientScene.RegisterPrefab(obstacle);
+        }
     }
 
     void InstantiateObstacle(GameObject prefab, int i, int j)
@@ -102,7 +105,10 @@ public class ObstacleGeneratorNet : Singleton<ObstacleGeneratorNet>
         obstacle.transform.position = cell.transform.position - offset;
         obstacle.transform.parent = ObstaclesParent;
         if (obstacle.GetComponent<NetworkIdentity>() != null)
+        {
             if (NetworkServer.active) NetworkServer.Spawn(obstacle);
+            else ClientScene.RegisterPrefab(obstacle);
+        }
     }
 
    /* void ManualSpawn()
