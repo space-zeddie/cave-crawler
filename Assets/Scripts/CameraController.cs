@@ -16,10 +16,7 @@ public class CameraController : MonoBehaviour
     public void RelocateToPlayer()
     {
         if (player == null)
-        {
             FindPlayer();
-
-        }
         if (player != null)
         {
             this.transform.position = new Vector3(player.transform.position.x, player.transform.position.y);
@@ -33,6 +30,11 @@ public class CameraController : MonoBehaviour
     void FindPlayer()
     {
         Carrier[] carriers = UnitsParent.GetComponentsInChildren<Carrier>();
+        if (carriers.GetLength(0) < 1)
+        {
+            FindPlayerNetwork();
+            return;
+        }
         foreach (Carrier carrier in carriers)
         {
             if (carrier.PlayerNumber == 0)
@@ -42,6 +44,20 @@ public class CameraController : MonoBehaviour
             }
         }
     }
+
+    void FindPlayerNetwork()
+    {
+        CarrierNet[] carriers = UnitsParent.GetComponentsInChildren<CarrierNet>();
+        foreach (CarrierNet carrier in carriers)
+        {
+            if (carrier.PlayerNumber == 0)
+            {
+                player = carrier.gameObject;
+                break;
+            }
+        }
+    }
+	
 	
 	// Update is called once per frame
 	void LateUpdate () 
