@@ -43,18 +43,17 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
     {
         foreach (Transform unit in UnitsParent.transform)
         {
-            unit.GetComponent<Unit>().UnitHighlighted += OnUnitHighlighted;
-            unit.GetComponent<Unit>().UnitDehighlighted += OnUnitDehighlighted;
-            unit.GetComponent<Unit>().UnitDestroyed += OnUnitDestroyed;
-            unit.GetComponent<Unit>().UnitAttacked += OnUnitAttacked;
+            unit.GetComponent<UnitNet>().UnitHighlighted += OnUnitHighlighted;
+            unit.GetComponent<UnitNet>().UnitDehighlighted += OnUnitDehighlighted;
+            unit.GetComponent<UnitNet>().UnitDestroyed += OnUnitDestroyed;
+            unit.GetComponent<UnitNet>().UnitAttacked += OnUnitAttacked;
         }
     }
 
     private void OnTurnEnded(object sender, EventArgs e)
     {
-        //NextTurnButton.interactable = ((sender as CellGrid).CurrentPlayer is HumanPlayer);
-        GameUnit[] units = UnitsParent.gameObject.transform.GetComponentsInChildren<GameUnit>();
-        foreach (GameUnit unit in units)
+        GameUnitNet[] units = UnitsParent.gameObject.transform.GetComponentsInChildren<GameUnitNet>();
+        foreach (GameUnitNet unit in units)
         {
             unit.UnSelect();
             unit.SetHasMoved(false);
@@ -63,46 +62,33 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
     }
     private void OnGameEnded(object sender, EventArgs e)
     {
-        //  if (PlayersParent.gameObject.transform.GetChildCount() > 1) 
-        //    InfoText.text = "Cave completed";
-        //else
-        //  InfoText.text = "Cave completed. Player " + ((sender as CellGrid).CurrentPlayerNumber + 1) + " wins!";
-        /* _gameOverPanel = Instantiate(GameOverPanel);
-         _gameOverPanel.transform.Find("InfoText").GetComponent<Text>().text = "Player " + ((sender as CellGrid).CurrentPlayerNumber + 1) + "\nwins!";
-
-         _gameOverPanel.transform.Find("DismissButton").GetComponent<Button>().onClick.AddListener(DismissPanel);
-
-         _gameOverPanel.GetComponent<RectTransform>().SetParent(Canvas.GetComponent<RectTransform>(), false);*/
-        //  Debug.Log("Game Ended");
-        GameObject.FindObjectOfType<HexGridCellularAutomata>().ClearGrid();
+        GameObject.FindObjectOfType<HexGCANetwork>().ClearGrid();
         StatManager.Instance.IsNewCave = true;
         GameManager.Instance.LoadGameEndedScreen();
 
     }
 
-    private void OnUnitAttacked(object sender, AttackEventArgs e)
+    private void OnUnitAttacked(object sender, AttackEventArgsNet e)
     {
         if (!(CellGrid.CurrentPlayer is HumanPlayer)) return;
 
         OnUnitDehighlighted(sender, e);
 
-        if ((sender as Unit).HitPoints <= 0) return;
+        if ((sender as UnitNet).HitPoints <= 0) return;
 
         OnUnitHighlighted(sender, e);
     }
-    private void OnUnitDestroyed(object sender, AttackEventArgs e)
+    private void OnUnitDestroyed(object sender, AttackEventArgsNet e)
     {
         Debug.Log("Unit Destroyed");
-        //  Destroy(_infoPanel);
     }
     private void OnUnitDehighlighted(object sender, EventArgs e)
     {
-        //  Destroy(_infoPanel);
     }
     private void OnUnitHighlighted(object sender, EventArgs e)
     {
         // Debug.Log("Unit Highlighted");
-        var unit = sender as GameUnit;
+        var unit = sender as GameUnitNet;
         /* _infoPanel = Instantiate(InfoPanel);
 
          float hpScale = (float)((float)(unit).HitPoints / (float)(unit).TotalHitPoints);
@@ -115,10 +101,6 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
          _infoPanel.GetComponent<RectTransform>().SetParent(Canvas.GetComponent<RectTransform>(), false);*/
     }
 
-    public void DismissPanel()
-    {
-        /// Destroy(_gameOverPanel);
-    }
 
     public void RestartLevel()
     {
@@ -130,15 +112,15 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
     void CheckForEndingConditions()
     {
         //Debug.Log("Check for ending condition");
-        GameUnit[] gameUnits = UnitsParent.GetComponentsInChildren<GameUnit>();
+        GameUnitNet[] gameUnits = UnitsParent.GetComponentsInChildren<GameUnitNet>();
         bool allUnitsMoved = true;
         bool exitReached = true;
-        Carrier carrier = null;
-        foreach (GameUnit gu in gameUnits)
+        CarrierNet carrier = null;
+        foreach (GameUnitNet gu in gameUnits)
         {
             if (gu.enabled) exitReached = false;
-            if (gu is Carrier)
-                carrier = gu as Carrier;
+            if (gu is CarrierNet)
+                carrier = gu as CarrierNet;
             if (!gu.HasMoved())
             {
                 allUnitsMoved = false;
@@ -156,7 +138,7 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
     public void SaveGame()
     {
         StatManager.Instance.IsNewCave = false;
-        ObstacleGenerator.Instance.SaveSpawns();
+        ObstacleGeneratorNet.Instance.SaveSpawns();
         PlayersParent.GetComponentInChildren<HumanPlayer>().SaveStats();
         GameManager.Instance.SaveGame();
     }
