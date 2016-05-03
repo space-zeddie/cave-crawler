@@ -97,13 +97,7 @@ public class UnitGenerator : Singleton<UnitGenerator>, IUnitGenerator
 
     Unit InitUnit(GameObject prefab, Cell cell, int i = -1)
     {
-        GameObject unit;
-        if (prefab.GetComponent<NetworkIdentity>() != null)
-        {
-            unit = GameObject.FindObjectOfType<Spawner>().Spawn(prefab, prefab.transform.position);
-            //NetworkGameUnit.CmdSpawn(unit.gameObject, unit.gameObject.transform.position);
-        }
-        else unit = Instantiate(prefab);
+        GameObject unit = Instantiate(prefab);
         cell.IsTaken = true;
         unit.GetComponent<GameUnit>().Cell = cell;
         unit.transform.position = cell.transform.position;

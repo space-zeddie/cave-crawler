@@ -123,6 +123,16 @@ public abstract class UnitNet : NetworkBehaviour
         TotalActionPoints = ActionPoints;
     }
 
+    public override void OnStartClient()
+    {
+        if (!NetworkServer.active)
+        {
+            this.PlayerNumber++;
+            GameObject parentObject = GameObject.FindObjectOfType<UnitParentScript>().gameObject;//ClientScene.FindLocalObject(parentNetId);
+            transform.SetParent(parentObject.transform);
+        }
+    }
+
     protected virtual void OnMouseDown()
     {
         if (UnitClicked != null)

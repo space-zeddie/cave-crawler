@@ -42,10 +42,15 @@ public class Spawner : NetworkBehaviour
     {
         if (prefab.GetComponent<NetworkIdentity>() == null) return null;
         var go = (GameObject)Instantiate(prefab, position, Quaternion.identity);
-        //if (go.GetComponent<GameUnit>() != null) go.GetComponent<GameUnit>().Initialize();
-        NetworkServer.SpawnWithClientAuthority(go, LocalPlayer());
+        Cmd_Spawn(go);
         Debug.Log("Spawned " + prefab + " on " + position + " with " + LocalPlayer() + " authority");
         return go;
+    }
+
+    [Command]
+    public void Cmd_Spawn(GameObject go)
+    {
+        NetworkServer.SpawnWithClientAuthority(go, LocalPlayer());
     }
 
     public GameObject LocalPlayer()
