@@ -67,21 +67,22 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
         List<UnitNet> ret = new List<UnitNet>();
         player.LoadFromGlobal();
 
-        if (StatManager.Instance.IsNewCave)
-        {
+      //  if (StatManager.Instance.IsNewCave)
+        //{
             ret.Add(InstantiateUnit(player.gameUnits[0]));
+            Debug.Log(CellGrid.Cells);
 
             for (int i = 1; i < player.gameUnits.GetLength(0); ++i)
             {
                 ret.Add(InstantiateUnit(player.gameUnits[i].gameObject, ret[i - 1].gameObject.GetComponent<GameUnitNet>().Cell.GetNeighbours(CellGrid.Cells)));
             }
-        }
+        //}
 
-        else
-        {
-            foreach (GameObject gu in player.gameUnits)
-                ret.Add(InstantiateUnit(gu, (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).i, (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).j));
-        }
+        //else
+        //{
+        //    foreach (GameObject gu in player.gameUnits)
+          //      ret.Add(InstantiateUnit(gu, (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).i, (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).j));
+        //}
 
         CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
         return ret;
@@ -100,7 +101,6 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
             i = rnd.Next(Hex.width * Hex.height);
             cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<CellNet>();
         }
-
         return InitUnit(prefab, cell, i);
     }
 

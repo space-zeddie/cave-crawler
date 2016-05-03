@@ -102,11 +102,14 @@ public class CellGridNet : NetworkBehaviour
     public override void OnStartClient()
     {
       //  base.OnStartClient();
-        /*if (!NetworkServer.active)
+        if (!NetworkServer.active)
         {
+            Cells = new List<CellNet>();
+            foreach (CellNet cell in GameObject.FindObjectsOfType<CellNet>())
+                Cells.Add(cell);
             InitUnits();
             StartGame();
-        }*/
+        }
     }
 
     void InitUnits()
