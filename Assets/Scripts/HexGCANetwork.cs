@@ -216,12 +216,12 @@ public class HexGCANetwork : ICellGridGeneratorNet
         hexagon.GetComponent<HexagonNet>().i = i;
         hexagon.GetComponent<HexagonNet>().j = j;
         hexagon.transform.parent = CellsParent;
-        if (NetworkServer.active)
-        {
+        //if (NetworkServer.active)
+       // {
            // hexagon.GetComponent<CellNet>().parentNetId = this.netId;
             NetworkServer.Spawn(hexagon);
-        }
-        else ClientScene.RegisterPrefab(hexagon);
+       // }
+       // else ClientScene.RegisterPrefab(hexagon);
 
         return hexagon;
     }

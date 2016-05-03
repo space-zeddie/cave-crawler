@@ -83,7 +83,18 @@ public class CellGridNet : NetworkBehaviour
              
         if (NetworkServer.active)
         {
-            InitUnits();
+            var unitGenerator = GetComponent<IUnitGeneratorNet>();
+            if (unitGenerator != null)
+            {
+                Units = unitGenerator.SpawnUnits(Cells);
+                foreach (var unit in Units)
+                {
+                    unit.UnitClicked += OnUnitClicked;
+                    unit.UnitDestroyed += OnUnitDestroyed;
+                }
+            }
+            else
+                Debug.LogError("No IUnitGenerator script attached to cell grid");
             StartGame();
         }
     }
