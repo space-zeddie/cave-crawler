@@ -52,17 +52,7 @@ public class CellGridNet : NetworkBehaviour
 
     void Start()
     {
-        Players = new List<Player>();
-        for (int i = 0; i < PlayersParent.childCount; i++)
-        {
-            var player = PlayersParent.GetChild(i).GetComponent<Player>();
-            if (player != null)
-                Players.Add(player);
-            else
-                Debug.LogError("Invalid object in Players Parent game object");
-        }
-        NumberOfPlayers = Players.Count;
-        CurrentPlayerNumber = Players.Min(p => p.PlayerNumber);
+        CalculatePlayers();
 
         Cells = new List<CellNet>();
         for (int i = 0; i < transform.childCount; i++)
@@ -99,15 +89,30 @@ public class CellGridNet : NetworkBehaviour
         }
     }
 
+    public void CalculatePlayers()
+    {
+        Players = new List<Player>();
+        for (int i = 0; i < PlayersParent.childCount; i++)
+        {
+            var player = PlayersParent.GetChild(i).GetComponent<Player>();
+            if (player != null)
+                Players.Add(player);
+            else
+                Debug.LogError("Invalid object in Players Parent game object");
+        }
+        NumberOfPlayers = Players.Count;
+        CurrentPlayerNumber = Players.Min(p => p.PlayerNumber);
+    }
+
     public override void OnStartClient()
     {
-      //  base.OnStartClient();
         if (!NetworkServer.active)
         {
             Cells = new List<CellNet>();
             foreach (CellNet cell in GameObject.FindObjectsOfType<CellNet>())
                 Cells.Add(cell);
             InitUnits();
+            CalculatePlayers();
             StartGame();
         }
     }
@@ -166,6 +171,7 @@ public class CellGridNet : NetworkBehaviour
             GameStarted.Invoke(this, new EventArgs());
 
         Units.FindAll(u => u.PlayerNumber.Equals(CurrentPlayerNumber)).ForEach(u => { u.OnTurnStart(); });
+        Debug.Log(Players);
         Players.Find(p => p.PlayerNumber.Equals(CurrentPlayerNumber)).Play(this);
     }
 
