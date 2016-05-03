@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,15 @@ public class GameUnitNet : UnitNet
     void Start()
     {
         InitID();
+    }
+
+    void OnClientStart()
+    {
+        if (!NetworkServer.active)
+        {
+            transform.SetParent(GameObject.FindObjectOfType<UnitParentScript>().transform);
+            this.PlayerNumber = 1;
+        }
     }
 
     public override void Initialize()

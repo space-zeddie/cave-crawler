@@ -23,6 +23,8 @@ public class HumanPlayer : Player
             this.gameObject.transform.parent = PlayersParent.Instance.gameObject.transform;
         if (UnitParentScript.Instance != null)
             allUnits = UnitParentScript.Instance;
+        if (!NetworkServer.active)
+            this.PlayerNumber = 1;
         this.gameObject.SetActive(true);
     }
 

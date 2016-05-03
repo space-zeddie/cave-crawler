@@ -22,6 +22,10 @@ public abstract class CellNet : NetworkBehaviour, IGraphNode
     [SyncVar]
     public int MovementCost;
 
+    [SyncVar]
+    public NetworkInstanceId parentNetId;
+    bool parentSet = false;
+
     /// <summary>
     /// CellClicked event is invoked when user clicks the unit. It requires a collider on the cell game object to work.
     /// </summary>
@@ -81,4 +85,28 @@ public abstract class CellNet : NetworkBehaviour, IGraphNode
     {
         return GetDistance(other as CellNet);
     }
+
+    void OnStartClient()
+    {
+        if (!NetworkServer.active && !parentSet)
+        {
+            GameObject parentObject = ClientScene.FindLocalObject(parentNetId);
+            transform.SetParent(parentObject.transform);
+            Debug.Log("setting parent");
+            parentSet = true;
+        }
+    }
+
+  /*  public void SetParent()
+    {
+        if (!NetworkServer.active)
+        {
+            Debug.Log("This cell's parent netid:" + parentNetId);
+            GameObject parentObject = ClientScene.FindLocalObject(parentNetId);
+            Debug.Log("Found a parent " + parentObject.gameObject);
+            transform.SetParent(parentObject.transform);
+            Debug.Log("setting parent");
+            parentSet = true;
+        }
+    }*/
 }

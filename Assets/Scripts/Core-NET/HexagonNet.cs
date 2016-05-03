@@ -18,6 +18,7 @@ public abstract class HexagonNet : CellNet
     [SyncVar]
     public int j = -1;
 
+
     /// <summary>
     /// Cube coordinates is another system of coordinates that makes calculation on hex grids easier.
     /// </summary>

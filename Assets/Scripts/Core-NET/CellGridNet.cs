@@ -81,6 +81,15 @@ public class CellGridNet : NetworkBehaviour
             cell.CellDehighlighted += OnCellDehighlighted;
         }
              
+        if (NetworkServer.active)
+        {
+            InitUnits();
+            StartGame();
+        }
+    }
+
+    void InitUnits()
+    {
         var unitGenerator = GetComponent<IUnitGeneratorNet>();
         if (unitGenerator != null)
         {
@@ -93,8 +102,6 @@ public class CellGridNet : NetworkBehaviour
         }
         else
             Debug.LogError("No IUnitGenerator script attached to cell grid");
-        
-        StartGame();
     }
 
 
