@@ -11,6 +11,7 @@ public class Spawner : NetworkBehaviour
     void Awake()
     {
         nm = GameObject.FindObjectOfType<NetworkManager>();
+        StatManager.Instance.IsNewCave = true;
     }
 
 	//void OnStartServer () 
@@ -23,8 +24,25 @@ public class Spawner : NetworkBehaviour
         }
 	}
 
+    public override void OnStartClient()
+    {
+        if (!NetworkServer.active)
+        {
+            Debug.Log("spawning");
+            Cmd_AddPlayer();
+            GUIControllerNet.Instance.Init();
+        }
+    }
+
+    [Command]
+    void Cmd_AddPlayer()
+    {
+        ClientScene.AddPlayer(0);
+    }
+
     public void Spawn()
     {
+        Debug.Log("spawning");
         ClientScene.AddPlayer(0);
         //nm.GetComponent<GridManager>().GenMap(hex.GetComponent<HexGCANetwork>());
         GameObject hexgrid = (GameObject)Instantiate(hex);

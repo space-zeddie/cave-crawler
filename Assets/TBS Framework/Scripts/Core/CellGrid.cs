@@ -53,6 +53,7 @@ public class CellGrid : MonoBehaviour
                 Players.Add(player);
             else
                 Debug.LogError("Invalid object in Players Parent game object");
+            Debug.Log(player);
         }
         NumberOfPlayers = Players.Count;
         CurrentPlayerNumber = Players.Min(p => p.PlayerNumber);

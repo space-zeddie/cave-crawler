@@ -32,6 +32,7 @@ public class GameUnit : Unit
         isDeployed = true;
         hasMoved = false;
         isSelected = false;
+        Debug.Log("Initialized");
         if (id.Length == 0) InitID();
     }
 

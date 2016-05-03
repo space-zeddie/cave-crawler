@@ -55,7 +55,7 @@ public class HexGCANetwork : ICellGridGeneratorNet
             if (!mapped) GenerateMap();
             //UpdateSyncedMap();
             Debug.Log("generated map");
-            LoadGrid(false);
+            LoadGrid();
         }
         else
         {
@@ -65,30 +65,12 @@ public class HexGCANetwork : ICellGridGeneratorNet
         GUIControllerNet.Instance.CellGrid = this.gameObject.GetComponent<CellGridNet>();
     }
 
-    protected void LoadGrid(bool gridFromLocalSaveFile)
+    protected void LoadGrid()
     {
-        StatManager.Instance.LoadData();
-        if (!PlayerState.Instance.Loaded) PlayerState.Instance.LoadFromGlobal();
-        if (!gridFromLocalSaveFile) StatManager.Instance.IsNewCave = true;
-        if (StatManager.Instance.IsSceneBeingLoaded && !StatManager.Instance.IsNewCave)
-        {
-            Debug.Log("Loading map");
-            ClearGrid();
-            width = PlayerState.Instance.LocalPlayerData.map.GetLength(0);
-            height = PlayerState.Instance.LocalPlayerData.map.GetLength(1);
-            map = new int[PlayerState.Instance.LocalPlayerData.map.GetLength(0), PlayerState.Instance.LocalPlayerData.map.GetLength(1)];
-            for (int i = 0; i < width; ++i)
-                for (int j = 0; j < height; ++j)
-                    map[i, j] = PlayerState.Instance.LocalPlayerData.map[i, j];
-            if (this.gameObject.transform.childCount == 0) { Debug.Log("Redrawing"); GenerateGrid(); }
-        }
-        else
-        {
             ClearGrid();
             Debug.Log("New map");
-            if (gridFromLocalSaveFile) GenerateMap();
+            GenerateMap();
             GenerateGrid();
-        }
         StartCoroutine(this.gameObject.GetComponent<ObstacleGeneratorNet>().SpawnObstacles());
         StartCoroutine(this.gameObject.GetComponent<UnitGeneratorNet>().SpawnUnits());
     }
