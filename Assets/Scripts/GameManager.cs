@@ -91,6 +91,10 @@ public class GameManager : Singleton<GameManager>
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
         //nm.client = client;
         nm.StartClient();
+        nm.client.RegisterHandler(MsgType.Connect, OnConnected);
+        nm.client.Connect("localhost", 7777);
+        Debug.Log(nm.client.isConnected);
+        Debug.Log(nm.numPlayers);
     }
 
     public void OnConnected(NetworkMessage netMsg)

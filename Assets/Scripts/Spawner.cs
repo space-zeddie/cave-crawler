@@ -12,7 +12,13 @@ public class Spawner : NetworkBehaviour
     {
         nm = GameObject.FindObjectOfType<NetworkManager>();
         StatManager.Instance.IsNewCave = true;
-    }
+    }    void Start()
+    {
+
+        if (!NetworkServer.active) ClientScene.AddPlayer(0);
+        Debug.Log("Local players: " + ClientScene.localPlayers.Count);
+        Debug.Log(nm.numPlayers);
+    }
 
 	//void OnStartServer () 
     void OnLevelWasLoaded(int level)
@@ -24,21 +30,25 @@ public class Spawner : NetworkBehaviour
         }
 	}
 
-    public override void OnStartClient()
+    /*public override void OnStartClient()
     {
         if (!NetworkServer.active)
         {
-            Debug.Log("spawning");
-            Cmd_AddPlayer();
+            Debug.Log("spawning client");
+            ClientScene.AddPlayer(nm.client.connection, 0);
             GUIControllerNet.Instance.Init();
         }
-    }
+    }*/
 
-    [Command]
-    void Cmd_AddPlayer()
+    /*public override void OnClientReady()
     {
-        ClientScene.AddPlayer(0);
-    }
+        if (!NetworkServer.active)
+        {
+            Debug.Log("spawning client");
+            ClientScene.AddPlayer(nm.client.connection, 0);
+            GUIControllerNet.Instance.Init();
+        }
+    }*/
 
     public void Spawn()
     {
