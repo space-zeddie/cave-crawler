@@ -128,8 +128,9 @@ public class HexGCANetwork : ICellGridGeneratorNet
       //  StartCoroutine(this.gameObject.GetComponent<UnitGeneratorNet>().SpawnUnits());
     }
 
-    void OnStartClient()
+    public override void OnStartClient()
     {
+      // base.OnStartClient();
         Debug.Log("Client Started");
       //  StartCoroutine(this.gameObject.GetComponent<UnitGeneratorNet>().SpawnUnits());
     }
@@ -217,7 +218,7 @@ public class HexGCANetwork : ICellGridGeneratorNet
         hexagon.transform.parent = CellsParent;
         if (NetworkServer.active)
         {
-            hexagon.GetComponent<CellNet>().parentNetId = this.netId;
+           // hexagon.GetComponent<CellNet>().parentNetId = this.netId;
             NetworkServer.Spawn(hexagon);
         }
         else ClientScene.RegisterPrefab(hexagon);

@@ -88,6 +88,16 @@ public class CellGridNet : NetworkBehaviour
         }
     }
 
+    public override void OnStartClient()
+    {
+      //  base.OnStartClient();
+        if (!NetworkServer.active)
+        {
+            InitUnits();
+            StartGame();
+        }
+    }
+
     void InitUnits()
     {
         var unitGenerator = GetComponent<IUnitGeneratorNet>();

@@ -22,8 +22,8 @@ public abstract class CellNet : NetworkBehaviour, IGraphNode
     [SyncVar]
     public int MovementCost;
 
-    [SyncVar]
-    public NetworkInstanceId parentNetId;
+   // [SyncVar]
+   // public NetworkInstanceId parentNetId;
     bool parentSet = false;
 
     /// <summary>
@@ -86,16 +86,19 @@ public abstract class CellNet : NetworkBehaviour, IGraphNode
         return GetDistance(other as CellNet);
     }
 
-    void OnStartClient()
+    public override void OnStartClient()
     {
+       // base.OnStartClient();
+        Debug.Log("ClientStarted");
         if (!NetworkServer.active && !parentSet)
         {
-            GameObject parentObject = ClientScene.FindLocalObject(parentNetId);
+            GameObject parentObject = GameObject.FindObjectOfType<HexGCANetwork>().gameObject;//ClientScene.FindLocalObject(parentNetId);
             transform.SetParent(parentObject.transform);
             Debug.Log("setting parent");
             parentSet = true;
         }
     }
+
 
   /*  public void SetParent()
     {
