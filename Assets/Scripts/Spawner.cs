@@ -14,15 +14,17 @@ public class Spawner : NetworkBehaviour
         StatManager.Instance.IsNewCave = true;
     }    void Start()
     {
-
-        if (!NetworkServer.active) ClientScene.AddPlayer(1);
+        if (!NetworkServer.active) { Debug.Log("added player on client"); ClientScene.AddPlayer(1); }
         Debug.Log("Local players: " + ClientScene.localPlayers.Count);
-        Debug.Log(nm.numPlayers);
+        if (!NetworkServer.active) { Debug.Log("connecting client to local server"); ClientScene.ConnectLocalServer(); }
+     //   Debug.Log("Active local player:" + GameObject.FindObjectOfType<Spawner>().LocalPlayer());
+     //   Debug.Log(nm.numPlayers);
     }
 
 	//void OnStartServer () 
     void OnLevelWasLoaded(int level)
     {
+        
         if (level == 4)
         {
             //  m_bools = new SyncListBool();
@@ -71,6 +73,7 @@ public class Spawner : NetworkBehaviour
         if (prefab.GetComponent<NetworkIdentity>() == null) return null;
         var go = (GameObject)Instantiate(prefab, position, Quaternion.identity);
         Cmd_Spawn(go);
+        Debug.Log("LocalPlayer " + LocalPlayer());
         Debug.Log("Spawned " + prefab + " on " + position + " with " + LocalPlayer() + " authority");
         return go;
     }

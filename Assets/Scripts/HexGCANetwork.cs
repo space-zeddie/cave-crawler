@@ -67,9 +67,9 @@ public class HexGCANetwork : ICellGridGeneratorNet
 
     protected void LoadGrid()
     {
-            ClearGrid();
-            Debug.Log("New map");
-            GenerateMap();
+        ClearGrid();
+        Debug.Log("New map");
+        GenerateMap();
             GenerateGrid();
         StartCoroutine(this.gameObject.GetComponent<ObstacleGeneratorNet>().SpawnObstacles());
         StartCoroutine(this.gameObject.GetComponent<UnitGeneratorNet>().SpawnUnits());
@@ -77,44 +77,26 @@ public class HexGCANetwork : ICellGridGeneratorNet
 
     void LoadGridForClient()
     {
-        Debug.Log("HexGrid's netID:" + this.netId);
         StatManager.Instance.LoadData();
         if (!PlayerState.Instance.Loaded) PlayerState.Instance.LoadFromGlobal();
-       // if (!gridFromLocalSaveFile) StatManager.Instance.IsNewCave = true;
-        //if (StatManager.Instance.IsSceneBeingLoaded && !StatManager.Instance.IsNewCave)
-        //{
-
-         //   ClearGrid();
-         //   width = PlayerState.Instance.LocalPlayerData.map.GetLength(0);
-         //   height = PlayerState.Instance.LocalPlayerData.map.GetLength(1);
-         //   map = new int[PlayerState.Instance.LocalPlayerData.map.GetLength(0), PlayerState.Instance.LocalPlayerData.map.GetLength(1)];
-         //   for (int i = 0; i < width; ++i)
-         //       for (int j = 0; j < height; ++j)
-          //          map[i, j] = PlayerState.Instance.LocalPlayerData.map[i, j];
-          //  if (this.gameObject.transform.childCount == 0) { Debug.Log("Redrawing"); GenerateGrid(); }
-       // }
-       // else
-       // {
-       //     ClearGrid();
-       //     Debug.Log("New map");
-       //     if (gridFromLocalSaveFile) GenerateMap();
-           // GenerateGrid();
-       // }
-
-        /*foreach (CellNet cell in GameObject.FindObjectsOfType<CellNet>())
-        {
-            cell.SetParent();
-        }*/
-
-      //  StartCoroutine(this.gameObject.GetComponent<ObstacleGeneratorNet>().SpawnObstacles());
-      //  StartCoroutine(this.gameObject.GetComponent<UnitGeneratorNet>().SpawnUnits());
     }
 
-    public override void OnStartClient()
+    public override void OnStartLocalPlayer()
     {
-      // base.OnStartClient();
-        Debug.Log("Client Started");
-      //  StartCoroutine(this.gameObject.GetComponent<UnitGeneratorNet>().SpawnUnits());
+        Debug.Log("Local player started");
+        if (!NetworkServer.active)
+        {
+            HumanPlayer thisPlayer = null;
+            for (int i = 0; i < PlayersParent.Instance.gameObject.transform.childCount; ++i)
+            {
+                GameObject p = PlayersParent.Instance.gameObject.transform.GetChild(i).gameObject;
+                if (p.GetComponent<NetworkIdentity>().isLocalPlayer || p.GetComponent<HumanPlayer>().PlayerNumber == 0)
+                    thisPlayer = p.GetComponent<HumanPlayer>();
+            }
+            if (thisPlayer != null)
+                this.gameObject.GetComponent<UnitGeneratorNet>().player = thisPlayer;
+            Debug.Log("This player : " + thisPlayer.PlayerNumber);
+        }
     }
 
     /*public void UpdateSyncedMap()

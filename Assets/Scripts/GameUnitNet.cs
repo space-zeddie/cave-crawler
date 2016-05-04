@@ -120,7 +120,7 @@ public class GameUnitNet : UnitNet
         if (unit_go != null) unit_go.GetComponent<GameUnitNet>().UnSelect();
         UnitParentScript.Instance.SetSelectedUnit(this);
         //this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
-        Debug.Log(available);
+//        Debug.Log(available);
         if (available.Count == 0) PopulateAvailableCells();
         foreach (CellNet cell in available)
         {

@@ -88,13 +88,10 @@ public abstract class CellNet : NetworkBehaviour, IGraphNode
 
     public override void OnStartClient()
     {
-       // base.OnStartClient();
-        Debug.Log("ClientStarted");
         if (!NetworkServer.active && !parentSet)
         {
             GameObject parentObject = GameObject.FindObjectOfType<HexGCANetwork>().gameObject;//ClientScene.FindLocalObject(parentNetId);
             transform.SetParent(parentObject.transform);
-            Debug.Log("setting parent");
             parentSet = true;
         }
     }

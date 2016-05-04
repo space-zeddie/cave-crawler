@@ -70,7 +70,7 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
       //  if (StatManager.Instance.IsNewCave)
         //{
             ret.Add(InstantiateUnit(player.gameUnits[0]));
-            Debug.Log(CellGrid.Cells);
+//            Debug.Log(CellGrid.Cells);
 
             for (int i = 1; i < player.gameUnits.GetLength(0); ++i)
             {
@@ -84,7 +84,8 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
           //      ret.Add(InstantiateUnit(gu, (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).i, (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).j));
         //}
 
-        CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer();
+        Debug.Log("player number " + player.PlayerNumber);
+        CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer(player.PlayerNumber);
         return ret;
     }
 

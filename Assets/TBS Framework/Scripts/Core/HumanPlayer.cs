@@ -26,8 +26,9 @@ public class HumanPlayer : Player
         if (UnitParentScript.Instance != null)
             allUnits = UnitParentScript.Instance;
         if (!NetworkServer.active && Application.loadedLevel == 4)
-            this.PlayerNumber = 1;
+            this.PlayerNumber = PlayersParent.Instance.gameObject.transform.childCount - 2;
         player_state = this.gameObject.GetComponent<PlayerState>();
+        Debug.Log("Started HumanPlayer " + PlayerNumber);
         this.gameObject.SetActive(true);
     }
 
@@ -52,7 +53,7 @@ public class HumanPlayer : Player
         {
             if (unitTypeCode == 1) gameUnits[i] = CarrierPrefab;
             else if (unitTypeCode == 2) gameUnits[i] = SentinelPrefab;
-            Debug.Log(gameUnits[i]);
+//            Debug.Log(gameUnits[i]);
            // gameUnits[i].CellNumber = PlayerState.Instance.LocalPlayerData.DeployedUnitCell[i];
             if (!StatManager.Instance.IsNewCave)
             {

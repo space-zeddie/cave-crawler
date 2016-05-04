@@ -79,17 +79,7 @@ public class GameManager : Singleton<GameManager>
     public void LoadClientMultiplayer()
     {
         LoadScene(4);
-       /* int server = -1;
-        for (server = 0; server < totalHosts; ++server)
-            if (hostList[server].connectedPlayers < hostList[server].playerLimit)
-                break;*/
-       // NetworkClient client = new NetworkClient();
-       // client.RegisterHandler(MsgType.Connect, OnConnected);
-       // client.Connect("localhost", 7777);
-        
-       // client.Connect(hostList[server].ip[0], hostList[server].port);
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
-        //nm.client = client;
         nm.StartClient();
         nm.client.RegisterHandler(MsgType.Connect, OnConnected);
         nm.client.Connect("localhost", 7777);

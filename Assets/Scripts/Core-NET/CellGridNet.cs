@@ -171,7 +171,6 @@ public class CellGridNet : NetworkBehaviour
             GameStarted.Invoke(this, new EventArgs());
 
         Units.FindAll(u => u.PlayerNumber.Equals(CurrentPlayerNumber)).ForEach(u => { u.OnTurnStart(); });
-        Debug.Log(Players);
         Players.Find(p => p.PlayerNumber.Equals(CurrentPlayerNumber)).Play(this);
     }
 

@@ -13,10 +13,10 @@ public class CameraController : MonoBehaviour
         
 	}
 
-    public void RelocateToPlayer()
+    public void RelocateToPlayer(int playerNumber = 0)
     {
         if (player == null)
-            FindPlayer();
+            FindPlayer(playerNumber);
         if (player != null)
         {
             this.transform.position = new Vector3(player.transform.position.x, player.transform.position.y);
@@ -27,17 +27,17 @@ public class CameraController : MonoBehaviour
 
  //   public IEnumerator 
 
-    void FindPlayer()
+    void FindPlayer(int playerNumber)
     {
         Carrier[] carriers = UnitsParent.GetComponentsInChildren<Carrier>();
         if (carriers.GetLength(0) < 1)
         {
-            FindPlayerNetwork();
+            FindPlayerNetwork(playerNumber);
             return;
         }
         foreach (Carrier carrier in carriers)
         {
-            if (carrier.PlayerNumber == 0)
+            if (carrier.PlayerNumber == playerNumber)
             {
                 player = carrier.gameObject;
                 break;
@@ -45,12 +45,12 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void FindPlayerNetwork()
+    void FindPlayerNetwork(int playerNumber)
     {
         CarrierNet[] carriers = UnitsParent.GetComponentsInChildren<CarrierNet>();
         foreach (CarrierNet carrier in carriers)
         {
-            if (carrier.PlayerNumber == 0)
+            if (carrier.PlayerNumber == playerNumber)
             {
                 player = carrier.gameObject;
                 break;

@@ -43,7 +43,7 @@ class AStarPathfinding : IPathfinding
 
         path.Add(destinationNode);
         var temp = destinationNode;
-        Debug.Log(temp + " - " + destinationNode + " - " + originNode);
+//        Debug.Log(temp + " - " + destinationNode + " - " + originNode);
         try
         {
             while (!cameFrom[temp].Equals(originNode))
