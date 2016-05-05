@@ -63,6 +63,7 @@ public class HexGCANetwork : ICellGridGeneratorNet
             LoadGridForClient();
         }
         GUIControllerNet.Instance.CellGrid = this.gameObject.GetComponent<CellGridNet>();
+       // this.gameObject.GetComponent<CellGridNet>().CreateUnits();
     }
 
     protected void LoadGrid()

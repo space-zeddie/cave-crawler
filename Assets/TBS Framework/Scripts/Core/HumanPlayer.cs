@@ -25,11 +25,6 @@ public class HumanPlayer : Player
             this.gameObject.transform.parent = PlayersParent.Instance.gameObject.transform;
         if (UnitParentScript.Instance != null)
             allUnits = UnitParentScript.Instance;
-       // if (!NetworkServer.active && Application.loadedLevel == 4)
-       // {
-            this.PlayerNumber = PlayersParent.Instance.gameObject.transform.childCount - 2;
-            if (PlayerNumber == 2 && !NetworkServer.active) ClientScene.SetLocalObject(this.GetComponent<NetworkIdentity>().netId, this.gameObject);
-       // }
         player_state = this.gameObject.GetComponent<PlayerState>();
         //Debug.Log("Started HumanPlayer " + PlayerNumber);
         this.gameObject.SetActive(true);

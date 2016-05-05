@@ -6,6 +6,8 @@ public class Spawner : NetworkBehaviour
 {
     NetworkManager nm;
     public GameObject hex;
+    public GameObject player;
+    public static bool updated = false;
    // SyncListBool m_bools;
 
     void Awake()
@@ -16,11 +18,17 @@ public class Spawner : NetworkBehaviour
 
     void Start()
     {
-        if (!NetworkServer.active) { Debug.Log("added player on client"); ClientScene.AddPlayer(1); }
-        Debug.Log("Local players: " + ClientScene.localPlayers.Count);
-        if (!NetworkServer.active) { Debug.Log("connecting client to local server"); ClientScene.ConnectLocalServer(); }
+        if (!NetworkServer.active) 
+        { 
+            Debug.Log("added player on client"); 
+            ClientScene.AddPlayer(1);  
+            Debug.Log("connecting client to local server"); 
+            ClientScene.ConnectLocalServer(); 
+        }
+     //   player = LocalPlayer();
      //   Debug.Log("Active local player:" + GameObject.FindObjectOfType<Spawner>().LocalPlayer());
      //   Debug.Log(nm.numPlayers);
+       // Debug.Log("Local players: " + ClientScene.localPlayers.Count);
     }
 
     
@@ -77,16 +85,12 @@ public class Spawner : NetworkBehaviour
     {
         if (prefab.GetComponent<NetworkIdentity>() == null) return null;
         var go = (GameObject)Instantiate(prefab, position, Quaternion.identity);
-        Cmd_Spawn(go);
+        player = LocalPlayer();
+        Debug.Log(player);
+        player.GetComponent<HumanPlayerNet>().Cmd_Spawn(go, LocalPlayer());
         Debug.Log("LocalPlayer " + LocalPlayer());
         Debug.Log("Spawned " + prefab + " on " + position + " with " + LocalPlayer() + " authority");
         return go;
-    }
-
-    [Command]
-    public void Cmd_Spawn(GameObject go)
-    {
-        NetworkServer.SpawnWithClientAuthority(go, LocalPlayer());
     }
 
     GameObject FindUnit(GameObject prefab, Vector3 position)
@@ -103,12 +107,12 @@ public class Spawner : NetworkBehaviour
     {
         var players = GameObject.FindObjectOfType<PlayersParent>().gameObject.transform;
         GameObject player = null;
-        Debug.Log("Child count: " + players.childCount);
         for (int i = 0; i < players.childCount; ++i)
-            if (!NetworkServer.active && players.GetChild(i).GetComponent<HumanPlayerNet>().PlayerNumber > 0)
+            if (!NetworkServer.active && players.GetChild(i).GetComponent<HumanPlayerNet>().PlayerNumber == 1)
                 player = players.GetChild(i).gameObject;
             else if (NetworkServer.active && players.GetChild(i).GetComponent<HumanPlayerNet>().PlayerNumber == 0)
                 player = players.GetChild(i).gameObject;
+        Debug.Log(player);
         return player;
 
     }

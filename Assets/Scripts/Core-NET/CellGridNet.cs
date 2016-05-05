@@ -117,10 +117,15 @@ public class CellGridNet : NetworkBehaviour
             Cells = new List<CellNet>();
             foreach (CellNet cell in GameObject.FindObjectsOfType<CellNet>())
                 Cells.Add(cell);
-            InitUnits();
-            CalculatePlayers();
-            StartGame();
+           
         }
+    }
+   
+    public void CreateUnits()
+    {
+        InitUnits();
+        CalculatePlayers();
+        StartGame();
     }
 
     void InitUnits()
@@ -128,11 +133,16 @@ public class CellGridNet : NetworkBehaviour
         var unitGenerator = GetComponent<IUnitGeneratorNet>();
         if (unitGenerator != null)
         {
+            Debug.Log("call to init units");
             Units = unitGenerator.SpawnUnits(Cells);
-            foreach (var unit in Units)
+            Debug.Log(Units.Count);
+            for (int i = 0; i < Units.Count; ++i)
             {
+                var unit = Units[i];
+                Debug.Log(unit);
                 unit.UnitClicked += OnUnitClicked;
                 unit.UnitDestroyed += OnUnitDestroyed;
+                if (i == 1) break;  
             }
         }
         else

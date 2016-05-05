@@ -84,7 +84,7 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
         var cell = Hex.cells[i, j];
         if (cell == null || cell.IsTaken)
             return null;
-
+        Debug.Log("about to InitUnit");
         return InitUnit(prefab, cell);
     }
 
@@ -101,7 +101,9 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
         GameObject unit = null;
         if (prefab.GetComponent<NetworkIdentity>() != null)
         {
+            Debug.Log(prefab.transform.position);
              unit = GameObject.FindObjectOfType<Spawner>().Spawn(prefab, prefab.transform.position);
+             
             //else { ClientScene.RegisterPrefab(unit); Debug.Log("registered unit"); }
         }
         else unit = Instantiate(prefab);

@@ -25,15 +25,35 @@ public class HumanPlayerNet : PlayerNet
             this.gameObject.transform.parent = PlayersParent.Instance.gameObject.transform;
         if (UnitParentScript.Instance != null)
             allUnits = UnitParentScript.Instance;
-        // if (!NetworkServer.active && Application.loadedLevel == 4)
-        // {
         this.PlayerNumber = PlayersParent.Instance.gameObject.transform.childCount - 2;
         if (PlayerNumber == 2 && !NetworkServer.active) ClientScene.SetLocalObject(this.GetComponent<NetworkIdentity>().netId, this.gameObject);
-        // }
         player_state = this.gameObject.GetComponent<PlayerState>();
         //Debug.Log("Started HumanPlayer " + PlayerNumber);
         this.gameObject.SetActive(true);
+        Debug.Log("started Human Player " + PlayerNumber);
     }
+
+    void FixedUpdate()
+    {
+        if (PlayersParent.Instance.gameObject.transform.childCount > 2 && !Spawner.updated)
+        {
+            GameObject.FindGameObjectWithTag("Grid").GetComponent<CellGridNet>().CreateUnits();
+            Spawner.updated = true;
+        }
+    }
+
+    [Command]
+    public void Cmd_Spawn(GameObject go, GameObject localPlayer)
+    {
+        NetworkServer.SpawnWithClientAuthority(go, localPlayer);
+    }
+
+
+    void OnServerAddPlayer()
+    {
+        Debug.Log("server added local player");
+    }
+
 
     public void LoadFromGlobal()
     {
