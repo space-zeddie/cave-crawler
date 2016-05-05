@@ -93,7 +93,6 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
         int[,] map = Hex.GetMap();
         System.Random rnd = new System.Random();
         int i = rnd.Next(Hex.width * Hex.height);
-        Debug.Log("Cells in CellGrid: " + CellGrid.transform.childCount);
         var cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<CellNet>();
 
         while (cell == null || cell.IsTaken)
@@ -136,7 +135,7 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
         unit.GetComponent<GameUnitNet>().Cell = cell;
         unit.transform.position = cell.transform.position;
         unit.transform.parent = UnitsParent;
-        if (i != -1) unit.GetComponent<GameUnitNet>().CellNumber = i;
+        //if (i != -1) unit.GetComponent<GameUnitNet>().CellNumber = i;
         unit.GetComponent<GameUnitNet>().Initialize();
         NetworkServer.Spawn(unit);
         return unit.GetComponent<UnitNet>();

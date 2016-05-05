@@ -79,7 +79,7 @@ public class HexGCANetwork : ICellGridGeneratorNet
     void LoadGridForClient()
     {
         StatManager.Instance.LoadData();
-        if (!PlayerState.Instance.Loaded) PlayerState.Instance.LoadFromGlobal();
+        if (PlayerState.Instance != null && !PlayerState.Instance.Loaded) PlayerState.Instance.LoadFromGlobal();
     }
 
     public override void OnStartLocalPlayer()
