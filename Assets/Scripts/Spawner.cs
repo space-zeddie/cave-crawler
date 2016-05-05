@@ -20,10 +20,10 @@ public class Spawner : NetworkBehaviour
     {
         if (!NetworkServer.active) 
         { 
-            Debug.Log("added player on client"); 
-            ClientScene.AddPlayer(1);  
-            Debug.Log("connecting client to local server"); 
-            ClientScene.ConnectLocalServer(); 
+           // Debug.Log("added player on client"); 
+            //ClientScene.AddPlayer(1);  
+          //  Debug.Log("connecting client to local server"); 
+           // ClientScene.ConnectLocalServer(); 
         }
      //   player = LocalPlayer();
      //   Debug.Log("Active local player:" + GameObject.FindObjectOfType<Spawner>().LocalPlayer());
@@ -91,16 +91,6 @@ public class Spawner : NetworkBehaviour
         Debug.Log("LocalPlayer " + LocalPlayer());
         Debug.Log("Spawned " + prefab); //+ " on " + position + " with " + LocalPlayer() + " authority");
         return go;
-    }
-
-    GameObject FindUnit(GameObject prefab, Vector3 position)
-    {
-        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Unit"))
-        {
-            if (go.transform.position.Equals(position))
-                return go;
-        }
-        return null;
     }
 
     public GameObject LocalPlayer()
