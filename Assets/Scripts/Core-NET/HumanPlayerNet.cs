@@ -45,9 +45,15 @@ public class HumanPlayerNet : PlayerNet
     [Command]
     public void Cmd_Spawn(GameObject go)
     {
+        Debug.Log("Spawning for player number: " + PlayerNumber + " an object " + go);
         NetworkServer.Spawn(go);
     }
 
+    [Command]
+    public void Cmd_SpawnUnits()
+    {
+        GameObject.FindObjectOfType<UnitGeneratorNet>().SpawnUnitsForClient(this);
+    }
 
     void OnServerAddPlayer()
     {

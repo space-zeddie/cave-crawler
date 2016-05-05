@@ -36,7 +36,7 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
     /// </summary>
     public List<UnitNet> SpawnUnits(List<CellNet> cells)
     {
-        if (instantiated) return null;
+       // if (instantiated) return null;
         instantiated = true;
         List<UnitNet> ret = new List<UnitNet>();
         player.LoadFromGlobal();
@@ -48,6 +48,7 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
 
             for (int i = 1; i < player.gameUnits.GetLength(0); ++i)
             {
+                Debug.Log(player.gameUnits[i]);
                 ret.Add(InstantiateUnit(player.gameUnits[i].gameObject, ret[i - 1].gameObject.GetComponent<GameUnitNet>().Cell.GetNeighbours(CellGrid.Cells)));
             }
         //}
@@ -63,12 +64,36 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
         return ret;
     }
 
+    public void SpawnUnitsForClient(HumanPlayerNet player)
+    {
+        instantiated = true;
+        List<UnitNet> ret = new List<UnitNet>();
+        player.LoadFromGlobal();
+        ret.Add(InstantiateUnit(player.gameUnits[0]));
+        for (int i = 1; i < player.gameUnits.GetLength(0); ++i)
+        {
+            Debug.Log(player.gameUnits[i]);
+            ret.Add(InstantiateUnit(player.gameUnits[i].gameObject, ret[i - 1].gameObject.GetComponent<GameUnitNet>().Cell.GetNeighbours(CellGrid.Cells)));
+        }
+        //}
+
+        //else
+        //{
+        //    foreach (GameObject gu in player.gameUnits)
+        //      ret.Add(InstantiateUnit(gu, (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).i, (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).j));
+        //}
+
+        Debug.Log("player number " + player.PlayerNumber);
+       /// CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer(player.PlayerNumber);
+    }
+
     UnitNet InstantiateUnit(GameObject prefab)
     {
         var cells = CellGrid.Cells;
         int[,] map = Hex.GetMap();
         System.Random rnd = new System.Random();
         int i = rnd.Next(Hex.width * Hex.height);
+        Debug.Log("Cells in CellGrid: " + CellGrid.transform.childCount);
         var cell = CellGrid.gameObject.transform.GetChild(i).GetComponent<CellNet>();
 
         while (cell == null || cell.IsTaken)
@@ -98,7 +123,7 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
 
     UnitNet InitUnit(GameObject prefab, CellNet cell, int i = -1)
     {
-        GameObject unit = null;
+        GameObject unit /*= null;
         if (prefab.GetComponent<NetworkIdentity>() != null)
         {
             Debug.Log(prefab.transform.position);
@@ -106,13 +131,14 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
              
             //else { ClientScene.RegisterPrefab(unit); Debug.Log("registered unit"); }
         }
-        else unit = Instantiate(prefab);
+        else unit */= (GameObject)Instantiate(prefab);
         cell.IsTaken = true;
         unit.GetComponent<GameUnitNet>().Cell = cell;
         unit.transform.position = cell.transform.position;
         unit.transform.parent = UnitsParent;
         if (i != -1) unit.GetComponent<GameUnitNet>().CellNumber = i;
         unit.GetComponent<GameUnitNet>().Initialize();
+        NetworkServer.Spawn(unit);
         return unit.GetComponent<UnitNet>();
     }
 

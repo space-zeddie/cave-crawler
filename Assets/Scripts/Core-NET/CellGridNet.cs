@@ -89,19 +89,25 @@ public class CellGridNet : NetworkBehaviour
         }
     }
 
-    public void CalculatePlayers()
+    public PlayerNet CalculatePlayers()
     {
         Players = new List<PlayerNet>();
+        PlayerNet pl = null;
         for (int i = 0; i < PlayersParent.childCount; i++)
         {
             var player = PlayersParent.GetChild(i).GetComponent<PlayerNet>();
             if (player != null)
+            {
                 Players.Add(player);
+                if (player.PlayerNumber == 1) pl = player;
+            }
+            
             else
                 Debug.LogError("Invalid object in Players Parent game object");
         }
         NumberOfPlayers = Players.Count;
         CurrentPlayerNumber = Players.Min(p => p.PlayerNumber);
+        return pl;
     }
 
     void OnPlayerConnected(NetworkPlayer player)
@@ -124,17 +130,19 @@ public class CellGridNet : NetworkBehaviour
     public void CreateUnits()
     {
         InitUnits();
-        CalculatePlayers();
         StartGame();
     }
 
     void InitUnits()
     {
         var unitGenerator = GetComponent<IUnitGeneratorNet>();
+        HumanPlayerNet p = CalculatePlayers().GetComponent<HumanPlayerNet>();
         if (unitGenerator != null)
         {
             Debug.Log("call to init units");
-            Units = unitGenerator.SpawnUnits(Cells);
+            p.Cmd_SpawnUnits();
+           // Units = unitGenerator.SpawnUnits(Cells);
+            Units = new List<UnitNet>(GameObject.FindObjectOfType<UnitParentScript>().gameObject.transform.GetComponentsInChildren<UnitNet>());
             Debug.Log(Units.Count);
             for (int i = 0; i < Units.Count; ++i)
             {
