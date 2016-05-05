@@ -19,14 +19,14 @@ public class FloorCellNet : HexagonNet
         int priorMovementPoints = moveable.MovementPoints;
         if (!(spawn is Exit)) moveable.Move(this, moveable.FindPath(moveable.GetAvailableCells(), this));
         int deltaPoints = priorMovementPoints - moveable.MovementPoints;
-        Debug.Log(PlayersParent.Instance.GetComponentInChildren<HumanPlayer>());
-        PlayersParent.Instance.GetComponentInChildren<HumanPlayer>().Score -= deltaPoints;
+        Debug.Log(PlayersParent.Instance.GetComponentInChildren<HumanPlayerNet>());
+        PlayersParent.Instance.GetComponentInChildren<HumanPlayerNet>().Score -= deltaPoints;
 
         moveable.SetHasMoved(true);
 
         if (spawn is Exit)
         {
-            PlayersParent.Instance.GetComponentInChildren<HumanPlayer>().Score += Exit.BUFF_POINTS;
+            PlayersParent.Instance.GetComponentInChildren<HumanPlayerNet>().Score += Exit.BUFF_POINTS;
             (spawn as Exit).VanishUnit(moveable);
         }
         moveable.UnSelect();

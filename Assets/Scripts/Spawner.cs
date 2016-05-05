@@ -105,9 +105,9 @@ public class Spawner : NetworkBehaviour
         GameObject player = null;
         Debug.Log("Child count: " + players.childCount);
         for (int i = 0; i < players.childCount; ++i)
-            if (!NetworkServer.active && players.GetChild(i).GetComponent<HumanPlayer>().PlayerNumber > 0)
+            if (!NetworkServer.active && players.GetChild(i).GetComponent<HumanPlayerNet>().PlayerNumber > 0)
                 player = players.GetChild(i).gameObject;
-            else if (NetworkServer.active && players.GetChild(i).GetComponent<HumanPlayer>().PlayerNumber == 0)
+            else if (NetworkServer.active && players.GetChild(i).GetComponent<HumanPlayerNet>().PlayerNumber == 0)
                 player = players.GetChild(i).gameObject;
         return player;
 
