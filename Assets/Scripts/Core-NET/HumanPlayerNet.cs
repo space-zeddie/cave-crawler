@@ -1,10 +1,10 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
 using System;
 using System.Collections.Generic;
 
-public class HumanPlayer : Player
+public class HumanPlayerNet : PlayerNet
 {
     public UnitParentScript allUnits;
     public GameObject CarrierPrefab;
@@ -15,9 +15,9 @@ public class HumanPlayer : Player
     public GameObject[] gameUnits = new GameObject[0];
     public int Score;
 
-   // void Start() { }
+    // void Start() { }
 
-   // void OnLevelWasLoaded(int level)
+    // void OnLevelWasLoaded(int level)
     //void OnServerAddPlayer()
     void Start()
     {
@@ -25,11 +25,11 @@ public class HumanPlayer : Player
             this.gameObject.transform.parent = PlayersParent.Instance.gameObject.transform;
         if (UnitParentScript.Instance != null)
             allUnits = UnitParentScript.Instance;
-       // if (!NetworkServer.active && Application.loadedLevel == 4)
-       // {
-            this.PlayerNumber = PlayersParent.Instance.gameObject.transform.childCount - 2;
-            if (PlayerNumber == 2 && !NetworkServer.active) ClientScene.SetLocalObject(this.GetComponent<NetworkIdentity>().netId, this.gameObject);
-       // }
+        // if (!NetworkServer.active && Application.loadedLevel == 4)
+        // {
+        this.PlayerNumber = PlayersParent.Instance.gameObject.transform.childCount - 2;
+        if (PlayerNumber == 2 && !NetworkServer.active) ClientScene.SetLocalObject(this.GetComponent<NetworkIdentity>().netId, this.gameObject);
+        // }
         player_state = this.gameObject.GetComponent<PlayerState>();
         //Debug.Log("Started HumanPlayer " + PlayerNumber);
         this.gameObject.SetActive(true);
@@ -41,13 +41,13 @@ public class HumanPlayer : Player
         if (!player_state.Loaded) player_state.LoadFromGlobal();
         if (player_state.LocalPlayerData.DeployedUnits == null || player_state.LocalPlayerData.DeployedUnits.GetLength(0) == 0)
         {
-           // Debug.Log("Assigning Units");
+            // Debug.Log("Assigning Units");
             player_state.LocalPlayerData.DeployedUnits = new int[2];
             player_state.LocalPlayerData.DeployedUnits[0] = 1; // carrier
             player_state.LocalPlayerData.DeployedUnits[1] = 2; // sentinel
             player_state.LocalPlayerData.unitI = new int[2] { -1, -1 };
             player_state.LocalPlayerData.unitJ = new int[2] { -1, -1 };
-          //  PlayerState.Instance.LocalPlayerData.DeployedUnitCell = new int[2]{-1, -1};
+            //  PlayerState.Instance.LocalPlayerData.DeployedUnitCell = new int[2]{-1, -1};
         }
         gameUnits = new GameObject[player_state.LocalPlayerData.DeployedUnits.GetLength(0)];
         //Debug.Log(PlayerState.Instance.LocalPlayerData.unitI);
@@ -56,30 +56,30 @@ public class HumanPlayer : Player
         {
             if (unitTypeCode == 1) gameUnits[i] = CarrierPrefab;
             else if (unitTypeCode == 2) gameUnits[i] = SentinelPrefab;
-//            Debug.Log(gameUnits[i]);
-           // gameUnits[i].CellNumber = PlayerState.Instance.LocalPlayerData.DeployedUnitCell[i];
+            //            Debug.Log(gameUnits[i]);
+            // gameUnits[i].CellNumber = PlayerState.Instance.LocalPlayerData.DeployedUnitCell[i];
             if (!StatManager.Instance.IsNewCave)
             {
-                gameUnits[i].GetComponent<GameUnit>().Cell = new FloorCell();
-                (gameUnits[i].GetComponent<GameUnit>().Cell as Hexagon).i = player_state.LocalPlayerData.unitI[i];
-                (gameUnits[i].GetComponent<GameUnit>().Cell as Hexagon).j = player_state.LocalPlayerData.unitJ[i];
+                gameUnits[i].GetComponent<GameUnitNet>().Cell = new FloorCellNet();
+                (gameUnits[i].GetComponent<GameUnitNet>().Cell as HexagonNet).i = player_state.LocalPlayerData.unitI[i];
+                (gameUnits[i].GetComponent<GameUnitNet>().Cell as HexagonNet).j = player_state.LocalPlayerData.unitJ[i];
             }
             ++i;
         }
         Score = player_state.LocalPlayerData.Score;
     }
 
-    public override void Play(CellGrid cellGrid)
+    public override void Play(CellGridNet cellGrid)
     {
         cellGrid.CellGridState = new CellGridStateWaitingForInput(cellGrid);
     }
 
     public void SaveStats()
     {
-        player_state.LocalPlayerData.map = GameObject.FindObjectOfType<HexGridCellularAutomata>().GetMap();
+        player_state.LocalPlayerData.map = GameObject.FindObjectOfType<HexGCANetwork>().GetMap();
         int i = 0;
         gameUnits = new GameObject[allUnits.transform.childCount];
-        foreach (GameUnit gu in allUnits.GetComponentsInChildren<GameUnit>())
+        foreach (GameUnitNet gu in allUnits.GetComponentsInChildren<GameUnitNet>())
             gameUnits[i++] = gu.gameObject;
         player_state.LocalPlayerData.DeployedUnits = new int[gameUnits.GetLength(0)];
         player_state.LocalPlayerData.unitI = new int[gameUnits.GetLength(0)];
@@ -87,11 +87,11 @@ public class HumanPlayer : Player
         i = 0;
         foreach (GameObject gu in gameUnits)
         {
-            if (gu.GetComponent<GameUnit>() is Carrier) player_state.LocalPlayerData.DeployedUnits[i] = 1;
-            else if (gu.GetComponent<GameUnit>() is Sentinel) player_state.LocalPlayerData.DeployedUnits[i] = 2;
-           // PlayerState.Instance.LocalPlayerData.DeployedUnitCell[i] = gu.CellNumber;
-            player_state.LocalPlayerData.unitI[i] = (gu.GetComponent<GameUnit>().Cell as Hexagon).i;
-            player_state.LocalPlayerData.unitJ[i] = (gu.GetComponent<GameUnit>().Cell as Hexagon).j;
+            if (gu.GetComponent<GameUnitNet>() is CarrierNet) player_state.LocalPlayerData.DeployedUnits[i] = 1;
+            else if (gu.GetComponent<GameUnitNet>() is SentinelNet) player_state.LocalPlayerData.DeployedUnits[i] = 2;
+            // PlayerState.Instance.LocalPlayerData.DeployedUnitCell[i] = gu.CellNumber;
+            player_state.LocalPlayerData.unitI[i] = (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).i;
+            player_state.LocalPlayerData.unitJ[i] = (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).j;
             Debug.Log(player_state.LocalPlayerData.unitI[i] + ", " + player_state.LocalPlayerData.unitJ[i]);
             ++i;
         }

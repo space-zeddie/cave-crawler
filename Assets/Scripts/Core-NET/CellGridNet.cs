@@ -34,7 +34,7 @@ public class CellGridNet : NetworkBehaviour
 
     public int NumberOfPlayers { get; private set; }
     
-    public Player CurrentPlayer
+    public PlayerNet CurrentPlayer
     {
         get { return Players.Find(p => p.PlayerNumber.Equals(CurrentPlayerNumber)); }
     }
@@ -44,7 +44,7 @@ public class CellGridNet : NetworkBehaviour
     public Transform PlayersParent;
 
     
-    public List<Player> Players { get; private set; }
+    public List<PlayerNet> Players { get; private set; }
     
     public List<CellNet> Cells { get; private set; }
     
@@ -91,10 +91,10 @@ public class CellGridNet : NetworkBehaviour
 
     public void CalculatePlayers()
     {
-        Players = new List<Player>();
+        Players = new List<PlayerNet>();
         for (int i = 0; i < PlayersParent.childCount; i++)
         {
-            var player = PlayersParent.GetChild(i).GetComponent<Player>();
+            var player = PlayersParent.GetChild(i).GetComponent<PlayerNet>();
             if (player != null)
                 Players.Add(player);
             else

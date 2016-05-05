@@ -77,23 +77,26 @@ public class Spawner : NetworkBehaviour
     {
         if (prefab.GetComponent<NetworkIdentity>() == null) return null;
         var go = (GameObject)Instantiate(prefab, position, Quaternion.identity);
-        Cmd_Spawn(prefab, position);
+        Cmd_Spawn(go);
         Debug.Log("LocalPlayer " + LocalPlayer());
         Debug.Log("Spawned " + prefab + " on " + position + " with " + LocalPlayer() + " authority");
         return go;
     }
 
     [Command]
-    public void Cmd_Spawn(GameObject prefab, Vector3 position)
+    public void Cmd_Spawn(GameObject go)
     {
-        var go = (GameObject)Instantiate(prefab, position, Quaternion.identity);
         NetworkServer.SpawnWithClientAuthority(go, LocalPlayer());
     }
 
-    void FindObject(GameObject prefab, Vector3 position)
+    GameObject FindUnit(GameObject prefab, Vector3 position)
     {
-        string name = prefab.name;
-        GameObject.FindGameObjectsWithTag("Unit");
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Unit"))
+        {
+            if (go.transform.position.Equals(position))
+                return go;
+        }
+        return null;
     }
 
     public GameObject LocalPlayer()

@@ -7,5 +7,4 @@ public abstract class Player : MonoBehaviour
     /// Method is called every turn. Allows player to interact with his units.
     /// </summary>         
     public abstract void Play(CellGrid cellGrid);
-    public abstract void Play(CellGridNet cellGrid);
 }

@@ -34,12 +34,12 @@ public class HexGCANetwork : ICellGridGeneratorNet
             this.gameObject.GetComponent<CellGridNet>().PlayersParent = PlayersParent.Instance.gameObject.transform;
         if (UnitParentScript.Instance != null)
             this.gameObject.GetComponent<UnitGeneratorNet>().UnitsParent = UnitParentScript.Instance.gameObject.transform;
-        HumanPlayer thisPlayer = null;
+        HumanPlayerNet thisPlayer = null;
         for (int i = 0; i < PlayersParent.Instance.gameObject.transform.childCount; ++i)
         {
             GameObject p = PlayersParent.Instance.gameObject.transform.GetChild(i).gameObject;
-            if (p.GetComponent<NetworkIdentity>().isLocalPlayer || p.GetComponent<HumanPlayer>().PlayerNumber == 0)
-                thisPlayer = p.GetComponent<HumanPlayer>();
+            if (p.GetComponent<NetworkIdentity>().isLocalPlayer || p.GetComponent<HumanPlayerNet>().PlayerNumber == 0)
+                thisPlayer = p.GetComponent<HumanPlayerNet>();
         }
         if (thisPlayer != null)
             this.gameObject.GetComponent<UnitGeneratorNet>().player = thisPlayer;
@@ -86,12 +86,12 @@ public class HexGCANetwork : ICellGridGeneratorNet
         Debug.Log("Local player started");
         if (!NetworkServer.active)
         {
-            HumanPlayer thisPlayer = null;
+            HumanPlayerNet thisPlayer = null;
             for (int i = 0; i < PlayersParent.Instance.gameObject.transform.childCount; ++i)
             {
                 GameObject p = PlayersParent.Instance.gameObject.transform.GetChild(i).gameObject;
-                if (p.GetComponent<NetworkIdentity>().isLocalPlayer || p.GetComponent<HumanPlayer>().PlayerNumber == 0)
-                    thisPlayer = p.GetComponent<HumanPlayer>();
+                if (p.GetComponent<NetworkIdentity>().isLocalPlayer || p.GetComponent<HumanPlayerNet>().PlayerNumber == 0)
+                    thisPlayer = p.GetComponent<HumanPlayerNet>();
             }
             if (thisPlayer != null)
                 this.gameObject.GetComponent<UnitGeneratorNet>().player = thisPlayer;

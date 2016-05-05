@@ -70,7 +70,7 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
 
     private void OnUnitAttacked(object sender, AttackEventArgsNet e)
     {
-        if (!(CellGrid.CurrentPlayer is HumanPlayer)) return;
+        if (!(CellGrid.CurrentPlayer is HumanPlayerNet)) return;
 
         OnUnitDehighlighted(sender, e);
 
@@ -139,7 +139,7 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
     {
         StatManager.Instance.IsNewCave = false;
         ObstacleGeneratorNet.Instance.SaveSpawns();
-        PlayersParent.GetComponentInChildren<HumanPlayer>().SaveStats();
+        PlayersParent.GetComponentInChildren<HumanPlayerNet>().SaveStats();
         GameManager.Instance.SaveGame();
     }
 

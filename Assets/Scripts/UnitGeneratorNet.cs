@@ -13,7 +13,7 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
     public HexGCANetwork Hex;
     bool instantiated = false;
 
-    public HumanPlayer player;
+    public HumanPlayerNet player;
 
     public GameObject CarrierPrefab;
     public GameObject SentinelPrefab;
