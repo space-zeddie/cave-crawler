@@ -12,14 +12,19 @@ public class Spawner : NetworkBehaviour
     {
         nm = GameObject.FindObjectOfType<NetworkManager>();
         StatManager.Instance.IsNewCave = true;
-    }    void Start()
+    }
+
+    void Start()
     {
         if (!NetworkServer.active) { Debug.Log("added player on client"); ClientScene.AddPlayer(1); }
         Debug.Log("Local players: " + ClientScene.localPlayers.Count);
         if (!NetworkServer.active) { Debug.Log("connecting client to local server"); ClientScene.ConnectLocalServer(); }
      //   Debug.Log("Active local player:" + GameObject.FindObjectOfType<Spawner>().LocalPlayer());
      //   Debug.Log(nm.numPlayers);
-    }
+    }
+
+    
+
 
 	//void OnStartServer () 
     void OnLevelWasLoaded(int level)
@@ -72,24 +77,34 @@ public class Spawner : NetworkBehaviour
     {
         if (prefab.GetComponent<NetworkIdentity>() == null) return null;
         var go = (GameObject)Instantiate(prefab, position, Quaternion.identity);
-        Cmd_Spawn(go);
+        Cmd_Spawn(prefab, position);
         Debug.Log("LocalPlayer " + LocalPlayer());
         Debug.Log("Spawned " + prefab + " on " + position + " with " + LocalPlayer() + " authority");
         return go;
     }
 
     [Command]
-    public void Cmd_Spawn(GameObject go)
+    public void Cmd_Spawn(GameObject prefab, Vector3 position)
     {
+        var go = (GameObject)Instantiate(prefab, position, Quaternion.identity);
         NetworkServer.SpawnWithClientAuthority(go, LocalPlayer());
+    }
+
+    void FindObject(GameObject prefab, Vector3 position)
+    {
+        string name = prefab.name;
+        GameObject.FindGameObjectsWithTag("Unit");
     }
 
     public GameObject LocalPlayer()
     {
         var players = GameObject.FindObjectOfType<PlayersParent>().gameObject.transform;
         GameObject player = null;
+        Debug.Log("Child count: " + players.childCount);
         for (int i = 0; i < players.childCount; ++i)
-            if (players.GetChild(i).GetComponent<NetworkIdentity>().isLocalPlayer)
+            if (!NetworkServer.active && players.GetChild(i).GetComponent<HumanPlayer>().PlayerNumber > 0)
+                player = players.GetChild(i).gameObject;
+            else if (NetworkServer.active && players.GetChild(i).GetComponent<HumanPlayer>().PlayerNumber == 0)
                 player = players.GetChild(i).gameObject;
         return player;
 

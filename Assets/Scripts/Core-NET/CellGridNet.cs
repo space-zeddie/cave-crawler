@@ -104,8 +104,14 @@ public class CellGridNet : NetworkBehaviour
         CurrentPlayerNumber = Players.Min(p => p.PlayerNumber);
     }
 
+    void OnPlayerConnected(NetworkPlayer player)
+    {
+        Debug.Log("Player connected");
+    }
+
     public override void OnStartClient()
     {
+        Debug.Log("Started client");
         if (!NetworkServer.active)
         {
             Cells = new List<CellNet>();
