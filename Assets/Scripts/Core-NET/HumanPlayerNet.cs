@@ -35,7 +35,7 @@ public class HumanPlayerNet : PlayerNet
 
     void FixedUpdate()
     {
-        if (PlayersParent.Instance.gameObject.transform.childCount > 2 && !Spawner.updated)
+        if (PlayersParent.Instance.gameObject.transform.childCount > 2 && !Spawner.updated && !NetworkServer.active)
         {
             GameObject.FindGameObjectWithTag("Grid").GetComponent<CellGridNet>().CreateUnits();
             Spawner.updated = true;
@@ -43,9 +43,9 @@ public class HumanPlayerNet : PlayerNet
     }
 
     [Command]
-    public void Cmd_Spawn(GameObject go, GameObject localPlayer)
+    public void Cmd_Spawn(GameObject go)
     {
-        NetworkServer.SpawnWithClientAuthority(go, localPlayer);
+        NetworkServer.Spawn(go);
     }
 
 

@@ -87,9 +87,9 @@ public class Spawner : NetworkBehaviour
         var go = (GameObject)Instantiate(prefab, position, Quaternion.identity);
         player = LocalPlayer();
         Debug.Log(player);
-        player.GetComponent<HumanPlayerNet>().Cmd_Spawn(go, LocalPlayer());
+        player.GetComponent<HumanPlayerNet>().Cmd_Spawn(go);
         Debug.Log("LocalPlayer " + LocalPlayer());
-        Debug.Log("Spawned " + prefab + " on " + position + " with " + LocalPlayer() + " authority");
+        Debug.Log("Spawned " + prefab); //+ " on " + position + " with " + LocalPlayer() + " authority");
         return go;
     }
 

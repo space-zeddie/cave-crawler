@@ -139,10 +139,9 @@ public class CellGridNet : NetworkBehaviour
             for (int i = 0; i < Units.Count; ++i)
             {
                 var unit = Units[i];
-                Debug.Log(unit);
+               // Debug.Log();
                 unit.UnitClicked += OnUnitClicked;
                 unit.UnitDestroyed += OnUnitDestroyed;
-                if (i == 1) break;  
             }
         }
         else
