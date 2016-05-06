@@ -138,6 +138,7 @@ public class CellGridNet : NetworkBehaviour
     public void CreateUnits()
     {
         InitUnits();
+        GUIControllerNet.Instance.Init();
     }
 
     void InitUnits()
@@ -168,21 +169,25 @@ public class CellGridNet : NetworkBehaviour
 
     private void OnCellDehighlighted(object sender, EventArgs e)
     {
-        CellGridState.OnCellDeselected(sender as CellNet);
+        if (CellGridState != null)
+            CellGridState.OnCellDeselected(sender as CellNet);
     }
     private void OnCellHighlighted(object sender, EventArgs e)
     {
-        Debug.Log(CellGridState);
-        CellGridState.OnCellSelected(sender as CellNet);
+        if (CellGridState != null)
+            CellGridState.OnCellSelected(sender as CellNet);
+        
     } 
     private void OnCellClicked(object sender, EventArgs e)
     {
-        CellGridState.OnCellClicked(sender as CellNet);
+        if (CellGridState != null)
+            CellGridState.OnCellClicked(sender as CellNet);
     }
 
     private void OnUnitClicked(object sender, EventArgs e)
     {
-        CellGridState.OnUnitClicked(sender as UnitNet);
+        if (CellGridState != null)
+            CellGridState.OnUnitClicked(sender as UnitNet);
     }
     private void OnUnitDestroyed(object sender, AttackEventArgsNet e)
     {

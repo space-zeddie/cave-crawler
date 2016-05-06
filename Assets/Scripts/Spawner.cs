@@ -31,6 +31,14 @@ public class Spawner : NetworkBehaviour
        // Debug.Log("Local players: " + ClientScene.localPlayers.Count);
     }
 
+
+    public override void OnStartClient()
+    {
+        if (!NetworkServer.active)
+        {
+            ClientScene.AddPlayer(1);
+        }
+    }
     
 
 
