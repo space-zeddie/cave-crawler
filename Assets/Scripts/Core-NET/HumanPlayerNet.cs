@@ -35,10 +35,16 @@ public class HumanPlayerNet : PlayerNet
 
     void FixedUpdate()
     {
-        if (PlayersParent.Instance.gameObject.transform.childCount > 2 && !Spawner.updated && !NetworkServer.active)
+        if (PlayersParent.Instance.gameObject.transform.childCount >= 2 && !Spawner.updated && !NetworkServer.active)
         {
-            GameObject.FindGameObjectWithTag("Grid").GetComponent<CellGridNet>().CreateUnits();
-            Spawner.updated = true;
+            var go = GameObject.FindGameObjectWithTag("Grid").GetComponent<CellGridNet>().CalculatePlayers();
+            if (go != null)
+            {
+                Debug.Log("FixedUpdate");
+                GameObject.FindGameObjectWithTag("Grid").GetComponent<CellGridNet>().CreateUnits();
+                Spawner.updated = true;
+                GameObject.FindGameObjectWithTag("Grid").GetComponent<CellGridNet>().StartGame();
+            }
         }
     }
 
@@ -97,6 +103,7 @@ public class HumanPlayerNet : PlayerNet
 
     public override void Play(CellGridNet cellGrid)
     {
+        Debug.Log("play called");
         cellGrid.CellGridState = new CellGridStateWaitingForInput(cellGrid);
     }
 

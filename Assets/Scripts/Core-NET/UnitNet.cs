@@ -121,6 +121,7 @@ public abstract class UnitNet : NetworkBehaviour
         TotalHitPoints = HitPoints;
         TotalMovementPoints = MovementPoints;
         TotalActionPoints = ActionPoints;
+        this.gameObject.GetComponent<SpriteRenderer>();
     }
 
     public override void OnStartClient()

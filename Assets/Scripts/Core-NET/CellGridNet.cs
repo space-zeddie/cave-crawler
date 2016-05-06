@@ -85,6 +85,7 @@ public class CellGridNet : NetworkBehaviour
             }
             else
                 Debug.LogError("No IUnitGenerator script attached to cell grid");
+
             StartGame();
         }
     }
@@ -123,14 +124,20 @@ public class CellGridNet : NetworkBehaviour
             Cells = new List<CellNet>();
             foreach (CellNet cell in GameObject.FindObjectsOfType<CellNet>())
                 Cells.Add(cell);
+            foreach (var cell in Cells)
+            {
+                cell.CellClicked += OnCellClicked;
+                cell.CellHighlighted += OnCellHighlighted;
+                cell.CellDehighlighted += OnCellDehighlighted;
+            }
            
         }
+
     }
    
     public void CreateUnits()
     {
         InitUnits();
-        StartGame();
     }
 
     void InitUnits()
@@ -154,6 +161,8 @@ public class CellGridNet : NetworkBehaviour
         }
         else
             Debug.LogError("No IUnitGenerator script attached to cell grid");
+
+       // StartGame();
     }
 
 
@@ -163,6 +172,7 @@ public class CellGridNet : NetworkBehaviour
     }
     private void OnCellHighlighted(object sender, EventArgs e)
     {
+        Debug.Log(CellGridState);
         CellGridState.OnCellSelected(sender as CellNet);
     } 
     private void OnCellClicked(object sender, EventArgs e)
@@ -193,7 +203,7 @@ public class CellGridNet : NetworkBehaviour
         if(GameStarted != null)
             GameStarted.Invoke(this, new EventArgs());
 
-        Units.FindAll(u => u.PlayerNumber.Equals(CurrentPlayerNumber)).ForEach(u => { u.OnTurnStart(); });
+        Units.FindAll(u => u.PlayerNumber.Equals(CurrentPlayerNumber - 1)).ForEach(u => { u.OnTurnStart(); });
         Players.Find(p => p.PlayerNumber.Equals(CurrentPlayerNumber)).Play(this);
     }
 
