@@ -69,6 +69,7 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
         instantiated = true;
         List<UnitNet> ret = new List<UnitNet>();
         player.LoadFromGlobal();
+        this.player = player;
         ret.Add(InstantiateUnit(player.gameUnits[0]));
         for (int i = 1; i < player.gameUnits.GetLength(0); ++i)
         {
@@ -137,6 +138,8 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
         unit.transform.parent = UnitsParent;
         //if (i != -1) unit.GetComponent<GameUnitNet>().CellNumber = i;
         unit.GetComponent<GameUnitNet>().Initialize();
+        unit.GetComponent<GameUnitNet>().PlayerNumber = player.PlayerNumber;
+        Debug.Log("Player Number: " + unit.GetComponent<GameUnitNet>().PlayerNumber);
         NetworkServer.Spawn(unit);
         return unit.GetComponent<UnitNet>();
     }

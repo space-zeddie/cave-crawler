@@ -127,7 +127,7 @@ public abstract class UnitNet : NetworkBehaviour
     {
         if (!NetworkServer.active)
         {
-            this.PlayerNumber++;
+            //this.PlayerNumber++;
             GameObject parentObject = GameObject.FindObjectOfType<UnitParentScript>().gameObject;//ClientScene.FindLocalObject(parentNetId);
             transform.SetParent(parentObject.transform);
         }

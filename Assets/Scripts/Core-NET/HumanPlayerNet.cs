@@ -56,6 +56,8 @@ public class HumanPlayerNet : PlayerNet
     public void Cmd_Spawn(GameObject go)
     {
         Debug.Log("Spawning for player number: " + PlayerNumber + " an object " + go);
+        if (go.GetComponent<GameUnitNet>() != null)
+            go.GetComponent<GameUnitNet>().PlayerNumber = PlayerNumber;
         NetworkServer.Spawn(go);
     }
 

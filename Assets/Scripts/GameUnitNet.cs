@@ -28,7 +28,7 @@ public class GameUnitNet : UnitNet
         if (!NetworkServer.active)
         {
             transform.SetParent(GameObject.FindObjectOfType<UnitParentScript>().transform);
-            this.PlayerNumber = 1;
+           // this.PlayerNumber = 1;
         }
     }
 
