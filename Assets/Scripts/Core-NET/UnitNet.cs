@@ -42,7 +42,8 @@ public abstract class UnitNet : NetworkBehaviour
 
     public void SetState(UnitState state)
     {
-        UnitState.MakeTransition(state);
+        if (UnitState != null)
+            UnitState.MakeTransition(state);
     }
 
     [SerializeField]
@@ -116,6 +117,7 @@ public abstract class UnitNet : NetworkBehaviour
 
     private static IPathfinding _pathfinder = new AStarPathfinding();
 
+
     /// <summary>
     /// Method called after object instantiation to initialize fields etc. 
     /// </summary>
@@ -128,6 +130,9 @@ public abstract class UnitNet : NetworkBehaviour
         TotalHitPoints = HitPoints;
         TotalMovementPoints = MovementPoints;
         TotalActionPoints = ActionPoints;
+
+       // pos_x = this.gameObject.transform.position.x;
+       // pos_y = this.gameObject.transform.position.y;
     }
 
     public override void OnStartClient()
@@ -272,8 +277,15 @@ public abstract class UnitNet : NetworkBehaviour
         Cell = destinationCell;
         destinationCell.IsTaken = true;
 
-        if (MovementSpeed > 0)
-            StartCoroutine(MovementAnimation(path));
+        List<GameObject> gos = new List<GameObject>();
+        foreach (CellNet c in path)
+            gos.Add(c.gameObject);
+
+        HumanPlayerNet player = GetMyPlayer();
+
+        Debug.Log("player: " + player + " cell count " + gos.Count + " id: " + this.GetComponent<GameUnitNet>().id);
+        if (MovementSpeed > 0 && player != null)
+            player.Cmd_MoveUnit(this.GetComponent<GameUnitNet>().id, gos); //StartCoroutine(MovementAnimation(path));
         else
             transform.position = Cell.transform.position;
 
@@ -295,6 +307,23 @@ public abstract class UnitNet : NetworkBehaviour
         }
 
         isMoving = false;
+    }
+
+    public void MoveAndAnimate(List<GameObject> path)
+    {
+        List<CellNet> cellpath = new List<CellNet>();
+        foreach (GameObject go in path)
+            cellpath.Add(go.GetComponent<CellNet>());
+        StartCoroutine(MovementAnimation(cellpath));
+    }
+
+    public HumanPlayerNet GetMyPlayer()
+    {
+        var go = GameObject.FindObjectOfType<PlayersParent>();
+        if (go == null) return null;
+        foreach (HumanPlayerNet player in go.GetComponentsInChildren<HumanPlayerNet>())
+            if (player.PlayerNumber == this.PlayerNumber) return player;
+        return null;
     }
 
     ///<summary>

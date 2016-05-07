@@ -68,26 +68,17 @@ public class HumanPlayerNet : PlayerNet
     }
 
     [Command]
-    public void Cmd_HighlightAvailableCells(bool isCarrier)
+    public void Cmd_MoveUnit(int ID, List<GameObject> path)
     {
         GameUnitNet unit = null;
+        Debug.Log("MoveUnit called on " + PlayerNumber);
         foreach (GameUnitNet gunit in allUnits.GetComponentsInChildren<GameUnitNet>())
         {
-            if (isCarrier && gunit is CarrierNet) unit = gunit;
-            else if (!isCarrier && gunit is SentinelNet) unit = gunit;
+            if (gunit.id == ID) unit = gunit;
         }
-        if (unit == null) return;
-        unit.available = null;
-        unit.PopulateAvailableCells();
-        //Debug.Log(available.Count);
-        foreach (CellNet cell in unit.available)
-        {
-            (cell as HexagonNet).MarkAsReachable();
-            if (cell is FloorCellNet)
-                (cell as FloorCellNet).moveable = unit;
-            else if (cell is WallCellNet && unit.canShoot)
-                (cell as WallCellNet).moveable = unit;
-        }
+        if (unit == null) { Debug.Log("unit is null"); return; }
+        Debug.Log("Movement called on " + unit.id);
+        unit.MoveAndAnimate(path);
     }
 
     void OnServerAddPlayer()

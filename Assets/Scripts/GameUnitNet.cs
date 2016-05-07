@@ -14,7 +14,8 @@ public class GameUnitNet : UnitNet
     bool hasMoved;
     public bool isDeployed;
     bool isSelected;
-    string id = "";
+    [SyncVar]
+    public int id;
 
     public List<CellNet> available;
 
@@ -47,7 +48,7 @@ public class GameUnitNet : UnitNet
         isDeployed = true;
         hasMoved = false;
         isSelected = false;
-        if (id.Length == 0) InitID();
+        InitID();
     }
 
     protected override IEnumerator MovementAnimation(List<CellNet> path)
@@ -61,7 +62,8 @@ public class GameUnitNet : UnitNet
 
     void InitID()
     {
-        id = this.GetType().ToString() + "," + this.TotalHitPoints + "," + this.AttackRange + "," + this.MovementPoints + "," + this.PlayerNumber;
+        if (this is CarrierNet) id = PlayerNumber + 10;
+        else id = PlayerNumber + 20;
     }
 
     /* public static GameUnit ParseGameUnitFromID(string id)
@@ -94,7 +96,7 @@ public class GameUnitNet : UnitNet
         return base.ToString() + " #" + id;
     }
 
-    public string ID()
+    public int ID()
     {
         return id;
     }
@@ -140,14 +142,7 @@ public class GameUnitNet : UnitNet
         }
     }
 
-    public HumanPlayerNet GetMyPlayer()
-    {
-        var go = GameObject.FindObjectOfType<PlayersParent>();
-        if (go == null) return null;
-        foreach (HumanPlayerNet player in go.GetComponentsInChildren<HumanPlayerNet>())
-            if (player.PlayerNumber == this.PlayerNumber) return player;
-        return null;
-    }
+    
 
     public void PopulateAvailableCells(CellNet cell = null, int limit = 0)
     {
@@ -157,7 +152,7 @@ public class GameUnitNet : UnitNet
         if (available == null) available = new List<CellNet>();
 
         if (limit == this.MovementPoints) return;
-        Debug.Log("cells: " + this.Cell  );
+//        Debug.Log("cells: " + this.Cell  );
         available.AddRange((cell as HexagonNet).GetNeighbours(new List<CellNet>(cell.gameObject.transform.parent.GetComponentsInChildren<CellNet>())));
         List<CellNet> cells = new List<CellNet>(available);
         foreach (CellNet c in cells)

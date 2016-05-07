@@ -146,7 +146,7 @@ public class CellGridNet : NetworkBehaviour
     {
         var unitGenerator = GetComponent<IUnitGeneratorNet>();
         HumanPlayerNet p = CalculatePlayers().GetComponent<HumanPlayerNet>();
-        if (unitGenerator != null)
+        if (unitGenerator != null && !NetworkServer.active)
         {
             Debug.Log("call to init units");
             p.Cmd_SpawnUnits();
