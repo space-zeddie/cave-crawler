@@ -87,9 +87,22 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
         //}
 
         Debug.Log("player number " + player.PlayerNumber);
-        if (player.PlayerNumber == 0) CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer(player.PlayerNumber);
-        else CarrierCamera1.gameObject.GetComponent<CameraController>().RelocateToPlayer(player.PlayerNumber);
+        Rpc_PositionCamera(player.PlayerNumber);
     }
+
+    [ClientRpc]
+    public void Rpc_PositionCamera(int player)
+    {
+        if (player == 0) CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer(player);
+        else CarrierCamera1.gameObject.GetComponent<CameraController>().RelocateToPlayer(player);
+    }
+
+    public void PositionCamera(int player)
+    {
+        if (player == 0) CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer(player);
+        else CarrierCamera1.gameObject.GetComponent<CameraController>().RelocateToPlayer(player);
+    }
+
 
     UnitNet InstantiateUnit(GameObject prefab)
     {

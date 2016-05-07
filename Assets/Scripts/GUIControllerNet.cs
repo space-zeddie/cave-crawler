@@ -160,11 +160,13 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
                 SwitchCameras();
                 return;
             }
-
-            // ending turn
-            if (Input.GetKeyDown(KeyCode.N))
-                CellGrid.EndTurn(); //User ends his turn by pressing "n" on keyboard.
-            CheckForEndingConditions();
+            if (CellGrid != null)
+            {
+                // ending turn
+                if (Input.GetKeyDown(KeyCode.N))
+                    CellGrid.EndTurn(); //User ends his turn by pressing "n" on keyboard.
+                CheckForEndingConditions();
+            }
         }
     }
 

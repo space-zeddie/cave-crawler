@@ -21,6 +21,12 @@ public class GameUnitNet : UnitNet
     void Start()
     {
         InitID();
+        GameObject grid = GameObject.FindGameObjectWithTag("Grid");
+        if (grid != null)
+        {
+            if (NetworkServer.active) grid.GetComponent<UnitGeneratorNet>().Rpc_PositionCamera(PlayerNumber);
+            grid.GetComponent<UnitGeneratorNet>().PositionCamera(PlayerNumber);
+        }
     }
 
     void OnClientStart()
@@ -28,7 +34,6 @@ public class GameUnitNet : UnitNet
         if (!NetworkServer.active)
         {
             transform.SetParent(GameObject.FindObjectOfType<UnitParentScript>().transform);
-           // this.PlayerNumber = 1;
         }
     }
 
