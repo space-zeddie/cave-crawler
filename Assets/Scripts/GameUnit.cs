@@ -102,7 +102,7 @@ public class GameUnit : Unit
         // hotseat on the same device is needed
         if (this.PlayerNumber != 0) return;
 
-        if (!this.isSelected) this.UnSelect();
+        if (!this.isSelected) this.MarkAsSelected();
         else
         {
             this.UnSelect();
@@ -111,11 +111,9 @@ public class GameUnit : Unit
         GameObject unit_go = UnitParentScript.Instance.SelectedUnit();
         if (unit_go != null) unit_go.GetComponent<GameUnit>().UnSelect();
         UnitParentScript.Instance.SetSelectedUnit(this);
-        //this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
-       /* if (available.Count == 0) */
         available = null;
         PopulateAvailableCells();
-        Debug.Log(available.Count);
+        //Debug.Log(available.Count);
         foreach (Cell cell in available)
         {
             (cell as Hexagon).MarkAsReachable();

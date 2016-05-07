@@ -119,9 +119,9 @@ public class GameUnitNet : UnitNet
         GameObject unit_go = UnitParentScript.Instance.SelectedUnit();
         if (unit_go != null) unit_go.GetComponent<GameUnitNet>().UnSelect();
         UnitParentScript.Instance.SetSelectedUnit(this);
-        //this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
-//        Debug.Log(available);
-        if (available.Count == 0) PopulateAvailableCells();
+        available = null;
+        PopulateAvailableCells();
+        //Debug.Log(available.Count);
         foreach (CellNet cell in available)
         {
             (cell as HexagonNet).MarkAsReachable();
@@ -214,6 +214,7 @@ public class GameUnitNet : UnitNet
     {
         Debug.Log("Unselected");
         if (isSelected) isSelected = false;
+        MovementPoints = TotalMovementPoints;
         UnitParentScript.Instance.ClearSelectedUnit();
         if (available.Count != 0)
         {
