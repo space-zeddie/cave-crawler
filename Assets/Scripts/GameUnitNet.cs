@@ -140,6 +140,7 @@ public class GameUnitNet : UnitNet
         if (available == null) available = new List<CellNet>();
 
         if (limit == this.MovementPoints) return;
+        Debug.Log("cell: " + cell);
         available.AddRange((cell as HexagonNet).GetNeighbours(new List<CellNet>(cell.gameObject.transform.parent.GetComponentsInChildren<CellNet>())));
         List<CellNet> cells = new List<CellNet>(available);
         foreach (CellNet c in cells)

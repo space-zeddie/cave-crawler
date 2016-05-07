@@ -12,7 +12,8 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
     public GameObject PlayersParent;
     public GameObject ObstaclesParent;
     public Camera CarrierCamera;
-    public Camera OverheadCamera;
+    public Camera OverheadCamera1;
+    public Camera OverheadCamera2;
     public GameObject RuntimeInstantiated;
 
     bool init = false;
@@ -34,7 +35,7 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
         CellGrid.GameEnded += OnGameEnded;
 
         CarrierCamera.enabled = true;
-        OverheadCamera.enabled = false;
+        OverheadCamera1.enabled = false;
 
         init = true;
     }
@@ -170,6 +171,6 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
     public void SwitchCameras()
     {
         CarrierCamera.enabled = !CarrierCamera.enabled;
-        OverheadCamera.enabled = !OverheadCamera.enabled;
+        OverheadCamera1.enabled = !OverheadCamera1.enabled;
     }
 }
