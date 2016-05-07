@@ -16,7 +16,7 @@ public class GameUnitNet : UnitNet
     bool isSelected;
     string id = "";
 
-    List<CellNet> available;
+    public List<CellNet> available;
 
     void Start()
     {
@@ -109,7 +109,7 @@ public class GameUnitNet : UnitNet
         hasMoved = val;
     }
 
-    void OnMouseDown()
+    protected override void OnMouseDown()
     {
         // simply blocks any other player; should be removed if
         // hotseat on the same device is needed
@@ -124,6 +124,9 @@ public class GameUnitNet : UnitNet
         GameObject unit_go = UnitParentScript.Instance.SelectedUnit();
         if (unit_go != null) unit_go.GetComponent<GameUnitNet>().UnSelect();
         UnitParentScript.Instance.SetSelectedUnit(this);
+        /*HumanPlayerNet player = GetMyPlayer();
+        if (player != null)
+            player.Cmd_HighlightAvailableCells(this is CarrierNet);*/
         available = null;
         PopulateAvailableCells();
         //Debug.Log(available.Count);
@@ -135,6 +138,15 @@ public class GameUnitNet : UnitNet
             else if (cell is WallCellNet && this.canShoot)
                 (cell as WallCellNet).moveable = this;
         }
+    }
+
+    public HumanPlayerNet GetMyPlayer()
+    {
+        var go = GameObject.FindObjectOfType<PlayersParent>();
+        if (go == null) return null;
+        foreach (HumanPlayerNet player in go.GetComponentsInChildren<HumanPlayerNet>())
+            if (player.PlayerNumber == this.PlayerNumber) return player;
+        return null;
     }
 
     public void PopulateAvailableCells(CellNet cell = null, int limit = 0)

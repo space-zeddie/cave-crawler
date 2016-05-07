@@ -67,6 +67,29 @@ public class HumanPlayerNet : PlayerNet
         GameObject.FindObjectOfType<UnitGeneratorNet>().SpawnUnitsForClient(this);
     }
 
+    [Command]
+    public void Cmd_HighlightAvailableCells(bool isCarrier)
+    {
+        GameUnitNet unit = null;
+        foreach (GameUnitNet gunit in allUnits.GetComponentsInChildren<GameUnitNet>())
+        {
+            if (isCarrier && gunit is CarrierNet) unit = gunit;
+            else if (!isCarrier && gunit is SentinelNet) unit = gunit;
+        }
+        if (unit == null) return;
+        unit.available = null;
+        unit.PopulateAvailableCells();
+        //Debug.Log(available.Count);
+        foreach (CellNet cell in unit.available)
+        {
+            (cell as HexagonNet).MarkAsReachable();
+            if (cell is FloorCellNet)
+                (cell as FloorCellNet).moveable = unit;
+            else if (cell is WallCellNet && unit.canShoot)
+                (cell as WallCellNet).moveable = unit;
+        }
+    }
+
     void OnServerAddPlayer()
     {
         Debug.Log("server added local player");

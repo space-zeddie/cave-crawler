@@ -61,7 +61,14 @@ public abstract class UnitNet : NetworkBehaviour
     /// Cell that the unit is currently occupying.
     /// </summary>
     [SerializeField]
-    public CellNet Cell { get; set; }
+    public CellNet Cell 
+    { 
+        get { return unitcell.GetComponent<CellNet>(); }
+        set { unitcell = value.gameObject; }
+    }
+
+    [SyncVar]
+    private GameObject unitcell;
 
     [SerializeField]
     [SyncVar]
