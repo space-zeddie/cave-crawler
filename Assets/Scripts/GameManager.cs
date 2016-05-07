@@ -2,6 +2,7 @@
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : Singleton<GameManager> 
 {
@@ -119,8 +120,16 @@ public class GameManager : Singleton<GameManager>
     void LoadScene(int level)
     {
         loadingImage.SetActive(true);
+        NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
+        if (nm.isNetworkActive)
+        {
+            if (NetworkServer.active) nm.StopHost();
+            else nm.StopClient();
+        }
+        
         SceneManager.LoadScene(level, LoadSceneMode.Single);
         Debug.Log("loading " + level);
         currentScene = level;
+        
     }
 }

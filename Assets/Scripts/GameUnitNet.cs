@@ -124,12 +124,8 @@ public class GameUnitNet : UnitNet
         GameObject unit_go = UnitParentScript.Instance.SelectedUnit();
         if (unit_go != null) unit_go.GetComponent<GameUnitNet>().UnSelect();
         UnitParentScript.Instance.SetSelectedUnit(this);
-        /*HumanPlayerNet player = GetMyPlayer();
-        if (player != null)
-            player.Cmd_HighlightAvailableCells(this is CarrierNet);*/
         available = null;
         PopulateAvailableCells();
-        //Debug.Log(available.Count);
         foreach (CellNet cell in available)
         {
             (cell as HexagonNet).MarkAsReachable();
@@ -139,6 +135,7 @@ public class GameUnitNet : UnitNet
                 (cell as WallCellNet).moveable = this;
         }
     }
+       
 
     public HumanPlayerNet GetMyPlayer()
     {

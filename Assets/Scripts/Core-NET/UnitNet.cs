@@ -276,10 +276,27 @@ public abstract class UnitNet : NetworkBehaviour
             StartCoroutine(MovementAnimation(path));
         else
             transform.position = Cell.transform.position;
+        //Rpc_MoveOnClients(Cell.transform.position.x, Cell.transform.position.y);
+       // if (!NetworkServer.active)
+           // Cmd_MoveOnClients(Cell.transform.position.x, Cell.transform.position.y);
 
         if (UnitMoved != null)
-            UnitMoved.Invoke(this, new MovementEventArgsNet(Cell, destinationCell, path));    
+            UnitMoved.Invoke(this, new MovementEventArgsNet(Cell, destinationCell, path));
     }
+
+    [Command]
+    public void Cmd_MoveOnClients(float x, float y)
+    {
+        transform.position = new Vector3(x, y);
+        Rpc_MoveOnClients(x, y);
+    }
+
+    [ClientRpc]
+    public void Rpc_MoveOnClients(float x, float y)
+    {
+        transform.position = new Vector3(x, y);
+    }
+
     protected virtual IEnumerator MovementAnimation(List<CellNet> path)
     {
         isMoving = true;
