@@ -1,7 +1,14 @@
 fileFormatVersion: 2
 guid: 90b8e30dbcd6eae4db00ec8984b948b9
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: asset1_0
+    21300002: asset1_1
+    21300004: asset1_2
+    21300006: asset1_3
+    21300008: asset1_4
+    21300010: asset1_5
+    21300012: asset1_20
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -58,7 +65,15 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: 49, y: 54.5}
+        - {x: -31, y: 54.5}
+        - {x: -73, y: 43.5}
+        - {x: -73, y: -4.5}
+        - {x: 20, y: -54.5}
+        - {x: 63, y: -54.5}
+        - {x: 73, y: -8.5}
+        - {x: 73, y: 30.5}
     - name: asset1_1
       rect:
         serializedVersion: 2
@@ -69,7 +84,15 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -53, y: 60}
+        - {x: -60, y: 37}
+        - {x: -60, y: -54}
+        - {x: -49, y: -60}
+        - {x: 49, y: -60}
+        - {x: 60, y: -37}
+        - {x: 60, y: 43}
+        - {x: 41, y: 60}
     - name: asset1_2
       rect:
         serializedVersion: 2
@@ -80,7 +103,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: 49, y: 40}
+        - {x: 26, y: 65}
+        - {x: -21, y: 65}
+        - {x: -64, y: 29}
+        - {x: -64, y: -26}
+        - {x: -55, y: -37}
+        - {x: -8, y: -65}
+        - {x: 12, y: -65}
+        - {x: 34, y: -48}
+        - {x: 64, y: -11}
+        - {x: 64, y: 10}
     - name: asset1_3
       rect:
         serializedVersion: 2
@@ -91,7 +125,20 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -11, y: 44}
+        - {x: -11, y: 39}
+        - {x: -11, y: 41}
+        - {x: -15, y: 44}
+        - {x: -32, y: 44}
+        - {x: -38, y: 40}
+        - {x: -39, y: 37}
+        - {x: -39, y: -11}
+        - {x: -38, y: -13}
+        - {x: -36, y: -39}
+        - {x: -32, y: -44}
+        - {x: 39, y: -44}
+        - {x: 39, y: 44}
     - name: asset1_4
       rect:
         serializedVersion: 2
@@ -102,7 +149,15 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -13, y: 62.5}
+        - {x: -45, y: 47.5}
+        - {x: -45, y: -24.5}
+        - {x: -36, y: -62.5}
+        - {x: 36, y: -62.5}
+        - {x: 45, y: -38.5}
+        - {x: 45, y: 16.5}
+        - {x: 14, y: 62.5}
     - name: asset1_5
       rect:
         serializedVersion: 2
@@ -113,7 +168,23 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -51, y: 69.5}
+        - {x: -69, y: 60.5}
+        - {x: -69, y: -40.5}
+        - {x: -40, y: -69.5}
+        - {x: 57, y: -69.5}
+        - {x: 69, y: -35.5}
+        - {x: 69, y: 49.5}
+        - {x: 57, y: 69.5}
+      - - {x: -36, y: -46.5}
+        - {x: -57, y: 10.5}
+        - {x: -45, y: 38.5}
+        - {x: 32, y: -49.5}
+      - - {x: -10, y: 23.5}
+        - {x: -31, y: 51.5}
+        - {x: 37, y: 47.5}
+        - {x: 50, y: -30.5}
     - name: asset1_20
       rect:
         serializedVersion: 2

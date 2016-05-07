@@ -22,8 +22,8 @@ public class Spawner : NetworkBehaviour
         { 
            // Debug.Log("added player on client"); 
             //ClientScene.AddPlayer(1);  
-          //  Debug.Log("connecting client to local server"); 
-           // ClientScene.ConnectLocalServer(); 
+             Debug.Log("connecting client to local server"); 
+            ClientScene.ConnectLocalServer(); 
         }
      //   player = LocalPlayer();
      //   Debug.Log("Active local player:" + GameObject.FindObjectOfType<Spawner>().LocalPlayer());

@@ -23,6 +23,18 @@ public class GameManager : Singleton<GameManager>
         connectedTo = -1;
     }
 
+
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                Application.Quit();
+            }
+        }
+    }
+
     void Awake()
     {
         loadingImage.SetActive(false);
