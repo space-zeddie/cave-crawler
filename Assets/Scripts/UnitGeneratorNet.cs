@@ -19,6 +19,7 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
     public GameObject SentinelPrefab;
 
     public Camera CarrierCamera;
+    public Camera CarrierCamera1;
 
     public IEnumerator SpawnUnits()
     {
@@ -60,7 +61,8 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
         //}
 
         Debug.Log("player number " + player.PlayerNumber);
-        CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer(player.PlayerNumber);
+        if (player.PlayerNumber == 0) CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer(player.PlayerNumber);
+        else CarrierCamera1.gameObject.GetComponent<CameraController>().RelocateToPlayer(player.PlayerNumber);
         return ret;
     }
 
@@ -85,7 +87,8 @@ public class UnitGeneratorNet : NetworkBehaviour, IUnitGeneratorNet
         //}
 
         Debug.Log("player number " + player.PlayerNumber);
-       /// CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer(player.PlayerNumber);
+        if (player.PlayerNumber == 0) CarrierCamera.gameObject.GetComponent<CameraController>().RelocateToPlayer(player.PlayerNumber);
+        else CarrierCamera1.gameObject.GetComponent<CameraController>().RelocateToPlayer(player.PlayerNumber);
     }
 
     UnitNet InstantiateUnit(GameObject prefab)

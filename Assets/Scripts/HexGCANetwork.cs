@@ -45,10 +45,13 @@ public class HexGCANetwork : ICellGridGeneratorNet
             this.gameObject.GetComponent<UnitGeneratorNet>().player = thisPlayer;
         GameObject obst = GameObject.FindGameObjectWithTag("ObstacleParent");
         GameObject maincam = GameObject.FindGameObjectWithTag("MainCamera");
+        GameObject maincam1 = GameObject.FindGameObjectWithTag("MainCamera1");
         if (obst != null)
             this.gameObject.GetComponent<ObstacleGeneratorNet>().ObstaclesParent = obst.transform;
         if (maincam != null)
             this.gameObject.GetComponent<UnitGeneratorNet>().CarrierCamera = maincam.GetComponent<Camera>();
+        if (maincam1 != null)
+            this.gameObject.GetComponent<UnitGeneratorNet>().CarrierCamera1 = maincam1.GetComponent<Camera>();
         if (nm.isNetworkActive) Debug.Log("Is in Network");
         if (NetworkServer.active)
         {
