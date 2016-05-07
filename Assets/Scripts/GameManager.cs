@@ -6,6 +6,7 @@ using System.Collections;
 public class GameManager : Singleton<GameManager> 
 {
     public GameObject loadingImage;
+    public Texture2D cursorTexture;
     
     private int currentScene;
     private HostData[] hostList;
@@ -16,6 +17,7 @@ public class GameManager : Singleton<GameManager>
     {
         currentScene = SceneManager.GetActiveScene().buildIndex;
         hostList = new HostData[10];
+        Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
         totalHosts = 0;
         connectedTo = -1;
     }
