@@ -8,7 +8,7 @@ public class CarrierNet : GameUnitNet
 {  
     void Awake()
     {
-        TotalMovementPoints = 0;
+        TotalMovementPoints = 2;
         TotalActionPoints = 0;
         AttackRange = 0;
         AttackFactor = 0;

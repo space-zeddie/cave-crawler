@@ -7,7 +7,7 @@ public class Carrier : GameUnit
 {
     void Start()
     {
-        TotalMovementPoints = 0;
+        TotalMovementPoints = 2;
         TotalActionPoints = 0;
         AttackRange = 0;
         AttackFactor = 0;

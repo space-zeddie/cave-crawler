@@ -81,6 +81,7 @@ public class GameUnit : Unit
     }
 
     public string ID()
+
     {
         return id;
     }
@@ -101,7 +102,7 @@ public class GameUnit : Unit
         // hotseat on the same device is needed
         if (this.PlayerNumber != 0) return;
 
-        if (!this.isSelected) this.MarkAsSelected();
+        if (!this.isSelected) this.UnSelect();
         else
         {
             this.UnSelect();
@@ -111,8 +112,10 @@ public class GameUnit : Unit
         if (unit_go != null) unit_go.GetComponent<GameUnit>().UnSelect();
         UnitParentScript.Instance.SetSelectedUnit(this);
         //this.gameObject.transform.parent.gameObject.GetComponent<UnitParentScript>().SetSelectedUnit(this);
-        Debug.Log(available);
-        if (available.Count == 0) PopulateAvailableCells();
+       /* if (available.Count == 0) */
+        available = null;
+        PopulateAvailableCells();
+        Debug.Log(available.Count);
         foreach (Cell cell in available)
         {
             (cell as Hexagon).MarkAsReachable();
@@ -205,6 +208,7 @@ public class GameUnit : Unit
     {
         Debug.Log("Unselected");
         if (isSelected) isSelected = false;
+        MovementPoints = TotalMovementPoints;
         UnitParentScript.Instance.ClearSelectedUnit();
         if (available.Count != 0)
         {

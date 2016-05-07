@@ -174,7 +174,7 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
 
     void Update () 
     {
-        if (init)
+        if (init && CellGrid != null)
         {
             // switching cameras
             if (Input.GetKeyDown(KeyCode.Z))

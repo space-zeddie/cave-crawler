@@ -8,7 +8,7 @@ public class SentinelNet : GameUnitNet
 
     void Awake()
     {
-        TotalMovementPoints = 0;
+        TotalMovementPoints = 2;
         TotalActionPoints = 0;
         HitPoints = 5;
         AttackRange = 4;
