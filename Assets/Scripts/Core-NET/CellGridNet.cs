@@ -119,19 +119,20 @@ public class CellGridNet : NetworkBehaviour
     public override void OnStartClient()
     {
         Debug.Log("Started client");
-        if (!NetworkServer.active)
+        //if (!NetworkServer.active)
+        //{
+        Cells = new List<CellNet>();
+        foreach (CellNet cell in GameObject.FindObjectsOfType<CellNet>())
+            Cells.Add(cell);
+        foreach (var cell in Cells)
         {
-            Cells = new List<CellNet>();
-            foreach (CellNet cell in GameObject.FindObjectsOfType<CellNet>())
-                Cells.Add(cell);
-            foreach (var cell in Cells)
-            {
-                cell.CellClicked += OnCellClicked;
-                cell.CellHighlighted += OnCellHighlighted;
-                cell.CellDehighlighted += OnCellDehighlighted;
-            }
-           
+            cell.CellClicked += OnCellClicked;
+            cell.CellHighlighted += OnCellHighlighted;
+            cell.CellDehighlighted += OnCellDehighlighted;
         }
+        if (NetworkServer.active) Rpc_AddEventsToCells();
+           
+        //}
 
     }
    
@@ -155,15 +156,44 @@ public class CellGridNet : NetworkBehaviour
             for (int i = 0; i < Units.Count; ++i)
             {
                 var unit = Units[i];
-               // Debug.Log();
+                // Debug.Log();
                 unit.UnitClicked += OnUnitClicked;
                 unit.UnitDestroyed += OnUnitDestroyed;
             }
+            if (NetworkServer.active) Rpc_AddEventsToUnits();
         }
         else
             Debug.LogError("No IUnitGenerator script attached to cell grid");
 
        // StartGame();
+    }
+
+    [ClientRpc]
+    public void Rpc_AddEventsToUnits()
+    {
+        Units = new List<UnitNet>(GameObject.FindObjectOfType<UnitParentScript>().gameObject.transform.GetComponentsInChildren<UnitNet>());
+        Debug.Log(Units.Count);
+        for (int i = 0; i < Units.Count; ++i)
+        {
+            var unit = Units[i];
+            // Debug.Log();
+            unit.UnitClicked += OnUnitClicked;
+            unit.UnitDestroyed += OnUnitDestroyed;
+        }
+    }
+
+    [ClientRpc]
+    public void Rpc_AddEventsToCells()
+    {
+        Cells = new List<CellNet>();
+        foreach (CellNet cell in GameObject.FindObjectsOfType<CellNet>())
+            Cells.Add(cell);
+        foreach (var cell in Cells)
+        {
+            cell.CellClicked += OnCellClicked;
+            cell.CellHighlighted += OnCellHighlighted;
+            cell.CellDehighlighted += OnCellDehighlighted;
+        }
     }
 
 

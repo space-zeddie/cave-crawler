@@ -6,6 +6,8 @@ using System;
 
 public class GUIControllerScript : Singleton<GUIControllerScript> 
 {
+
+
 	public CellGrid CellGrid;
     public GameObject UnitsParent;
     public GameObject PlayersParent;

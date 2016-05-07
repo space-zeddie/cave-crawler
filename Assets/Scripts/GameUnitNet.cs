@@ -113,7 +113,7 @@ public class GameUnitNet : UnitNet
     {
         // simply blocks any other player; should be removed if
         // hotseat on the same device is needed
-        if (this.PlayerNumber != 0) return;
+       // if (this.PlayerNumber != PlayerNumber) return;
 
         if (!this.isSelected) this.MarkAsSelected();
         else
