@@ -26,6 +26,7 @@ public class GameManager : Singleton<GameManager>
         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
         totalHosts = 0;
         connectedTo = -1;
+        PlayGamesPlatform.Activate();
     }
 
 
@@ -67,39 +68,46 @@ public class GameManager : Singleton<GameManager>
 
     public void SignIn()
     {
-        // authenticate user:
-        Social.localUser.Authenticate((bool success) =>
+        if (!signedIn)
         {
-            if (success)
+            // authenticate user:
+            Social.localUser.Authenticate((bool success) =>
             {
-                Debug.Log("Authenticated, checking achievements");
-                PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().Build();
+                if (success)
+                {
+                    Debug.Log("Authenticated, checking achievements");
+                    PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().Build();
 
-                PlayGamesPlatform.InitializeInstance(config);
-                // recommended for debugging:
-                PlayGamesPlatform.DebugLogEnabled = true;
-                // Activate the Google Play Games platform
-                PlayGamesPlatform.Activate();
+                    PlayGamesPlatform.InitializeInstance(config);
+                    // recommended for debugging:
+                    PlayGamesPlatform.DebugLogEnabled = true;
+                    // Activate the Google Play Games platform
+                    PlayGamesPlatform.Activate();
 
-                // Request loaded achievements, and register a callback for processing them
-              //  Social.LoadAchievements(ProcessLoadedAchievements);
-                signedIn = true;
-                string userInfo = "Username: " + Social.localUser.userName +
-                    "\nUser ID: " + Social.localUser.id +
-                    "\nIsUnderage: " + Social.localUser.underage;
-                Debug.Log(userInfo);
-            }
-            else
-                Debug.Log("Failed to authenticate");
-        });
-        Debug.Log("Signing in");
+                    // Request loaded achievements, and register a callback for processing them
+                    //  Social.LoadAchievements(ProcessLoadedAchievements);
+                    signedIn = true;
+                    string userInfo = "Username: " + Social.localUser.userName +
+                        "\nUser ID: " + Social.localUser.id +
+                        "\nIsUnderage: " + Social.localUser.underage;
+                    Debug.Log(userInfo);
+                }
+                else
+                    Debug.Log("Failed to authenticate");
+            });
+        }
+        else
+        {
+            PlayGamesPlatform.Instance.SignOut();
+            signedIn = false;
+        }
     }
 
 
     public void ViewLeaderboard()
     {
         //Social.ShowLeaderboardUI();
-        PlayGamesPlatform.Instance.ShowLeaderboardUI("CgkIgfvp2_QUEAIQBg");
+        ((PlayGamesPlatform) Social.Active).ShowLeaderboardUI(Constants.leaderboard_cave_crawler_leaderboard);
     }
 
     // This function gets called when the LoadAchievement call completes
