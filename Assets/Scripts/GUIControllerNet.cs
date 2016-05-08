@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+
 public class GUIControllerNet : Singleton<GUIControllerNet>
 {
     public CellGridNet CellGrid;
@@ -63,9 +66,34 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
     }
     private void OnGameEnded(object sender, EventArgs e)
     {
+        SaveScore();
         GameObject.FindObjectOfType<HexGCANetwork>().ClearGrid();
         StatManager.Instance.IsNewCave = true;
+        GameManager.Instance.FinMatch();
         GameManager.Instance.LoadGameEndedScreen();
+    }
+
+    void SaveScore()
+    {
+        HumanPlayerNet lplayer = null;
+        foreach (HumanPlayerNet player in PlayersParent.GetComponentsInChildren<HumanPlayerNet>())
+        {
+            player.SaveStats();
+            if (player.isLocalPlayer) lplayer = player;
+        }
+        if (lplayer != null)
+        {
+            int score = lplayer.Score;
+            Social.ReportScore(score, Constants.leaderboard_cave_crawler_leaderboard, (bool success) =>
+            {
+                if (success)
+                    Debug.Log("Reported score " + score);
+                else
+                    Debug.Log("Failed to report score");
+            });
+        }
+        else
+            Debug.Log("Local player not found");
 
     }
 
@@ -88,18 +116,7 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
     }
     private void OnUnitHighlighted(object sender, EventArgs e)
     {
-        // Debug.Log("Unit Highlighted");
         var unit = sender as GameUnitNet;
-        /* _infoPanel = Instantiate(InfoPanel);
-
-         float hpScale = (float)((float)(unit).HitPoints / (float)(unit).TotalHitPoints);
-
-         _infoPanel.transform.Find("Name").GetComponent<Text>().text = unit.UnitName;
-         _infoPanel.transform.Find("HitPoints").Find("Image").transform.localScale = new Vector3(hpScale, 1, 1);
-         _infoPanel.transform.Find("Attack").Find("Image").transform.localScale = new Vector3((float)unit.AttackFactor / 10.0f, 1, 1);
-         _infoPanel.transform.Find("Defence").Find("Image").transform.localScale = new Vector3((float)unit.DefenceFactor / 10.0f, 1, 1);
-
-         _infoPanel.GetComponent<RectTransform>().SetParent(Canvas.GetComponent<RectTransform>(), false);*/
     }
 
 

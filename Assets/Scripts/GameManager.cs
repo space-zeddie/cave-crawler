@@ -6,6 +6,7 @@ using GooglePlayGames;
 using System.Collections;
 using System.Collections.Generic;
 using GooglePlayGames.BasicApi;
+using GooglePlayGames.BasicApi.Multiplayer;
 
 public class GameManager : Singleton<GameManager> 
 {
@@ -13,18 +14,19 @@ public class GameManager : Singleton<GameManager>
     public Texture2D cursorTexture;
     
     private int currentScene;
-    private HostData[] hostList;
-    private int totalHosts;
     private int connectedTo;
 
+    const int MinOpponents = 1;
+    const int MaxOpponents = 7;
+    const int Variant = 0;  // default
+
     bool signedIn = false;
+    TurnBasedMatch currentMatch;
 
     void Start()
     {
         currentScene = SceneManager.GetActiveScene().buildIndex;
-        hostList = new HostData[10];
         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
-        totalHosts = 0;
         connectedTo = -1; 
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
         // enables saving game progress.
@@ -165,12 +167,6 @@ public class GameManager : Singleton<GameManager>
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
         //NetworkServer.serverHostId;
         nm.StartHost();
-        hostList[totalHosts] = new HostData();
-        hostList[totalHosts].port = NetworkServer.listenPort;
-        hostList[totalHosts].ip = new string[1];
-        hostList[totalHosts].ip[0] = Network.player.ipAddress;
-        hostList[totalHosts].playerLimit = 2;
-        totalHosts++;
     }
 
     public void LoadClientMultiplayer()
@@ -179,9 +175,51 @@ public class GameManager : Singleton<GameManager>
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
         nm.StartClient();
         nm.client.RegisterHandler(MsgType.Connect, OnConnected);
-        nm.client.Connect("localhost", 7777);
-        Debug.Log(nm.client.isConnected);
-        Debug.Log(nm.numPlayers);
+        PlayGamesPlatform.Instance.TurnBased.CreateQuickMatch(MinOpponents, MaxOpponents,
+        Variant, OnMatchStarted);
+       // nm.client.Connect("localhost", 7777);
+       // Debug.Log(nm.client.isConnected);
+       // Debug.Log(nm.numPlayers);
+    }
+
+    // Callback:
+    void OnMatchStarted(bool success, TurnBasedMatch match)
+    {
+        if (success)
+        {
+            Debug.Log("Match started");
+            currentMatch = match;
+        }
+        else
+        {
+            Debug.Log("failed to match");
+        }
+    }
+
+    public void FinMatch()
+    {
+        TurnBasedMatch match = currentMatch;  // our current match
+        byte[] finalData = match.Data; // match data representing the final state of the match
+        
+        // define the match's outcome
+        MatchOutcome outcome = new MatchOutcome();
+        uint players = 0;
+        foreach (Participant p in match.Participants) {
+            // decide if participant p has won, lost or tied, and
+            // their ranking (1st, 2nd, 3rd, ...):
+            MatchOutcome.ParticipantResult result = MatchOutcome.ParticipantResult.Unset;
+            uint placement = ++players;
+            outcome.SetParticipantResult(p.ParticipantId, result, placement);
+        }
+
+        // finish the match
+        PlayGamesPlatform.Instance.TurnBased.Finish(match, finalData, outcome, (bool success) => {
+            if (success) {
+                Debug.Log("Match finished");
+            } else {
+                Debug.Log("Match failed to finish");
+            }
+     });
     }
 
     public void OnConnected(NetworkMessage netMsg)
@@ -213,17 +251,21 @@ public class GameManager : Singleton<GameManager>
 
     void LoadScene(int level)
     {
-        loadingImage.SetActive(true);
-        NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
-        if (nm.isNetworkActive)
+        if (Social.localUser.authenticated)
         {
-            if (NetworkServer.active) nm.StopHost();
-            else nm.StopClient();
+            loadingImage.SetActive(true);
+            NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
+            if (nm.isNetworkActive)
+            {
+                if (NetworkServer.active) nm.StopHost();
+                else nm.StopClient();
+            }
+
+            SceneManager.LoadScene(level, LoadSceneMode.Single);
+            Debug.Log("loading " + level);
+            currentScene = level;
         }
         
-        SceneManager.LoadScene(level, LoadSceneMode.Single);
-        Debug.Log("loading " + level);
-        currentScene = level;
         
     }
 }

@@ -138,25 +138,6 @@ public class HumanPlayerNet : PlayerNet
 
     public void SaveStats()
     {
-        player_state.LocalPlayerData.map = GameObject.FindObjectOfType<HexGCANetwork>().GetMap();
-        int i = 0;
-        gameUnits = new GameObject[allUnits.transform.childCount];
-        foreach (GameUnitNet gu in allUnits.GetComponentsInChildren<GameUnitNet>())
-            gameUnits[i++] = gu.gameObject;
-        player_state.LocalPlayerData.DeployedUnits = new int[gameUnits.GetLength(0)];
-        player_state.LocalPlayerData.unitI = new int[gameUnits.GetLength(0)];
-        player_state.LocalPlayerData.unitJ = new int[gameUnits.GetLength(0)];
-        i = 0;
-        foreach (GameObject gu in gameUnits)
-        {
-            if (gu.GetComponent<GameUnitNet>() is CarrierNet) player_state.LocalPlayerData.DeployedUnits[i] = 1;
-            else if (gu.GetComponent<GameUnitNet>() is SentinelNet) player_state.LocalPlayerData.DeployedUnits[i] = 2;
-            // PlayerState.Instance.LocalPlayerData.DeployedUnitCell[i] = gu.CellNumber;
-            player_state.LocalPlayerData.unitI[i] = (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).i;
-            player_state.LocalPlayerData.unitJ[i] = (gu.GetComponent<GameUnitNet>().Cell as HexagonNet).j;
-            Debug.Log(player_state.LocalPlayerData.unitI[i] + ", " + player_state.LocalPlayerData.unitJ[i]);
-            ++i;
-        }
         player_state.LocalPlayerData.Score = Score;
     }
 }
