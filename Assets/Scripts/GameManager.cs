@@ -25,11 +25,30 @@ public class GameManager : Singleton<GameManager>
         hostList = new HostData[10];
         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
         totalHosts = 0;
-        connectedTo = -1;
+        connectedTo = -1; 
+        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+        // enables saving game progress.
+        .EnableSavedGames()
+        .Build();
+
+        PlayGamesPlatform.InitializeInstance(config);
+        // recommended for debugging:
+        PlayGamesPlatform.DebugLogEnabled = true;
+        // Activate the Google Play Games platform
         PlayGamesPlatform.Activate();
     }
 
 
+
+    void Invitation()
+    {
+        Debug.Log("invitation");
+    }
+
+    void Matched()
+    {
+        Debug.Log("Matched");
+    }
     void Update()
     {
         if (Input.GetKey(KeyCode.Escape))
@@ -76,13 +95,7 @@ public class GameManager : Singleton<GameManager>
                 if (success)
                 {
                     Debug.Log("Authenticated, checking achievements");
-                    PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().Build();
-
-                    PlayGamesPlatform.InitializeInstance(config);
-                    // recommended for debugging:
-                    PlayGamesPlatform.DebugLogEnabled = true;
-                    // Activate the Google Play Games platform
-                    PlayGamesPlatform.Activate();
+                    
 
                     // Request loaded achievements, and register a callback for processing them
                     //  Social.LoadAchievements(ProcessLoadedAchievements);
@@ -107,7 +120,8 @@ public class GameManager : Singleton<GameManager>
     public void ViewLeaderboard()
     {
         //Social.ShowLeaderboardUI();
-        ((PlayGamesPlatform) Social.Active).ShowLeaderboardUI(Constants.leaderboard_cave_crawler_leaderboard);
+        PlayGamesPlatform.Activate();
+        PlayGamesPlatform.Instance.ShowLeaderboardUI(Constants.leaderboard_cave_crawler_leaderboard);
     }
 
     // This function gets called when the LoadAchievement call completes
