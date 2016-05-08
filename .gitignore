@@ -3,6 +3,7 @@ ExportedObj/
 Builds/
 Temp/
 Saves/
+Assets/auth
 *.csproj
 *.unityproj
 *.sln
