@@ -1,0 +1,10 @@
+lastUpgrade=00932
+proj.pluginVersion=0.9.32
+proj.AppId=718525857153
+and.BundleId=com.ukma.zakh
+proj.classDir=Assets
+proj.ConstantsClassName=Constants
+and.ResourceData=%3cresources%3e%0d%0a++%3cstring+name%3d%22app_id%22%3e718525857153%3c%2fstring%3e%0d%0a++%3cstring+name%3d%22package_name%22%3ecom.ukma.zakh%3c%2fstring%3e%0d%0a++%3cstring+name%3d%22achievement_quick_paced%22%3eCgkIgfvp2_QUEAIQAQ%3c%2fstring%3e%0d%0a++%3cstring+name%3d%22achievement_caveperson%22%3eCgkIgfvp2_QUEAIQAg%3c%2fstring%3e%0d%0a++%3cstring+name%3d%22achievement_victor%22%3eCgkIgfvp2_QUEAIQAw%3c%2fstring%3e%0d%0a++%3cstring+name%3d%22achievement_outwitted%22%3eCgkIgfvp2_QUEAIQBA%3c%2fstring%3e%0d%0a++%3cstring+name%3d%22achievement_pioneer%22%3eCgkIgfvp2_QUEAIQBQ%3c%2fstring%3e%0d%0a++%3cstring+name%3d%22leaderboard_cave_crawler_leaderboard%22%3eCgkIgfvp2_QUEAIQBg%3c%2fstring%3e%0d%0a%3c%2fresources%3e
+and.ClientId=718525857153-e8dg6sd4oaee9c7d441bif65chca39db.apps.googleusercontent.com
+proj.requireGPlus=false
+android.SetupDone=true
