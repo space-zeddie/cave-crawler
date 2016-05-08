@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.SceneManagement;
+using GooglePlayGames;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,6 +15,8 @@ public class GameManager : Singleton<GameManager>
     private HostData[] hostList;
     private int totalHosts;
     private int connectedTo;
+
+    bool signedIn = false;
 
     void Start()
     {
@@ -58,6 +62,48 @@ public class GameManager : Singleton<GameManager>
     public void LoadSingleplayerCave()
     {
         LoadScene(2);
+    }
+
+    public void SignIn()
+    {
+        // authenticate user:
+        Social.localUser.Authenticate((bool success) =>
+        {
+            if (success)
+            {
+                Debug.Log("Authenticated, checking achievements");
+
+                // Request loaded achievements, and register a callback for processing them
+                Social.LoadAchievements(ProcessLoadedAchievements);
+                signedIn = true;
+                string userInfo = "Username: " + Social.localUser.userName +
+                    "\nUser ID: " + Social.localUser.id +
+                    "\nIsUnderage: " + Social.localUser.underage;
+                Debug.Log(userInfo);
+            }
+            else
+                Debug.Log("Failed to authenticate");
+        });
+        Debug.Log("Signing in");
+    }
+
+
+    // This function gets called when the LoadAchievement call completes
+    void ProcessLoadedAchievements(IAchievement[] achievements)
+    {
+        if (achievements.Length == 0)
+            Debug.Log("Error: no achievements found");
+        else
+            Debug.Log("Got " + achievements.Length + " achievements");
+
+        // You can also call into the functions like this
+        Social.ReportProgress("Achievement01", 100.0, result =>
+        {
+            if (result)
+                Debug.Log("Successfully reported achievement progress");
+            else
+                Debug.Log("Failed to report achievement");
+        });
     }
 
     public void SaveGame()
