@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using GooglePlayGames;
 using System.Collections;
 using System.Collections.Generic;
+using GooglePlayGames.BasicApi;
 
 public class GameManager : Singleton<GameManager> 
 {
@@ -72,9 +73,16 @@ public class GameManager : Singleton<GameManager>
             if (success)
             {
                 Debug.Log("Authenticated, checking achievements");
+                PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().Build();
+
+                PlayGamesPlatform.InitializeInstance(config);
+                // recommended for debugging:
+                PlayGamesPlatform.DebugLogEnabled = true;
+                // Activate the Google Play Games platform
+                PlayGamesPlatform.Activate();
 
                 // Request loaded achievements, and register a callback for processing them
-                Social.LoadAchievements(ProcessLoadedAchievements);
+              //  Social.LoadAchievements(ProcessLoadedAchievements);
                 signedIn = true;
                 string userInfo = "Username: " + Social.localUser.userName +
                     "\nUser ID: " + Social.localUser.id +
@@ -91,7 +99,7 @@ public class GameManager : Singleton<GameManager>
     // This function gets called when the LoadAchievement call completes
     void ProcessLoadedAchievements(IAchievement[] achievements)
     {
-        if (achievements.Length == 0)
+        if (achievements != null && achievements.Length == 0)
             Debug.Log("Error: no achievements found");
         else
             Debug.Log("Got " + achievements.Length + " achievements");
