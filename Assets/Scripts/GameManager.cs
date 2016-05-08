@@ -96,6 +96,12 @@ public class GameManager : Singleton<GameManager>
     }
 
 
+    public void ViewLeaderboard()
+    {
+        //Social.ShowLeaderboardUI();
+        PlayGamesPlatform.Instance.ShowLeaderboardUI("CgkIgfvp2_QUEAIQBg");
+    }
+
     // This function gets called when the LoadAchievement call completes
     void ProcessLoadedAchievements(IAchievement[] achievements)
     {
