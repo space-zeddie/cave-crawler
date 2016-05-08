@@ -35,7 +35,7 @@ public class GameManager : Singleton<GameManager>
         // recommended for debugging:
         PlayGamesPlatform.DebugLogEnabled = true;
         // Activate the Google Play Games platform
-        PlayGamesPlatform.Activate();
+        PlayGamesPlatform.Activate();   
     }
 
 

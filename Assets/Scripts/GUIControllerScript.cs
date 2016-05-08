@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+
 public class GUIControllerScript : Singleton<GUIControllerScript> 
 {
 
@@ -81,10 +84,25 @@ public class GUIControllerScript : Singleton<GUIControllerScript>
 
         _gameOverPanel.GetComponent<RectTransform>().SetParent(Canvas.GetComponent<RectTransform>(), false);*/
       //  Debug.Log("Game Ended");
+        SaveScore();
         GameObject.FindObjectOfType<HexGridCellularAutomata>().ClearGrid();
         StatManager.Instance.IsNewCave = true;
         GameManager.Instance.LoadGameEndedScreen();
         
+    }
+
+    void SaveScore()
+    {
+        PlayersParent.GetComponentInChildren<HumanPlayer>().SaveStats();
+        int score = PlayersParent.GetComponentInChildren<HumanPlayer>().Score;
+        Social.ReportScore(score, Constants.leaderboard_cave_crawler_leaderboard, (bool success) =>
+        {
+            if (success)
+                Debug.Log("Reported score " + score);
+            else
+                Debug.Log("Failed to report score");
+        });
+            
     }
 
     private void OnUnitAttacked(object sender, AttackEventArgs e)
