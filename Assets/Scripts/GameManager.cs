@@ -151,7 +151,7 @@ public class GameManager : Singleton<GameManager>
             Debug.Log("Saving game");
             PlayerState.Instance.SaveToGlobal();
 
-            StatManager.Instance.LocalCopyOfPlayerData.SceneID = Application.loadedLevel;
+            StatManager.Instance.LocalCopyOfPlayerData.SceneID = SceneManager.GetActiveScene().buildIndex;
             StatManager.Instance.SaveData();
         }
     }
@@ -251,7 +251,7 @@ public class GameManager : Singleton<GameManager>
 
     void LoadScene(int level)
     {
-        if (Social.localUser.authenticated)
+       // if (Social.localUser.authenticated)
         {
             loadingImage.SetActive(true);
             NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
