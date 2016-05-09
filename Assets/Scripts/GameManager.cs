@@ -8,6 +8,8 @@ using System.Collections;
 using System.Collections.Generic;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.Multiplayer;
+using UnityEngine.Networking.Match;
+using UnityEngine.Networking.Types;
 
 public class GameManager : Singleton<GameManager> 
 {
@@ -18,11 +20,12 @@ public class GameManager : Singleton<GameManager>
     private int connectedTo;
 
     const int MinOpponents = 1;
-    const int MaxOpponents = 7;
-    const int Variant = 0;  // default
-
+    const int MaxOpponents = 1;
     bool signedIn = false;
-    TurnBasedMatch currentMatch;
+
+    List<MatchDesc> matchList = new List<MatchDesc>();
+    bool matchCreated;
+    NetworkMatch networkMatch;
 
     void Start()
     {
@@ -85,6 +88,7 @@ public class GameManager : Singleton<GameManager>
     void Awake()
     {
         loadingImage.SetActive(false);
+        networkMatch = gameObject.AddComponent<NetworkMatch>();
     }
 
     public void LoadGameEndedScreen()
@@ -183,64 +187,80 @@ public class GameManager : Singleton<GameManager>
 
     public void LoadMultiplayerCave()
     {
-        LoadScene(4);
+        
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
         //NetworkServer.serverHostId;
         nm.StartHost();
+        nm.serverBindAddress = Network.player.ipAddress;
+        nm.StartMatchMaker();
+        nm.matchMaker.SetProgramAppID((UnityEngine.Networking.Types.AppID)1036802);
+
+       /* CreateMatchRequest create = new CreateMatchRequest();
+        create.name = "NewRoom";
+        create.size = 2;
+        create.advertise = true;
+        create.password = "";*/
+
+       // networkMatch.CreateMatch(create, OnMatchCreate);
+        LoadScene(4);
+     //   Debug.Log("address " + nm.serverBindAddress);
+    }
+
+    public void OnMatchJoined(JoinMatchResponse matchJoin)
+    {
+        if (matchJoin.success)
+        {
+            Debug.Log("Join match succeeded");
+            if (matchCreated)
+            {
+                Debug.LogWarning("Match already set up, aborting...");
+                return;
+            }
+            Utility.SetAccessTokenForNetwork(matchJoin.networkId, new NetworkAccessToken(matchJoin.accessTokenString));
+            NetworkClient myClient = new NetworkClient();
+            myClient.RegisterHandler(MsgType.Connect, OnConnected);
+            myClient.Connect(new MatchInfo(matchJoin));
+        }
+        else
+        {
+            Debug.LogError("Join match failed");
+        }
+    }
+
+    public void OnMatchCreate(CreateMatchResponse matchResponse)
+    {
+        if (matchResponse.success)
+        {
+            Debug.Log("Create match succeeded");
+            matchCreated = true;
+            Utility.SetAccessTokenForNetwork(matchResponse.networkId, new NetworkAccessToken(matchResponse.accessTokenString));
+            NetworkServer.Listen(new MatchInfo(matchResponse), 9000);
+        }
+        else
+        {
+            Debug.LogError("Create match failed");
+        }
     }
 
     public void LoadClientMultiplayer()
     {
         LoadScene(4);
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
+
+        nm.StartMatchMaker();
+        nm.matchMaker.SetProgramAppID((UnityEngine.Networking.Types.AppID)1036802);
+       // nm.matchMaker.
         nm.StartClient();
         nm.client.RegisterHandler(MsgType.Connect, OnConnected);
        /* PlayGamesPlatform.Instance.TurnBased.CreateQuickMatch(MinOpponents, MaxOpponents,
         Variant, OnMatchStarted);*/
-        nm.client.Connect("localhost", 7777);
-        Debug.Log(nm.client.isConnected);
+       // nm.client.Connect("localhost", 7777);
+       // Debug.Log(nm.client.isConnected);
         Debug.Log(nm.numPlayers);
     }
 
-    // Callback:
-    void OnMatchStarted(bool success, TurnBasedMatch match)
-    {
-        if (success)
-        {
-            Debug.Log("Match started");
-            currentMatch = match;
-        }
-        else
-        {
-            Debug.Log("failed to match");
-        }
-    }
 
-    public void FinMatch()
-    {
-        TurnBasedMatch match = currentMatch;  // our current match
-        byte[] finalData = match.Data; // match data representing the final state of the match
-        
-        // define the match's outcome
-        MatchOutcome outcome = new MatchOutcome();
-        uint players = 0;
-        foreach (Participant p in match.Participants) {
-            // decide if participant p has won, lost or tied, and
-            // their ranking (1st, 2nd, 3rd, ...):
-            MatchOutcome.ParticipantResult result = MatchOutcome.ParticipantResult.Unset;
-            uint placement = ++players;
-            outcome.SetParticipantResult(p.ParticipantId, result, placement);
-        }
-
-        // finish the match
-        PlayGamesPlatform.Instance.TurnBased.Finish(match, finalData, outcome, (bool success) => {
-            if (success) {
-                Debug.Log("Match finished");
-            } else {
-                Debug.Log("Match failed to finish");
-            }
-     });
-    }
+    
 
     public void OnConnected(NetworkMessage netMsg)
     {
@@ -275,7 +295,7 @@ public class GameManager : Singleton<GameManager>
         if (level == 4) nm.GetComponent<NetworkManagerHUD>().showGUI = true;
         else nm.GetComponent<NetworkManagerHUD>().showGUI = false;
 
-        if (Social.localUser.authenticated)
+      //  if (Social.localUser.authenticated)
         {
             loadingImage.SetActive(true);            
             if (nm.isNetworkActive)
