@@ -195,11 +195,11 @@ public class GameManager : Singleton<GameManager>
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
         nm.StartClient();
         nm.client.RegisterHandler(MsgType.Connect, OnConnected);
-        PlayGamesPlatform.Instance.TurnBased.CreateQuickMatch(MinOpponents, MaxOpponents,
-        Variant, OnMatchStarted);
-       // nm.client.Connect("localhost", 7777);
-       // Debug.Log(nm.client.isConnected);
-       // Debug.Log(nm.numPlayers);
+       /* PlayGamesPlatform.Instance.TurnBased.CreateQuickMatch(MinOpponents, MaxOpponents,
+        Variant, OnMatchStarted);*/
+        nm.client.Connect("localhost", 7777);
+        Debug.Log(nm.client.isConnected);
+        Debug.Log(nm.numPlayers);
     }
 
     // Callback:
