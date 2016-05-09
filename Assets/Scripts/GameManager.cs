@@ -40,7 +40,7 @@ public class GameManager : Singleton<GameManager>
         // Activate the Google Play Games platform
         PlayGamesPlatform.Activate();
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
-        if (level == 4) nm.GetComponent<NetworkManagerHUD>().showGUI = true;
+        if (SceneManager.GetActiveScene().buildIndex == 4) nm.GetComponent<NetworkManagerHUD>().showGUI = true;
         else nm.GetComponent<NetworkManagerHUD>().showGUI = false;
         
     }
