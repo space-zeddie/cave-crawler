@@ -69,7 +69,7 @@ public class GUIControllerNet : Singleton<GUIControllerNet>
         SaveScore();
         GameObject.FindObjectOfType<HexGCANetwork>().ClearGrid();
         StatManager.Instance.IsNewCave = true;
-        GameManager.Instance.FinMatch();
+       // GameManager.Instance.FinMatch();
         GameManager.Instance.LoadGameEndedScreen();
     }
 

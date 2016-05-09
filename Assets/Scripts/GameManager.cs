@@ -216,7 +216,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public void FinMatch()
+  /*  public void FinMatch()
     {
         TurnBasedMatch match = currentMatch;  // our current match
         byte[] finalData = match.Data; // match data representing the final state of the match
@@ -240,7 +240,7 @@ public class GameManager : Singleton<GameManager>
                 Debug.Log("Match failed to finish");
             }
      });
-    }
+    }*/
 
     public void OnConnected(NetworkMessage netMsg)
     {
@@ -275,7 +275,7 @@ public class GameManager : Singleton<GameManager>
         if (level == 4) nm.GetComponent<NetworkManagerHUD>().showGUI = true;
         else nm.GetComponent<NetworkManagerHUD>().showGUI = false;
 
-        if (Social.localUser.authenticated)
+       // if (Social.localUser.authenticated)
         {
             loadingImage.SetActive(true);            
             if (nm.isNetworkActive)
