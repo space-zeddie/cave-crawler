@@ -252,9 +252,12 @@ public class GameManager : Singleton<GameManager>
     void LoadScene(int level)
     {
        // if (Social.localUser.authenticated)
-        {
+     //   {
+
             loadingImage.SetActive(true);
             NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
+            if (level == 4) nm.GetComponent<NetworkManagerHUD>().showGUI = true;
+            else nm.GetComponent<NetworkManagerHUD>().showGUI = false;
             if (nm.isNetworkActive)
             {
                 if (NetworkServer.active) nm.StopHost();
@@ -264,7 +267,7 @@ public class GameManager : Singleton<GameManager>
             SceneManager.LoadScene(level, LoadSceneMode.Single);
             Debug.Log("loading " + level);
             currentScene = level;
-        }
+    //    }
         
         
     }
