@@ -39,22 +39,10 @@ public class GameManager : Singleton<GameManager>
         PlayGamesPlatform.DebugLogEnabled = true;
         // Activate the Google Play Games platform
         PlayGamesPlatform.Activate();
-
-        GameObject authCheck = GameObject.FindGameObjectWithTag("AuthCheck");
-        if (authCheck != null)
-        {
-            if (Social.localUser.authenticated)
-            {
-                authCheck.GetComponent<Text>().color = Color.gray;
-                authCheck.GetComponent<Text>().text = "Weclome back!";                
-            }
-            else
-            {
-                // light red
-                authCheck.GetComponent<Text>().color = Color.red;
-                authCheck.GetComponent<Text>().text = "Please, log in";
-            }
-        }
+        NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
+        if (level == 4) nm.GetComponent<NetworkManagerHUD>().showGUI = true;
+        else nm.GetComponent<NetworkManagerHUD>().showGUI = false;
+        
     }
 
 
@@ -70,6 +58,21 @@ public class GameManager : Singleton<GameManager>
     }
     void Update()
     {
+        GameObject authCheck = GameObject.FindGameObjectWithTag("AuthCheck");
+        if (authCheck != null)
+        {
+            if (Social.localUser.authenticated)
+            {
+                authCheck.GetComponent<Text>().color = Color.gray;
+                authCheck.GetComponent<Text>().text = "Weclome back!";
+            }
+            else
+            {
+                // light red
+                authCheck.GetComponent<Text>().color = Color.red;
+                authCheck.GetComponent<Text>().text = "Please, log in";
+            }
+        }
         if (Input.GetKey(KeyCode.Escape))
         {
             if (Application.platform == RuntimePlatform.Android)
@@ -268,12 +271,13 @@ public class GameManager : Singleton<GameManager>
 
     void LoadScene(int level)
     {
+        NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
+        if (level == 4) nm.GetComponent<NetworkManagerHUD>().showGUI = true;
+        else nm.GetComponent<NetworkManagerHUD>().showGUI = false;
+
         if (Social.localUser.authenticated)
         {
-            loadingImage.SetActive(true);
-            NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
-            if (level == 4) nm.GetComponent<NetworkManagerHUD>().showGUI = true;
-            else nm.GetComponent<NetworkManagerHUD>().showGUI = false;
+            loadingImage.SetActive(true);            
             if (nm.isNetworkActive)
             {
                 if (NetworkServer.active) nm.StopHost();
