@@ -60,13 +60,4 @@ public class Loader : Singleton<Loader>
         GameManager.Instance.LoadMainMenu();
     }
 
-    public void LoadSingplayerScene()
-    {
-        GameManager.Instance.LoadGame();
-        
-    }
-    public void LoadMultiplayerScene()
-    {
-        //Application.LoadLevel();
-    }
 }
