@@ -2,6 +2,7 @@
 using UnityEngine.Networking;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using GooglePlayGames;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,7 +38,23 @@ public class GameManager : Singleton<GameManager>
         // recommended for debugging:
         PlayGamesPlatform.DebugLogEnabled = true;
         // Activate the Google Play Games platform
-        PlayGamesPlatform.Activate();   
+        PlayGamesPlatform.Activate();
+
+        GameObject authCheck = GameObject.FindGameObjectWithTag("AuthCheck");
+        if (authCheck != null)
+        {
+            if (Social.localUser.authenticated)
+            {
+                authCheck.GetComponent<Text>().color = Color.gray;
+                authCheck.GetComponent<Text>().text = "Weclome back!";                
+            }
+            else
+            {
+                // light red
+                authCheck.GetComponent<Text>().color = Color.red;
+                authCheck.GetComponent<Text>().text = "Please, log in";
+            }
+        }
     }
 
 
@@ -251,9 +268,8 @@ public class GameManager : Singleton<GameManager>
 
     void LoadScene(int level)
     {
-       // if (Social.localUser.authenticated)
-     //   {
-
+        if (Social.localUser.authenticated)
+        {
             loadingImage.SetActive(true);
             NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
             if (level == 4) nm.GetComponent<NetworkManagerHUD>().showGUI = true;
@@ -263,11 +279,10 @@ public class GameManager : Singleton<GameManager>
                 if (NetworkServer.active) nm.StopHost();
                 else nm.StopClient();
             }
-
             SceneManager.LoadScene(level, LoadSceneMode.Single);
             Debug.Log("loading " + level);
             currentScene = level;
-    //    }
+        }
         
         
     }
