@@ -246,12 +246,13 @@ public class GameManager : Singleton<GameManager>
     {
         LoadScene(4);
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
-
+        nm.networkAddress = Network.player.ipAddress;
+        nm.StartClient();
+        nm.client.RegisterHandler(MsgType.Connect, OnConnected);
         nm.StartMatchMaker();
         nm.matchMaker.SetProgramAppID((UnityEngine.Networking.Types.AppID)1036802);
        // nm.matchMaker.
-        nm.StartClient();
-        nm.client.RegisterHandler(MsgType.Connect, OnConnected);
+        
        /* PlayGamesPlatform.Instance.TurnBased.CreateQuickMatch(MinOpponents, MaxOpponents,
         Variant, OnMatchStarted);*/
        // nm.client.Connect("localhost", 7777);
