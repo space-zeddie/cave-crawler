@@ -23,5 +23,4 @@ Assets/auth
 sysinfo.txt
 
 # Builds
-*.apk
 *.unitypackage
