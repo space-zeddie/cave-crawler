@@ -130,7 +130,7 @@ public class CellGridNet : NetworkBehaviour
             cell.CellHighlighted += OnCellHighlighted;
             cell.CellDehighlighted += OnCellDehighlighted;
         }
-        if (NetworkServer.active) Rpc_AddEventsToCells();
+        //if (NetworkServer.active) Rpc_AddEventsToCells();
            
         //}
 

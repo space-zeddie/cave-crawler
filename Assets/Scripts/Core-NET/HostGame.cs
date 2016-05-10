@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class HostGame : MonoBehaviour
 {
     List<MatchDesc> matchList = new List<MatchDesc>();
+    NetworkManager nm;
     bool matchCreated;
     NetworkMatch networkMatch;
     Spawner spawner;
@@ -16,7 +17,7 @@ public class HostGame : MonoBehaviour
     void Awake()
     {
         networkMatch = gameObject.AddComponent<NetworkMatch>();
-        
+        nm = GameObject.FindObjectOfType<NetworkManager>();
     }
 
     void OnGUI()
@@ -91,9 +92,13 @@ public class HostGame : MonoBehaviour
                 return;
             }
             Utility.SetAccessTokenForNetwork(matchJoin.networkId, new NetworkAccessToken(matchJoin.accessTokenString));
-            NetworkClient myClient = new NetworkClient();
+            NetworkClient myClient = nm.client;
             myClient.RegisterHandler(MsgType.Connect, OnConnected);
             myClient.Connect(new MatchInfo(matchJoin));
+            GameObject sp = (GameObject)GameObject.Instantiate(spawnerPrefab);
+            if (NetworkServer.active) NetworkServer.Spawn(sp);
+            else ClientScene.RegisterPrefab(sp);
+            if (spawner != null) spawner.AddClientPlayer();
         }
         else
         {

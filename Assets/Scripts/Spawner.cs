@@ -22,8 +22,11 @@ public class Spawner : NetworkBehaviour
         { 
            // Debug.Log("added player on client"); 
             //ClientScene.AddPlayer(1);  
-             Debug.Log("connecting client to local server"); 
-            ClientScene.ConnectLocalServer(); 
+             //Debug.Log("adding player"); 
+          //  ClientScene.ConnectLocalServer();
+
+           // ClientScene.AddPlayer(1);
+            AddClientPlayer();
         }
      //   player = LocalPlayer();
      //   Debug.Log("Active local player:" + GameObject.FindObjectOfType<Spawner>().LocalPlayer());
@@ -32,12 +35,24 @@ public class Spawner : NetworkBehaviour
     }
 
 
-    public override void OnStartClient()
+    /*public override void OnStartClient()
     {
         if (!NetworkServer.active)
         {
             ClientScene.AddPlayer(1);
         }
+    }*/
+
+    public void AddClientPlayer()
+    {
+      //  ClientScene.ConnectLocalServer(); nm.client = NetworkClient.allClients[0];
+        //nm.client.Connect("localhost", 7777);
+        //  Debug.Log(NetworkClient.allClients[0].connection.address);
+        ClientScene.AddPlayer(nm.client.connection, 1);
+      //  ClientScene.AddPlayer(1);
+      //  GameObject player = (GameObject)Instantiate(nm.playerPrefab, Vector3.zero, Quaternion.identity);
+
+       // NetworkServer.AddPlayerForConnection(nm.client.connection, player, 0);
     }
     
 
