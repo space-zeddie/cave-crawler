@@ -17,21 +17,15 @@ public class GameManager : Singleton<GameManager>
     public Texture2D cursorTexture;
     
     private int currentScene;
-    private int connectedTo;
-
-    const int MinOpponents = 1;
-    const int MaxOpponents = 1;
     bool signedIn = false;
 
-    List<MatchDesc> matchList = new List<MatchDesc>();
-    bool matchCreated;
     NetworkMatch networkMatch;
+    bool matchCreated = false;
 
     void Start()
     {
         currentScene = SceneManager.GetActiveScene().buildIndex;
         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
-        connectedTo = -1; 
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
         // enables saving game progress.
         .EnableSavedGames()
@@ -262,7 +256,6 @@ public class GameManager : Singleton<GameManager>
        // Debug.Log(nm.client.isConnected);
         Debug.Log(nm.numPlayers);
     }
-
 
     
 

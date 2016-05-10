@@ -96,7 +96,7 @@ public class HostGame : MonoBehaviour
             Utility.SetAccessTokenForNetwork(matchJoin.networkId, new NetworkAccessToken(matchJoin.accessTokenString));
             NetworkClient myClient = nm.client;
             this.matchJoin = matchJoin;
-            myClient.RegisterHandler(MsgType.Connect, OnClientConnect);
+           // myClient.RegisterHandler(MsgType.AddPlayer, OnClientConnect);
             myClient.Connect(new MatchInfo(matchJoin));
             GameObject sp = (GameObject)GameObject.Instantiate(spawnerPrefab);
             if (NetworkServer.active) NetworkServer.Spawn(sp);
