@@ -11,6 +11,8 @@ public class HostGame : MonoBehaviour
     bool matchCreated;
     NetworkMatch networkMatch;
     Spawner spawner;
+    NetworkClient remoteClient;
+    JoinMatchResponse matchJoin;
 
     public GameObject spawnerPrefab;
 
@@ -93,12 +95,14 @@ public class HostGame : MonoBehaviour
             }
             Utility.SetAccessTokenForNetwork(matchJoin.networkId, new NetworkAccessToken(matchJoin.accessTokenString));
             NetworkClient myClient = nm.client;
-            myClient.RegisterHandler(MsgType.Connect, OnConnected);
+            this.matchJoin = matchJoin;
+            myClient.RegisterHandler(MsgType.Connect, OnClientConnect);
             myClient.Connect(new MatchInfo(matchJoin));
             GameObject sp = (GameObject)GameObject.Instantiate(spawnerPrefab);
             if (NetworkServer.active) NetworkServer.Spawn(sp);
             else ClientScene.RegisterPrefab(sp);
-            if (spawner != null) spawner.AddClientPlayer();
+            if (spawner != null)
+                spawner.AddClientPlayer();
         }
         else
         {
@@ -106,8 +110,24 @@ public class HostGame : MonoBehaviour
         }
     }
 
-    public void OnConnected(NetworkMessage msg)
+    public void SetUpRemoteClient(NetworkClient client)
     {
-        Debug.Log("Connected!");
+     //   remoteClient = client;
+  //      remoteClient.RegisterHandler(MsgType.Connect, OnClientConnect);
+//        remoteClient.Connect(new MatchInfo(matchJoin));
+    }
+
+    public void OnClientConnect(NetworkMessage msg)
+    {
+        Debug.Log("Connected!"); 
+        //if (NetworkServer.active) NetworkServer.Spawn(sp);
+        //else ClientScene.RegisterPrefab(sp);
+//        spawner.AddClientPlayer();
+        spawner = GameObject.FindObjectOfType<Spawner>();
+        Debug.Log("where: " + nm.matchName);
+        spawner.AddClientPlayer();
+        //remoteClient.RegisterHandler(MsgType.Connect, OnClientConnect);
+        //remoteClient.Connect(new MatchInfo(matchJoin));
+
     }
 }

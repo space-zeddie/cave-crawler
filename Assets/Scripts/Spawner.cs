@@ -18,7 +18,7 @@ public class Spawner : NetworkBehaviour
 
     void Start()
     {
-        if (!NetworkServer.active) 
+        if (!isServer) 
         { 
            // Debug.Log("added player on client"); 
             //ClientScene.AddPlayer(1);  
@@ -26,6 +26,8 @@ public class Spawner : NetworkBehaviour
           //  ClientScene.ConnectLocalServer();
 
            // ClientScene.AddPlayer(1);
+           // GameObject.FindObjectOfType<HostGame>().SetUpRemoteClient(nm.client);
+            Debug.Log("Started Spawner, " + nm.IsClientConnected());
             AddClientPlayer();
         }
      //   player = LocalPlayer();
@@ -48,10 +50,15 @@ public class Spawner : NetworkBehaviour
       //  ClientScene.ConnectLocalServer(); nm.client = NetworkClient.allClients[0];
         //nm.client.Connect("localhost", 7777);
         //  Debug.Log(NetworkClient.allClients[0].connection.address);
-        ClientScene.AddPlayer(nm.client.connection, 1);
+        if (!isServer)
+        {
+            Debug.Log("Added client player");
+            ClientScene.AddPlayer(nm.client.connection, 1);
+        }
       //  ClientScene.AddPlayer(1);
-      //  GameObject player = (GameObject)Instantiate(nm.playerPrefab, Vector3.zero, Quaternion.identity);
+        //GameObject player = (GameObject)Instantiate(nm.playerPrefab, Vector3.zero, Quaternion.identity);
 
+       // ClientScene.
        // NetworkServer.AddPlayerForConnection(nm.client.connection, player, 0);
     }
     
@@ -91,7 +98,7 @@ public class Spawner : NetworkBehaviour
     public void Spawn()
     {
         Debug.Log("spawning");
-        ClientScene.ConnectLocalServer();
+        if (isServer) ClientScene.ConnectLocalServer();
         nm.client = NetworkClient.allClients[0];
         nm.client.Connect("localhost", 7777);
       //  Debug.Log(NetworkClient.allClients[0].connection.address);
