@@ -28,7 +28,7 @@ public class Loader : Singleton<Loader>
         {
             GameObject spawner = (GameObject)GameObject.Instantiate(spawnerPrefab);
             if (NetworkServer.active) NetworkServer.Spawn(spawner);
-            else ClientScene.RegisterPrefab(spawner);
+           // else ClientScene.RegisterPrefab(spawner);
         }
     }
 

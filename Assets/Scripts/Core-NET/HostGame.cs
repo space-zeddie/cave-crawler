@@ -11,11 +11,12 @@ public class HostGame : MonoBehaviour
     NetworkMatch networkMatch;
     Spawner spawner;
 
+    public GameObject spawnerPrefab;
+
     void Awake()
     {
         networkMatch = gameObject.AddComponent<NetworkMatch>();
-        spawner = GameObject.FindObjectOfType<Spawner>();
-        Debug.Log("spawner " + spawner);
+        
     }
 
     void OnGUI()
@@ -58,6 +59,12 @@ public class HostGame : MonoBehaviour
             matchCreated = true;
             Utility.SetAccessTokenForNetwork(matchResponse.networkId, new NetworkAccessToken(matchResponse.accessTokenString));
             NetworkServer.Listen(new MatchInfo(matchResponse), 9000);
+            GameObject sp = (GameObject)GameObject.Instantiate(spawnerPrefab);
+            if (NetworkServer.active) NetworkServer.Spawn(sp);
+            else ClientScene.RegisterPrefab(sp);
+            spawner = GameObject.FindObjectOfType<Spawner>();
+            Debug.Log("spawner " + spawner);
+            Debug.Log("NetworkServer.active " + NetworkServer.active);
             if (spawner != null) spawner.Spawn();
         }
         else
