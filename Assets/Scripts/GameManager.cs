@@ -206,7 +206,7 @@ public class GameManager : Singleton<GameManager>
      //   Debug.Log("address " + nm.serverBindAddress);
     }
 
-    public void OnMatchJoined(JoinMatchResponse matchJoin)
+   /* public void OnMatchJoined(JoinMatchResponse matchJoin)
     {
         if (matchJoin.success)
         {
@@ -218,14 +218,14 @@ public class GameManager : Singleton<GameManager>
             }
             Utility.SetAccessTokenForNetwork(matchJoin.networkId, new NetworkAccessToken(matchJoin.accessTokenString));
             NetworkClient myClient = new NetworkClient();
-            myClient.RegisterHandler(MsgType.Connect, OnConnected);
+            myClient.RegisterHandler(MsgType.Connect, OnClientConnect);
             myClient.Connect(new MatchInfo(matchJoin));
         }
         else
         {
             Debug.LogError("Join match failed");
         }
-    }
+    }*/
 
     public void OnMatchCreate(CreateMatchResponse matchResponse)
     {
@@ -252,7 +252,7 @@ public class GameManager : Singleton<GameManager>
         
         nm.matchMaker.SetProgramAppID((UnityEngine.Networking.Types.AppID)1036802);
         nm.StartClient();
-        nm.client.RegisterHandler(MsgType.Connect, OnConnected);
+        nm.client.RegisterHandler(MsgType.Connect, OnClientConnect);
         //nm.client.
        // nm.matchMaker.
         
@@ -266,7 +266,7 @@ public class GameManager : Singleton<GameManager>
 
     
 
-    public void OnConnected(NetworkMessage netMsg)
+    public void OnClientConnect(NetworkMessage netMsg)
     {
         Debug.Log("Connected to server");
         // Debug.Log(NetworkServer.active + ": " + NetworkServer.listenPort);
