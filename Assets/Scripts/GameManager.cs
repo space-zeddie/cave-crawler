@@ -15,20 +15,13 @@ public class GameManager : Singleton<GameManager>
     public Texture2D cursorTexture;
     
     private int currentScene;
-    private int connectedTo;
-
-    const int MinOpponents = 1;
-    const int MaxOpponents = 7;
-    const int Variant = 0;  // default
 
     bool signedIn = false;
-    TurnBasedMatch currentMatch;
 
     void Start()
     {
         currentScene = SceneManager.GetActiveScene().buildIndex;
         Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
-        connectedTo = -1; 
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
         // enables saving game progress.
         .EnableSavedGames()
@@ -42,6 +35,8 @@ public class GameManager : Singleton<GameManager>
         NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
         if (SceneManager.GetActiveScene().buildIndex == 4) nm.GetComponent<NetworkManagerHUD>().showGUI = true;
         else nm.GetComponent<NetworkManagerHUD>().showGUI = false;
+
+        Debug.Log("c#: " + System.Environment.Version);
         
     }
 
@@ -202,19 +197,6 @@ public class GameManager : Singleton<GameManager>
         Debug.Log(nm.numPlayers);
     }
 
-    // Callback:
-    void OnMatchStarted(bool success, TurnBasedMatch match)
-    {
-        if (success)
-        {
-            Debug.Log("Match started");
-            currentMatch = match;
-        }
-        else
-        {
-            Debug.Log("failed to match");
-        }
-    }
 
   /*  public void FinMatch()
     {

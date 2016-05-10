@@ -67,7 +67,7 @@ public class HumanPlayerNet : PlayerNet
         GameObject.FindObjectOfType<UnitGeneratorNet>().SpawnUnitsForClient(this);
     }
 
-    [Command]
+   /* [Command]
     public void Cmd_HighlightAvailableCells(bool isCarrier)
     {
         GameUnitNet unit = null;
@@ -88,7 +88,7 @@ public class HumanPlayerNet : PlayerNet
             else if (cell is WallCellNet && unit.canShoot)
                 (cell as WallCellNet).moveable = unit;
         }
-    }
+    }*/
 
     void OnServerAddPlayer()
     {
