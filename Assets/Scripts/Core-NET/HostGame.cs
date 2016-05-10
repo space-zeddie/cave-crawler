@@ -63,9 +63,8 @@ public class HostGame : MonoBehaviour
             if (NetworkServer.active) NetworkServer.Spawn(sp);
             else ClientScene.RegisterPrefab(sp);
             spawner = GameObject.FindObjectOfType<Spawner>();
-            Debug.Log("spawner " + spawner);
-            Debug.Log("NetworkServer.active " + NetworkServer.active);
             if (spawner != null) spawner.Spawn();
+
         }
         else
         {

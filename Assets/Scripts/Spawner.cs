@@ -58,7 +58,7 @@ public class Spawner : NetworkBehaviour
         if (!NetworkServer.active)
         {
             Debug.Log("spawning client");
-            ClientScene.AddPlayer(nm.client.connection, 0);
+            ClientScene.AddPlayer(nm.client.connection, 1);
             GUIControllerNet.Instance.Init();
         }
     }*/
@@ -76,7 +76,13 @@ public class Spawner : NetworkBehaviour
     public void Spawn()
     {
         Debug.Log("spawning");
-        ClientScene.AddPlayer(0);
+        ClientScene.ConnectLocalServer();
+        nm.client = NetworkClient.allClients[0];
+        nm.client.Connect("localhost", 7777);
+      //  Debug.Log(NetworkClient.allClients[0].connection.address);
+        ClientScene.AddPlayer(NetworkServer.localConnections[0], 0);
+        GameObject player = (GameObject)Instantiate(nm.playerPrefab, Vector3.zero, Quaternion.identity);
+        NetworkServer.AddPlayerForConnection(NetworkServer.localConnections[0], player, 0);
         //nm.GetComponent<GridManager>().GenMap(hex.GetComponent<HexGCANetwork>());
         GameObject hexgrid = (GameObject)Instantiate(hex);
         // player.GetComponent<HumanPlayer>().PlayerNumber = GameObject.FindObjectOfType<PlayersParent>().gameObject.transform.childCount; 
